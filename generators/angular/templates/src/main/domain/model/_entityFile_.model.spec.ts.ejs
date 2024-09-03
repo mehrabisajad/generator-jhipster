@@ -1,0 +1,32 @@
+import { <%= entityAngularName %> } from './<%= entityFileName %>.model';
+import { sampleWithNewData, sampleWithFullData, sampleWithPartialData, sampleWithRequiredData } from './<%= entityFileName %>.test-samples';
+
+describe('<%= entityAngularName %> Model Test', () => {
+  it('should create <%= entityAngularName %> model', async () => {
+    const prepareForCreation = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
+      _<%= entityInstance %>.prepareForCreation();
+    };
+    const prepareForUpdate = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
+      _<%= entityInstance %>.prepareForUpdate();
+    };
+
+    await expect(prepareForCreation(sampleWithNewData)).resolves.not.toThrow();
+    await expect(prepareForUpdate(sampleWithNewData)).rejects.toThrow();
+  });
+
+  it('should update <%= entityAngularName %> model', async () => {
+    const <%= entityInstancePlural %> = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData];
+
+    for (const <%= entityInstance %> of <%= entityInstancePlural %>) {
+      const prepareForCreation = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
+        _<%= entityInstance %>.prepareForCreation();
+      };
+      const prepareForUpdate = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
+        _<%= entityInstance %>.prepareForUpdate();
+      };
+
+      await expect(prepareForUpdate(<%= entityInstance %>)).resolves.not.toThrow();
+      await expect(prepareForCreation(<%= entityInstance %>)).rejects.toThrow();
+    }
+  });
+});

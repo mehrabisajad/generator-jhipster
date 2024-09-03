@@ -15,54 +15,137 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
--%><%
-let helpBlocks = 0; %>
+-%>
+<%
+const hasStatusField = fields.some(field => field.fieldName === 'status')
+%>
 {
     "<%= frontendAppName %>": {
-        "<%= entityTranslationKey %>" : {
+        "<%= entityTranslationKey %>": {
+            "__authority__": {
+                "LIST_<%= entityAngularName %>": "فهرست <%= entityClassPluralHumanized %>",
+<%_ if (!readOnly) { _%>
+                "VIEW_<%= entityAngularName %>": "مشاهده <%= entityAngularName %>",
+                "CREATE_<%= entityAngularName %>": "ایجاد <%= entityAngularName %>",
+                "EDIT_<%= entityAngularName %>": "ویرایش <%= entityAngularName %>",
+                "DELETE_<%= entityAngularName %>": "حذف <%= entityAngularName %>",
+    <%_ if (hasStatusField) { _%>
+                "CHANGE_STATUS_<%= entityAngularName %>": "تغییر وضعیت <%= entityAngularName %>",
+    <%_ } _%>
+<%_ } _%>
+            },
             "home": {
                 "title": "<%= entityClassPluralHumanized %>",
-                "refreshListLabel": "Refresh list",
-<%_ if (!readOnly) { _%>
-                "createLabel": "Create a new <%= entityClassHumanized %>",
-                "createOrEditLabel": "Create or edit a <%= entityClassHumanized %>",
-<%_ } _%>
+                "invalid": "لطفاً ابتدا موارد مورد نیاز را انتخاب کنید.",
 <%_ if (searchEngineAny) { _%>
-                "search": "Search for <%= entityClassHumanized %>",
+                "search": "جستجو برای <%= entityClassHumanized %>",
 <%_ } _%>
-                "notFound": "No <%= entityClassPluralHumanized %> found"
+                "notFound": "هیچ <%= entityClassPluralHumanized %> یافت نشد"
+<%_ if (!readOnly) { _%>
+                ,"action": {
+                    "create": "ایجاد یک <%= entityClassHumanized %> جدید"
+<%_ if (hasStatusField) { _%>,
+                    "deactivation": "غیرفعال‌سازی",
+                    "activation": "فعال‌سازی"
+<%_ } _%>
+                }
+<%_ } _%>
+            }
+<%_ if (!readOnly) { _%>
+            ,"form": {
+                "newTitle": "ایجاد <%= entityClassHumanized %>",
+                "editTitle": "ویرایش <%= entityClassHumanized %>",
+                "viewTitle": "مشاهده <%= entityClassHumanized %>",
+                "cancel": "لغو",
+                "submit": "ذخیره",
+                "created": "<%= entityClassHumanized %> با موفقیت ایجاد شد.",
+                "updated": "<%= entityClassHumanized %> با موفقیت بروزرسانی شد."
             },
-<%_ if (!microserviceAppName && !readOnly) { _%>
-            "created": "A new <%= entityClassHumanized %> is created with identifier {{ param }}",
-            "updated": "A <%= entityClassHumanized %> is updated with identifier {{ param }}",
-            "deleted": "A <%= entityClassHumanized %> is deleted with identifier {{ param }}",
+            "delete": {
+                "title": "تایید حذف",
+                "question": "آیا مطمئن هستید که می‌خواهید <%= entityClassHumanized %> {{ id }} را حذف کنید؟",
+                "cancel": "لغو",
+                "submit": "حذف",
+                "deleted": "<%= entityClassHumanized %> با موفقیت حذف شد."
+            }
+    <%_ if (hasStatusField) { _%>
+            ,"changeStatus": {
+                "ACTIVE": {
+                    "title": "تایید فعال‌سازی",
+                    "question": "آیا مطمئن هستید که می‌خواهید <%= entityClassHumanized %> {{ id }} را فعال کنید؟",
+                    "cancel": "لغو",
+                    "submit": "فعال‌سازی",
+                    "submitted": "<%= entityClassHumanized %> با موفقیت فعال شد."
+                },
+                "INACTIVE": {
+                    "title": "تایید غیرفعال‌سازی",
+                    "question": "آیا مطمئن هستید که می‌خواهید <%= entityClassHumanized %> {{ id }} را غیرفعال کنید؟",
+                    "cancel": "لغو",
+                    "submit": "غیرفعال‌سازی",
+                    "submitted": "<%= entityClassHumanized %> با موفقیت غیرفعال شد."
+                }
+              }
+    <%_ } _%>
 <%_ } _%>
 <%_ if (!readOnly) { _%>
-            "delete": {
-                "question": "Are you sure you want to delete <%= entityClassHumanized %> {{ id }}?"
-            },
-<%_ } _%>
-            "detail": {
-                "title": "<%= entityClassHumanized %>"
-            }<% for (idx in fields) {
-            if (typeof fields[idx].documentation !== 'undefined') ++helpBlocks; %>,
-            "<%= fields[idx].fieldName %>": "<%= fields[idx].fieldNameHumanized %>"<% } %><% for (idx in relationships) { %>,
-            "<%= relationships[idx].relationshipName %>": "<%= relationships[idx].relationshipNameHumanized %>"<% } if (helpBlocks > 0) { %>,
-            "help": {<% for (idx in fields) {
-                if (fields[idx].documentation) {
-                    --helpBlocks; %>
-                "<%= fields[idx].fieldName %>": "<%= fields[idx].documentation %>"<% if (helpBlocks > 0) { %>,<% }
+            ,"validate": {
+    <%_ let addComma = false; for (const field of fields) {
+        const fieldName = field.fieldName;
+        const fieldNameHumanized = field.fieldNameHumanized;
+        if (field.fieldValidate === true) {
+            let i = 0;
+            _%>
+            <% if (addComma) { %>,<% } %>"<%= fieldName %>": {
+            <%_ if (field.fieldValidationRequired) { _%>"required": "<%= fieldNameHumanized %> الزامی است."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMinLength) { _%><% if (i > 0) { %>,<% } %>"minlength": "<%= fieldNameHumanized %> باید حداقل <%= field.fieldValidateRulesMinlength %> کاراکتر باشد."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMaxLength) { _%><% if (i > 0) { %>,<% } %>"maxlength": "<%= fieldNameHumanized %> نمی‌تواند بیشتر از <%= field.fieldValidateRulesMaxlength %> کاراکتر باشد."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMin) { _%><% if (i > 0) { %>,<% } %>"min": "<%= fieldNameHumanized %> باید حداقل <%= field.fieldValidateRulesMin %> باشد."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMax) { _%><% if (i > 0) { %>,<% } %>"max": "<%= fieldNameHumanized %> نمی‌تواند بیشتر از <%= field.fieldValidateRulesMax %> باشد."<%_ i++; } _%>
+            <%_ if (field.fieldValidationPattern) { _%><% if (i > 0) { %>,<% } %>"pattern": "<%= fieldNameHumanized %> باید مطابق الگوی <%= field.fieldValidateRulesPattern.replace(/\\/g, '\\\\') %> باشد."<%_ i++; } _%>
+            }
+            <%_ addComma = true; } _%>
+            <%_ } _%>
+            <%_ for (const relationship of relationships) {
+                const ownerSide = relationship.ownerSide;
+                const relationshipName = relationship.relationshipName;
+                const relationshipNameHumanized = relationship.relationshipNameHumanized;
+            if (relationship.relationshipRequired) {
+            _%>
+                <% if (addComma) { %>,<% } %>"<%= relationshipName %>": {
+                "required": "<%= relationshipNameHumanized %> الزامی است."
                 }
-            } %>
-            }<% } %>
+            <%_ addComma = true; } _%>
+            <%_ } _%>
+            }
+<%_ } _%>
+            ,"rowIndex": "#"
+<%_ for (const field of fields) { -%>
+            ,
+            "<%= field.fieldName %>": "<%= field.fieldNameHumanized %>"
+<%_ } -%>
+<% for (const relationship of relationships) { -%>
+            ,
+            "<%= relationship.relationshipName %>": "<%= relationship.relationshipNameHumanized %>"
+<%_ } -%>
+<%_ const fieldsWithDoc = fields.filter(field => field.documentation); -%>
+<%_ if (fieldsWithDoc.length > 0) { -%>
+  <%_ const lastField = fieldsWithDoc[fieldsWithDoc.length - 1]; -%>
+            ,
+            "help": {
+  <%_ for (const field of fieldsWithDoc) { _%>
+                "<%= field.fieldName %>": "<%= field.documentation %>"<% if (field !== lastField) { %>,<% } %>
+  <%_ } _%>
+            }
+<%_ } _%>
         }
     }
-<%_ if (microserviceAppName && !readOnly) { _%>,
+<%_ if (microserviceAppName && !readOnly) { -%>
+    ,
     "<%= microserviceAppName %>": {
-        "<%= entityTranslationKey %>" : {
-            "created": "A new <%= entityClassHumanized %> is created with identifier {{ param }}",
-            "updated": "A <%= entityClassHumanized %> is updated with identifier {{ param }}",
-            "deleted": "A <%= entityClassHumanized %> is deleted with identifier {{ param }}"
+        "<%= entityTranslationKey %>": {
+            "created": "یک <%= entityClassHumanized %> جدید با شناسه {{ param }} ایجاد شد.",
+            "updated": "<%= entityClassHumanized %> با شناسه {{ param }} بروزرسانی شد.",
+            "deleted": "<%= entityClassHumanized %> با شناسه {{ param }} حذف شد."
         }
     }
 <%_ } _%>

@@ -1,0 +1,23 @@
+import { random } from "avanng/common/core";
+import { Observable } from 'rxjs';
+import { BaseQueryHandler, safeQuery } from "avanng/domain";
+import { BaseQuery } from "avanng/domain/base-query";
+import { I<%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
+import { <%= entityAngularName %>PersistenceQueryPort } from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-query.port";
+
+const __NAME__ = random();
+
+export class <%= entityAngularName %>FindAllQuery implements BaseQuery<I<%= entityAngularName %>[]> {
+  queryId = __NAME__;
+}
+
+export class <%= entityAngularName %>FindAllQueryHandler implements BaseQueryHandler<<%= entityAngularName %>FindAllQuery, I<%= entityAngularName %>[]> {
+  queryId = __NAME__;
+
+  constructor(private <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
+  }
+
+  handle(query: <%= entityAngularName %>FindAllQuery): Observable<I<%= entityAngularName %>[]> {
+    return this.<%= entityInstance %>PersistenceQueryPort.findAll();
+  }
+}

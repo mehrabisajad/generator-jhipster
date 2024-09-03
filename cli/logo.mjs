@@ -19,12 +19,12 @@
 import chalk from 'chalk';
 import { packageJson } from '../lib/index.js';
 
-export default `${chalk.green('        ██╗')}${chalk.red(' ██╗   ██╗ ████████╗ ███████╗   ██████╗ ████████╗ ████████╗ ███████╗')}
-${chalk.green('        ██║')}${chalk.red(' ██║   ██║ ╚══██╔══╝ ██╔═══██╗ ██╔════╝ ╚══██╔══╝ ██╔═════╝ ██╔═══██╗')}
-${chalk.green('        ██║')}${chalk.red(' ████████║    ██║    ███████╔╝ ╚█████╗     ██║    ██████╗   ███████╔╝')}
-${chalk.green('  ██╗   ██║')}${chalk.red(' ██╔═══██║    ██║    ██╔════╝   ╚═══██╗    ██║    ██╔═══╝   ██╔══██║')}
-${chalk.green('  ╚██████╔╝')}${chalk.red(' ██║   ██║ ████████╗ ██║       ██████╔╝    ██║    ████████╗ ██║  ╚██╗')}
-${chalk.green('   ╚═════╝ ')}${chalk.red(' ╚═╝   ╚═╝ ╚═══════╝ ╚═╝       ╚═════╝     ╚═╝    ╚═══════╝ ╚═╝   ╚═╝')}
-                            https://www.jhipster.tech
-${chalk.white('Welcome to JHipster')} ${chalk.yellow(`v${packageJson.version}`)}
+export default `${chalk.blueBright(' █████╗ ██╗   ██╗ █████╗ ███╗   ██╗')}${chalk.green('        ██╗')}${chalk.red(' ██╗   ██╗ ████████╗ ███████╗   ██████╗ ████████╗ ████████╗ ███████╗')}
+${chalk.blueBright('██╔══██╗██║   ██║██╔══██╗████╗  ██║')}${chalk.green('        ██║')}${chalk.red(' ██║   ██║ ╚══██╔══╝ ██╔═══██╗ ██╔════╝ ╚══██╔══╝ ██╔═════╝ ██╔═══██╗')}
+${chalk.blueBright('███████║██║   ██║███████║██╔██╗ ██║')}${chalk.green('        ██║')}${chalk.red(' ████████║    ██║    ███████╔╝ ╚█████╗     ██║    ██████╗   ███████╔╝')}
+${chalk.blueBright('██╔══██║╚██╗ ██╔╝██╔══██║██║╚██╗██║')}${chalk.green('  ██╗   ██║')}${chalk.red(' ██╔═══██║    ██║    ██╔════╝   ╚═══██╗    ██║    ██╔═══╝   ██╔══██║')}
+${chalk.blueBright('██║  ██║ ╚████╔╝ ██║  ██║██║ ╚████║')}${chalk.green('  ╚██████╔╝')}${chalk.red(' ██║   ██║ ████████╗ ██║       ██████╔╝    ██║    ████████╗ ██║  ╚██╗')}
+${chalk.blueBright('╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝')}${chalk.green('   ╚═════╝ ')}${chalk.red(' ╚═╝   ╚═╝ ╚═══════╝ ╚═╝       ╚═════╝     ╚═╝    ╚═══════╝ ╚═╝   ╚═╝')}
+                            https://vla.co.ir https://www.jhipster.tech
+${chalk.white('Welcome to Avan JHipster')} ${chalk.yellow(`v${packageJson.version}`)}
 `;

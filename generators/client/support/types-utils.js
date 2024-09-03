@@ -68,7 +68,7 @@ export const getTypescriptType = fieldType => {
     return 'number';
   }
   if ([TYPE_LOCAL_DATE, TYPE_ZONED_DATE_TIME, TYPE_INSTANT].includes(fieldType)) {
-    return 'dayjs.Dayjs';
+    return 'Date';
   }
   if ([TYPE_BOOLEAN].includes(fieldType)) {
     return 'boolean';

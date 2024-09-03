@@ -44,6 +44,8 @@ export default function prepareField(entityWithConfig, field, generator) {
     field.transient = true;
     // Disable update form.
     field.readonly = true;
+    // Disable update form.
+    field.wizard = false;
   }
 
   if (field.documentation) {
@@ -73,6 +75,7 @@ export default function prepareField(entityWithConfig, field, generator) {
       field.autoGenerateByRepository = !field.autoGenerateByService;
       field.requiresPersistableImplementation = false;
       field.readonly = true;
+      field.wizard = false;
     } else if (entityWithConfig.reactive) {
       field.liquibaseAutoIncrement = field.fieldType === LONG;
       field.jpaGeneratedValue = false;
@@ -80,6 +83,7 @@ export default function prepareField(entityWithConfig, field, generator) {
       field.autoGenerateByRepository = !field.autoGenerateByService;
       field.requiresPersistableImplementation = !field.liquibaseAutoIncrement;
       field.readonly = true;
+      field.wizard = false;
     } else {
       const defaultGenerationType = entityWithConfig.prodDatabaseType === MYSQL ? 'identity' : 'sequence';
       field.jpaGeneratedValue = field.jpaGeneratedValue || [INTEGER, LONG].includes(field.fieldType) ? defaultGenerationType : true;
@@ -89,6 +93,7 @@ export default function prepareField(entityWithConfig, field, generator) {
       field.autoGenerateByRepository = true;
       field.requiresPersistableImplementation = false;
       field.readonly = true;
+      field.wizard = false;
       if (field.jpaGeneratedValueIdentity) {
         field.liquibaseAutoIncrement = true;
       } else if (field.jpaGeneratedValueSequence) {

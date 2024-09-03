@@ -3,7 +3,7 @@ import { defaultHelpers as helpers } from '../../testing/index.js';
 import { GENERATOR_EXPORT_JDL } from '../generator-list.js';
 
 const files = {
-  '.jhipster/Country.json': {
+  '.avan/Country.json': {
     fluentMethods: true,
     relationships: [
       {
@@ -32,7 +32,7 @@ const files = {
     pagination: 'no',
     service: 'no',
   },
-  '.jhipster/Department.json': {
+  '.avan/Department.json': {
     fluentMethods: false,
     relationships: [
       {

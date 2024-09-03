@@ -1,0 +1,34 @@
+import { random } from "avanng/common/core";
+import { BaseCommand, BaseCommandHandler, HandlerResponse } from "avanng/domain";
+import { <%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+import { <%= entityAngularName %>PersistenceCommandPort} from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
+
+const __name__ = random();
+
+export class <%= entityAngularName %>DeleteCommand implements BaseCommand<void> {
+  commandId = __name__;
+
+  constructor(public id?: <%= tsKeyType %> | null) {
+  }
+
+}
+
+export class <%= entityAngularName %>DeleteCommandHandler implements BaseCommandHandler<<%= entityAngularName %>DeleteCommand, void> {
+  commandId = __name__;
+
+  constructor(private <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
+
+  handle(command: <%= entityAngularName %>DeleteCommand): HandlerResponse<void> {
+
+    if (command.id) {
+      const <%= entityInstance %> = <%= entityAngularName %>.delete(command.id);
+
+      return {
+        result: this.<%= entityInstance %>PersistenceCommandPort.delete(<%= entityInstance %>.id!),
+        domain: <%= entityInstance %>
+      };
+    }
+
+    throw new Error('id is null');
+  }
+}

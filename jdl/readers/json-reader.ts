@@ -34,7 +34,7 @@ export default function parseFromDir(dir: string): JDLObject {
   if (!doesDirectoryExist(dir)) {
     throw new Error(`The passed directory '${dir}' must exist and must be a directory to read JSON files.`);
   }
-  const entityDir = `${dir}/.jhipster`;
+  const entityDir = `${dir}/.avan`;
   if (!doesDirectoryExist(entityDir)) {
     throw new Error(`'${entityDir}' must exist as a directory.`);
   }

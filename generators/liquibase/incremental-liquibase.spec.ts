@@ -380,7 +380,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'Customer.json')]);
+      runResult.assertFile([join('.avan', 'Customer.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([`${SERVER_MAIN_RES_DIR}config/liquibase/changelog/20200101000100_added_entity_Customer.xml`]);
@@ -465,7 +465,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'Customer.json')]);
+      runResult.assertFile([join('.avan', 'Customer.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([`${SERVER_MAIN_RES_DIR}config/liquibase/changelog/20200101000100_added_entity_Customer.xml`]);

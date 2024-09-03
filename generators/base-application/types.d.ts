@@ -124,6 +124,7 @@ export type CommonClientServerApplication = BaseApplication &
     pages: string[];
 
     serverPort: number;
+    serverName: number;
     backendType?: string;
     backendTypeJavaAny?: boolean;
     backendTypeSpringBoot?: boolean;

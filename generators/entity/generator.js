@@ -206,6 +206,7 @@ export default class EntityGenerator extends BaseApplicationGenerator {
       askForDTO: prompts.askForDTO,
       askForFiltering: prompts.askForFiltering,
       askForReadOnly: prompts.askForReadOnly,
+      askForWizard: prompts.askForWizard,
       askForPagination: prompts.askForPagination,
       async composeEntities() {
         // We need to compose with others entities to update relationships.

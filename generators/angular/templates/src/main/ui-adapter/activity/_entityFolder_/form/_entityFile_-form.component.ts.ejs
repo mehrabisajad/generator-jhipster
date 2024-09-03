@@ -1,0 +1,178 @@
+<%
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const hasBooleanField = this.hasBooleanField(fields);
+%>
+import { Component, inject, HostListener } from '@angular/core';
+import { Validators } from "@angular/forms";
+import { Observable } from "rxjs";
+import { finalize } from 'rxjs/operators';
+
+<%_ if (hasBooleanField) { _%>
+import { CheckboxModule } from "avan-primeng/checkbox";
+<%_ } _%>
+import { SharedFormModule, SharedDialogModule } from 'avanng/shared';
+import { Mediator } from 'avanng/domain';
+<%_ if (enumImports.size) { _%>
+import { DropdownItemsForEnum, EnumSelectItem } from 'avanng/enum';
+<%_ } _%>
+<%_ if (relationships.filter(rel => rel.otherEntity.primaryKey)) { _%>
+import {addItemToCollectionIfMissing} from "avanng/common/core";
+<%_ } _%>
+import { <% if (!wizard) { %>FormRouterComponent,<% } %> init, validateForm } from "avanng/forms";
+<% if (wizard) { %>
+import { WizardFormRouterComponent } from "avanng/wizard-forms";
+import { WizardModule } from "avanng/wizard";
+<% } %>
+
+import { I<%= entityAngularName %>, <%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+    import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
+<%_ for (const relationshipsByType of Object.values(differentRelationships).filter(relationshipsByType => relationshipsByType.some(relationship => relationship.otherEntity.entityAngularName !== entityAngularName))) {
+    const { otherEntity } = relationshipsByType[0];
+if (relationships.find(relationship => otherEntity === relationship.otherEntity)) {
+_%>
+    import { I<%- otherEntity.entityAngularName %> } from '@domain/model/<%= otherEntity.entityFileName %>.model';
+<%_ } } _%>
+
+<%_ for (const relationship of relationships.filter(rel => rel.otherEntity.primaryKey)) {
+    const { otherEntity, otherEntityName, relationshipName, propertyName, otherEntityField, relationshipRequired, relationshipFieldNamePlural } = relationship;
+_%>
+import { <%= otherEntity.entityAngularName %>FindAllQuery } from '@application/query/<%= otherEntity.entityFolderName %>/<%= otherEntity.entityFileName %>-find-all.query';
+<%_ } _%>
+import { <%= entityAngularName %>CreateOrUpdateCommand } from '@application/command/<%= entityFolderName %>/<%= entityFileName %>-create-or-update.command';
+import { <%= entityAngularName %>Definition } from "../<%= entityFileName %>.df";
+
+@Component({
+  standalone: true,
+  selector: '<%= jhiPrefixDashed %>-<%= entityFileName %>-form',
+  templateUrl: './<%= entityFileName %>-form.component.html',
+  imports: [SharedFormModule, SharedDialogModule <% if (wizard) { %>, WizardModule<% } %>, <% if (hasBooleanField) { %>CheckboxModule<% } %>],
+})
+export class <%= entityAngularName %>FormComponent extends <% if (wizard) { %>Wizard<% } %>FormRouterComponent<I<%= entityAngularName %>> {
+  routeItemName = '<%= entityInstance %>';
+
+  df = inject(<%= entityAngularName %>Definition);
+  mediator = inject(Mediator);
+
+  <%_ enumImports.forEach((importedPath, importedType) => { _%>
+      @DropdownItemsForEnum(<%- importedType %>)
+      <%- importedType %>Collection: EnumSelectItem[] = [];
+  <%_ }); _%>
+
+    <%_ for (const relationshipsByType of Object.values(differentRelationships)) {
+        const { otherEntity } = relationshipsByType[0];
+    if (relationships.find(relationship => otherEntity === relationship.otherEntity)) {
+    _%>
+        <%- otherEntity.entityAngularName %>Collection: I<%- otherEntity.entityAngularName %>[] = [];
+    <%_ } } _%>
+
+  editForm = this.fb.group({
+    <% if (wizard) { %>baseForm: this.fb.group({<% } %>
+<%_ for (const field of fields) {
+      const { fieldName, fieldValidationRequired,fieldValidationMinLength,
+          fieldValidationMaxLength,
+          fieldValidationMin,
+          fieldValidationMax,
+          fieldValidationPattern, id } = field;
+      const tsType = `${field.fieldIsEnum ? 'keyof typeof ' : ''}${field.tsType}`;
+        const listValidators = [];
+        if (fieldValidationRequired) {
+            listValidators.push('Validators.required');
+        }
+        if (fieldValidationMinLength) {
+            listValidators.push(`Validators.minLength(${field.fieldValidateRulesMinlength})`);
+        }
+        if (fieldValidationMaxLength) {
+            listValidators.push(`Validators.maxLength(${field.fieldValidateRulesMaxlength})`);
+        }
+        if (fieldValidationMin) {
+            listValidators.push(`Validators.min(${field.fieldValidateRulesMin})`);
+        }
+        if (fieldValidationMax) {
+            listValidators.push(`Validators.max(${field.fieldValidateRulesMax})`);
+        }
+        if (fieldValidationPattern) {
+            listValidators.push(`Validators.pattern(/${field.fieldValidateRulesPattern.replace(/\\/g, '\\\\')}/)`);
+        }
+_%>
+  <%= fieldName %>: [init<<%= tsType %>>(), [<%= listValidators %>]],
+  <%_ if (field.fieldTypeBinary && !field.blobContentTypeText) { _%>
+  <%= fieldName %>ContentType: [init<string>(), [<%= listValidators %>]],
+  <%_ } _%>
+<%_ } _%>
+<%_ for (const relationship of relationships) {
+      const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+_%>
+  <%= propertyName %>Id<% if (collection) { %>s<% } %>: [init<<%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %>>(), [<% if (relationshipRequired) { %>Validators.required<% } %>]],
+<%_ } _%>
+<% if (wizard) { %>})<% } %>
+  });
+
+  shortcuts = [
+    {
+      key: 'Enter',
+      condition: () => !this.isView,
+      command: () => <% if (wizard) { %> this.editForm.invalid ? this.validateAndNext() :<% } %> this.save(),
+    },
+    { key: 'Alt+Q', command: () => this.previousState() },
+<%_ if (wizard) { _%>
+    { key: 'Control+keyArrowRight', command: () => this.dir !== 'rtl' ? this.next() : this.previous() },
+    { key: 'Control+keyArrowLeft', command: () => this.dir === 'rtl' ? this.next() : this.previous() },
+    { key: 'Control+keyArrowUp', command: () => this.first() },
+    { key: 'Control+keyArrowDown', command: () => this.last() },
+<%_ } _%>
+  ];
+
+<%_ if (relationships.filter(rel => rel.otherEntity.primaryKey).length) { _%>
+  loadRelationshipsOptions(): void {
+    <%_ for (const relationship of relationships.filter(rel => rel.otherEntity.primaryKey)) {
+        const { otherEntity, collection, relationshipName, propertyName, otherEntityField, relationshipRequired, relationshipFieldNamePlural } = relationship;
+    _%>
+    this.setInProgress(this.df.<%= propertyName %>, true);
+    this.mediator.send<I<%= otherEntity.entityAngularName %>[]>(new <%= otherEntity.entityAngularName %>FindAllQuery())
+      .pipe(finalize(() => this.setInProgress(this.df.<%= propertyName %>, false)))
+      .subscribe(items => {
+        this.<%= otherEntity.entityAngularName %>Collection = addItemToCollectionIfMissing(items, <% if (collection) { %>this.item?.<%= propertyName %> ?? []<% } else { %>[this.item?.<%= propertyName %>]<% } %>);
+      });
+
+    <%_ } _%>
+  }
+<%_ } _%>
+
+  updateForm(<%= entityInstance %>: I<%= entityAngularName %>): void {
+    this.editForm.patchValue(<% if (wizard) { %>{ baseForm: <% } %><%= entityInstance %><% if (wizard) { %> } <% } %>);
+  }
+
+  createFromForm(): I<%= entityAngularName %> {
+    return new <%= entityAngularName %>(<% if (wizard) { %>{ ...<% } %>this.editForm.value<% if (wizard) { %>.baseForm } <% } %>);
+  }
+
+  save(): void {
+    if (this.editForm.invalid) {
+      validateForm(this.editForm);
+      return;
+    }
+
+    this.inProgress = true;
+    const <%= entityInstance %> = this.createFromForm();
+    const command = new <%= entityAngularName %>CreateOrUpdateCommand(<%= entityInstance %>);
+    this.subscribeToSaveResponse(<%= entityInstance %>, this.mediator.send(command));
+  }
+
+  protected subscribeToSaveResponse(requestBody: I<%= entityAngularName %>, result: Observable<I<%= entityAngularName %> | null>): void {
+    this.subs.sink = result.pipe(finalize(() => this.inProgress = false)).subscribe({
+      next: res => this.onSaveSuccess(res ?? requestBody),
+      error: err => this.onSaveError(err),
+    });
+  }
+
+  protected onSaveSuccess(result?: I<%= entityAngularName %> | null): void {
+    this.alertService.addSuccess(this.isNew ? '<%- i18nKeyPrefix %>.form.created' : '<%- i18nKeyPrefix %>.form.updated');
+    this.previousState(result);
+  }
+
+  protected onSaveError(err: Error): void {
+    // Api for inheritance.
+  }
+}

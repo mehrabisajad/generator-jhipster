@@ -46,7 +46,7 @@ export function convertToJDL(directory = '.', output: string | false = 'app.jdl'
   if (doesFileExist(path.join(directory, '.yo-rc.json'))) {
     const yoRcFileContent: JHipsterYoRcContent = readJSONFile(path.join(directory, '.yo-rc.json'));
     let entities: Map<string, JSONEntity> | undefined;
-    if (doesDirectoryExist(path.join(directory, '.jhipster'))) {
+    if (doesDirectoryExist(path.join(directory, '.avan'))) {
       entities = getJSONEntityFiles(directory);
     }
     jdlObject = getJDLObjectFromSingleApplication(yoRcFileContent, entities);
@@ -78,7 +78,7 @@ function getJDLObjectFromMultipleApplications(directory: string): JDLObject {
     const applicationDirectory = path.join(directory, subDirectory);
     const yoRcFileContent: JHipsterYoRcContent = readJSONFile(path.join(applicationDirectory, '.yo-rc.json'));
     let entities: Map<string, JSONEntity> = new Map();
-    if (doesDirectoryExist(path.join(applicationDirectory, '.jhipster'))) {
+    if (doesDirectoryExist(path.join(applicationDirectory, '.avan'))) {
       entities = getJSONEntityFiles(applicationDirectory);
     }
     jdlObject = getJDLObjectFromSingleApplication(yoRcFileContent, entities, jdlObject);
@@ -120,9 +120,9 @@ function cleanYoRcFileContent(yoRcFileContent: JHipsterYoRcContent): PostProcess
 
 function getJSONEntityFiles(applicationDirectory: string): Map<string, JSONEntity> {
   const entities: Map<string, JSONEntity> = new Map();
-  fs.readdirSync(path.join(applicationDirectory, '.jhipster')).forEach(file => {
+  fs.readdirSync(path.join(applicationDirectory, '.avan')).forEach(file => {
     const entityName = file.slice(0, file.indexOf('.json'));
-    const jsonFilePath = path.join(applicationDirectory, '.jhipster', file);
+    const jsonFilePath = path.join(applicationDirectory, '.avan', file);
     if (fs.statSync(jsonFilePath).isFile() && file.endsWith('.json')) {
       entities.set(entityName, readJSONFile(jsonFilePath));
     }

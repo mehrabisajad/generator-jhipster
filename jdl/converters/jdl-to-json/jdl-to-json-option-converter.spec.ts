@@ -81,6 +81,10 @@ describe('jdl - JDLToJSONOptionConverter', () => {
               entityNames: ['A'],
             }),
             new JDLUnaryOption({
+              name: unaryOptions.WIZARD,
+              entityNames: ['A'],
+            }),
+            new JDLUnaryOption({
               name: unaryOptions.SKIP_CLIENT,
               entityNames: ['A'],
             }),

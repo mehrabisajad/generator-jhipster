@@ -1,0 +1,29 @@
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { of, EMPTY, Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import { Mediator } from 'avanng/domain';
+
+import { I<%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+import { <%= entityAngularName %>FindByIdQuery } from '@application/query/<%= entityFolderName %>/<%= entityFileName %>-find-by-id.query';
+
+export const <%= entityAngularName %>RoutingResolve = (route: ActivatedRouteSnapshot): Observable<null | I<%= entityAngularName %>> => {
+  const id = route.params['<%= primaryKey.name %>'];
+  if (id) {
+    const mediator = inject(Mediator);
+    const router = inject(Router);
+
+    return mediator.send(new <%= entityAngularName %>FindByIdQuery(id))
+      .pipe(
+        mergeMap((<%= entityInstance %>) => {
+          if (<%= entityInstance %>) {
+            return of(<%= entityInstance %>);
+          } else {
+            router.navigate(['404']);
+            return EMPTY;
+          }
+        }),
+      );
+  }
+  return of(null);
+};

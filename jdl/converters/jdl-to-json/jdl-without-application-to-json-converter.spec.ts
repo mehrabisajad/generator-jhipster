@@ -206,6 +206,10 @@ JSONEntity {
               entityNames: new Set(['A']),
             }),
             new JDLUnaryOption({
+              name: unaryOptions.WIZARD,
+              entityNames: new Set(['A']),
+            }),
+            new JDLUnaryOption({
               name: unaryOptions.SKIP_CLIENT,
               entityNames: new Set(['A']),
             }),

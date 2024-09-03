@@ -476,7 +476,7 @@ export default class EnvironmentBuilder {
       return {};
     }
 
-    const localPath = './.jhipster/sharedOptions';
+    const localPath = './.avan/sharedOptions';
     let result = await loadSharedOptionsFromFile(localPath, `SharedOptions found at local config ${localPath}`);
 
     if (!blueprintPackagePaths) {

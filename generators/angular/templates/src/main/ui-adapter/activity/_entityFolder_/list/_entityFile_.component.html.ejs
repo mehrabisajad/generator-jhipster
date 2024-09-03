@@ -1,0 +1,245 @@
+<div class="card card-flat" [dir]="dir">
+  <form
+    class="datatable focus"
+    name="searchForm"
+    novalidate
+    [formGroup]="searchForm"
+    (ngSubmit)="transition()"
+    ngaFormValidation
+    [translatePrefix]="translatePrefix + 'validate'"
+  >
+    <nga-page-header (back)="previousState()" [title]="translatePrefix + 'home.title' | ngaTranslate : '<%= entityClassPluralHumanized %>'">
+      <ng-container page-header-action>
+        @if (searchable && mediaScreen !== 'sm') {
+          <button
+            pButton
+            type="button"
+            (click)="exchangeSearch()"
+            class="ml-2 p-button-text p-button-plain p-button-icon-only"
+            [pTooltip]="(isTopSearch ? 'toolbar.sideSearch' : 'toolbar.topSearch') | ngaTranslate : (isTopSearch ? 'Side Search' : 'Top Search' )"
+            tooltipPosition="top"
+          >
+            <em [ngaIcon]="isTopSearch ? 'side-search' : 'top-search'"></em>
+          </button>
+        }
+        <button
+          pButton
+          type="button"
+          icon="pi pi-refresh"
+          (click)="loadAll(true)"
+          class="ml-2 p-button-text p-button-plain"
+          [pTooltip]="'toolbar.refresh' | ngaTranslate : 'Refresh'"
+          tooltipPosition="top"
+        ></button>
+        @if (filterable && !activeFilter) {
+          <button
+            pButton
+            type="button"
+            icon="pi pi-filter"
+            (click)="openFilter()"
+            class="ml-2 p-button-text p-button-plain"
+            [pTooltip]="'toolbar.filter' | ngaTranslate : 'Filter'"
+            tooltipPosition="top"
+          ></button>
+        } @else if (filterable && activeFilter) {
+          <button
+            pButton
+            type="button"
+            icon="pi pi-filter-slash"
+            (click)="closeFilter()"
+            class="ml-2 p-button-text p-button-plain"
+            [pTooltip]="'toolbar.deFilter' | ngaTranslate : 'De Filter'"
+            tooltipPosition="top"
+          ></button>
+        }
+        <nga-column-selector-overlay
+          dir="rtl"
+          [(columns)]="columns"
+          [(selection)]="selectedColumns"
+          class="ml-2"
+          [tooltip]="'toolbar.selectColumn' | ngaTranslate: 'Select Column'"
+          tooltipPosition="top"
+        >
+        </nga-column-selector-overlay>
+        <button
+          pButton
+          icon="pi pi-file-excel"
+          (click)="outlet('export')"
+          type="button"
+          class="ml-2 p-button-text p-button-plain"
+          [pTooltip]="'toolbar.export' | ngaTranslate: 'Export'"
+          tooltipPosition="top"
+        ></button>
+<%_ if (!readOnly) { _%>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-plus"
+          class="ml-2"
+          [ngClass]="'p-button-success'"
+          *ngaHasAnyAuthorityOrAdmin="df.Authority.CREATE_<%= entityAngularName %>"
+          [label]="translatePrefix + 'home.action.create' | ngaTranslate : 'New'"
+          [routerLink]="['./new']"
+        ></button>
+<%_ } _%>
+      </ng-container>
+    </nga-page-header>
+
+    <nga-datatable-handler
+      [searchable]="searchable"
+      [isTopSearch]="isTopSearch"
+      [searchLabel]="translatePrefix + 'home.search' | ngaTranslate : 'Search'"
+      [isLoading]="inProgress"
+      topSearchMaxWidth="100rem"
+    >
+      <p-table
+        datatable
+        [value]="items"
+        [loading]="inProgress"
+        [sortField]="sortField"
+        [sortOrder]="ascending ? 1 : -1"
+        [lazy]="lazy"
+        (onLazyLoad)="lazyLoad($event)"
+        (onPage)="change($event)"
+        (onSort)="change($event)"
+        [resizableColumns]="resizable"
+        [paginator]="pageable"
+        [first]="page * itemsPerPage"
+        [rows]="itemsPerPage"
+        [rowsPerPageOptions]="itemsPerPages"
+        [totalRecords]="totalItems"
+        [showCurrentPageReport]="pageable"
+        [currentPageReportTemplate]="'table.pageReport' | ngaTranslate"
+        [dataKey]="df.<%= primaryKey.name %>"
+      >
+        <ng-template pTemplate="header">
+          <tr
+            [ngClass]="{ 'filter-row-open': activeFilter }"
+            class="table-header-row"
+          >
+            @if (indexColumn) {
+              <th id="col-#index" [className]="indexColumn.headerStyleClass">
+                <span>{{ indexColumn.label }}</span>
+              </th>
+            }
+            @for (col of selectedColumns; track col.name) {
+              <th
+                [id]="'col-' + col.name"
+                [pSortableColumn]="col.serverName"
+                [style.min-width]="col.minWidth ?? '50px'"
+                [style.max-width]="col.maxWidth ?? ''"
+                pResizableColumn
+                [pResizableColumnDisabled]="(selectedColumns.length - 1) === $index || !resizable || !col.resizable"
+                [style.width]="selectedColumns.length - 1 === $index ? '' : col.width ?? 100 / selectedColumns.length + '%'"
+                [className]="col.headerStyleClass"
+              >
+                <div class="table-header-column">
+                  <span>{{ col.label }}</span>
+                  <p-sortIcon [field]="col.serverName"></p-sortIcon>
+                </div>
+              </th>
+            }
+            @if (actionable || activeFilter) {
+              <th id="action" class="no-action"></th>
+            }
+          </tr>
+
+          <tr class="filter-row" [ngClass]="{ 'filter-row-open': activeFilter }">
+            @if (indexColumn) {
+              <th id="filter-index"></th>
+            }
+            @for (col of selectedColumns; track col.name) {
+              <th [id]="'filter-' + col.name">
+                @if (col.filterable) {
+                  <div class="table-filter-column p-fluid">
+                    <nga-column-filter [column]="col" (applyFilter)="transition()">
+                    </nga-column-filter>
+                  </div>
+                }
+              </th>
+            }
+            @if (actionable || activeFilter) {
+              <th id="filter-action" class="p-fluid">
+                <div class="p-buttonset">
+                  <button pButton type="submit" icon="pi pi-search" [loading]="inProgress"></button>
+                  <button pButton type="button" class="p-button-danger" icon="pi pi-trash"
+                          (click)="closeFilter()"></button>
+                </div>
+              </th>
+            }
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item let-index="rowIndex">
+          <tr [className]="rowStyleClass | invoke: item">
+            @if (indexColumn) {
+              <td>
+                <span class="p-column-title">{{ indexColumn.label }}</span>
+                <span [className]="indexColumn.styleClass | invoke"> {{ index + 1 }} </span>
+              </td>
+            }
+            @for (col of selectedColumns; track col.name) {
+              <td #cell
+                  tooltipPosition="top"
+                  [tooltipDisabled]="!isOverflown(cell, cellContent)"
+                  [pTooltip]="item | value: col.serverName:col.pipes | toString">
+                <span class="p-column-title">{{ col.label }}</span>
+                <span #cellContent [className]="col.styleClass | invoke: item: col.serverName">
+                  <em [ngaIcon]="col.icons | invoke: item: col.serverName"></em>
+                  {{ item | value: col.serverName: col.pipes }}
+                </span>
+              </td>
+            }
+            @if (actionable || activeFilter) {
+              <td>
+                @if (actionable) {
+                  <div class="action-button">
+                    @for (action of actionMenu[getItemIdentifier(item)].items; track action.id) {
+                      <button
+                        pButton
+                        type="button"
+                        class="p-edit-item p-button-text"
+                        [label]="action.showLabel ? action.label! : ''"
+                        [icon]="action.icon ?? ''"
+                        (click)="action.command()"
+                        [pTooltip]="action.tooltip"
+                        [tooltipOptions]="action.tooltipOptions"
+                        [tooltipPosition]="action.tooltipPosition || 'top'"
+                      ></button>
+                    }
+                    @if (actionMenu[getItemIdentifier(item)].subItems.length) {
+                      <button
+                        pButton
+                        type="button"
+                        class="ml-1 btn-menu p-button-text p-button-plain"
+                        icon="pi pi-ellipsis-v"
+                        (click)="menu.toggle($event)"
+                      ></button>
+                      <p-menu #menu [popup]="true" [model]="actionMenu[getItemIdentifier(item)].subItems"
+                              appendTo="body" />
+                    }
+                  </div>
+                }
+              </td>
+            }
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="selectedColumns.length + (actionable || activeFilter ? 1 : 0) + (indexColumn ? 1 : 0) ">
+              <nga-empty-table
+                [invalid]="searchForm.invalid"
+                [invalidMessage]="translatePrefix + 'home.invalid' | ngaTranslate: 'Please select the necessary items first.'"
+                [notFoundMessage]="translatePrefix + 'home.notFound' | ngaTranslate: 'No Information Found!'"
+                [filterable]="filterable && activeFilter"
+                (reload)="loadAll(true)"
+                (closeFilter)="closeFilter()"
+              />
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </nga-datatable-handler>
+  </form>
+</div>

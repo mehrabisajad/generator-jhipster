@@ -1,0 +1,44 @@
+<%
+const hasStatusField = this.hasStatusField(fields, this);
+%>
+import { Method } from "avanng/core";
+import { <%= entityAngularName %>Authority } from "@ui-adapter/activity/<%= entityFolderName %>/<%= entityFileName %>.authority";
+import { <%= entityAngularName %>Apis } from "@http-adapter/<%= entityFolderName %>/<%= entityFileName %>.api";
+
+export const <%= entityAngularName %>Access = [
+    {
+        title: '<%= i18nKeyPrefix %>.__authority__.LIST_<%= entityAngularName %>',
+        authority: <%= entityAngularName %>Authority.LIST_<%= entityAngularName %>,
+        apis: [{ method: Method.get, url: <%= entityAngularName %>Apis.<%= entityInstancePlural %> }],
+    },
+<%_ if (!readOnly) { _%>
+    {
+        title: '<%= i18nKeyPrefix %>.__authority__.VIEW_<%= entityAngularName %>',
+        authority: <%= entityAngularName %>Authority.VIEW_<%= entityAngularName %>,
+        apis: [{ method: Method.get, url: <%= entityAngularName %>Apis.<%= entityInstancePlural %>ById }],
+    },
+    {
+        title: '<%= i18nKeyPrefix %>.__authority__.CREATE_<%= entityAngularName %>',
+        authority: <%= entityAngularName %>Authority.CREATE_<%= entityAngularName %>,
+        apis: [{ method: Method.post, url: <%= entityAngularName %>Apis.<%= entityInstancePlural %> }],
+    },
+    {
+        title: '<%= i18nKeyPrefix %>.__authority__.EDIT_<%= entityAngularName %>',
+        authority: <%= entityAngularName %>Authority.EDIT_<%= entityAngularName %>,
+        apis: [{ method: Method.get, url: <%= entityAngularName %>Apis.<%= entityInstancePlural %>ById },
+               { method: Method.put, url: <%= entityAngularName %>Apis.<%= entityInstancePlural %> }],
+    },
+    {
+        title: '<%= i18nKeyPrefix %>.__authority__.DELETE_<%= entityAngularName %>',
+        authority: <%= entityAngularName %>Authority.DELETE_<%= entityAngularName %>,
+        apis: [{ method: Method.delete, url: <%= entityAngularName %>Apis.<%= entityInstancePlural %>ById }],
+    },
+    <%_ if (hasStatusField) { _%>
+    {
+        title: '<%= i18nKeyPrefix %>.__authority__.CHANGE_STATUS_<%= entityAngularName %>',
+        authority: <%= entityAngularName %>Authority.CHANGE_STATUS_<%= entityAngularName %>,
+        apis: [{ method: Method.patch, url: <%= entityAngularName %>Apis.<%= entityInstancePlural %>ChangeStatus }],
+    },
+    <%_ } _%>
+<%_ } _%>
+];

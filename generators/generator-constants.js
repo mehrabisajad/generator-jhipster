@@ -90,7 +90,7 @@ export const CLIENT_DIST_DIR = 'static/';
 export const GENERATOR_JHIPSTER = 'generator-jhipster';
 export const YO_RC_FILE = '.yo-rc.json';
 
-export const JHIPSTER_CONFIG_DIR = '.jhipster';
+export const JHIPSTER_CONFIG_DIR = '.avan';
 export const TEMPLATES_DOCKER_DIR = 'docker/';
 export const JAVA_DOCKER_DIR = `${MAIN_DIR}docker/`;
 export const LINE_LENGTH = 180;

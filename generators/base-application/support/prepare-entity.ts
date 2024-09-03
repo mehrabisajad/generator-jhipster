@@ -131,6 +131,7 @@ export const entityDefaultConfig = {
   service: binaryOptions.DefaultValues[binaryOptions.Options.SERVICE],
   jpaMetamodelFiltering: false,
   readOnly: false,
+  wizard: false,
   embedded: false,
   entityAngularJSSuffix: '',
   fluentMethods: true,

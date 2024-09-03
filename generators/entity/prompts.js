@@ -62,6 +62,7 @@ const prompts = {
   askForService,
   askForFiltering,
   askForReadOnly,
+  askForWizard,
   askForPagination,
 };
 
@@ -315,6 +316,25 @@ function askForReadOnly() {
   ];
   return this.prompt(prompts).then(props => {
     this.entityConfig.readOnly = props.readOnly;
+  });
+}
+
+function askForWizard() {
+  const context = this.entityData;
+  // don't prompt if data is imported from a file
+  if (context.useConfigurationFile) {
+    return undefined;
+  }
+  const prompts = [
+    {
+      type: 'confirm',
+      name: 'wizard',
+      message: 'Is this entity wizard?',
+      default: false,
+    },
+  ];
+  return this.prompt(prompts).then(props => {
+    this.entityConfig.wizard = props.wizard;
   });
 }
 

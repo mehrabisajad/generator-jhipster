@@ -31,6 +31,7 @@ export type BaseEntity = {
   relationships?: Relationship[];
 
   readOnly?: boolean;
+  wizard?: boolean;
   embedded?: boolean;
   skipClient?: boolean;
   skipServer?: boolean;

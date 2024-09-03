@@ -39,5 +39,5 @@ export function toFilePath(entityName: string): string {
   if (!entityName) {
     throw new Error('The passed entity name must not be nil to be converted to file path.');
   }
-  return path.join('.jhipster', `${upperFirst(entityName)}.json`);
+  return path.join('.avan', `${upperFirst(entityName)}.json`);
 }

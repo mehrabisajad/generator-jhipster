@@ -67,6 +67,7 @@ const {
   REACTIVE,
   SEARCH_ENGINE,
   SERVER_PORT,
+  SERVER_NAME,
   SERVICE_DISCOVERY_TYPE,
   SKIP_CLIENT,
   SKIP_USER_MANAGEMENT,
@@ -201,6 +202,7 @@ export function getServerConfigForMonolithApplication(customOptions: any = {}): 
     [CACHE_PROVIDER]: EHCACHE,
     [CLIENT_FRAMEWORK]: ANGULAR,
     [SERVER_PORT]: OptionValues[SERVER_PORT],
+    [SERVER_NAME]: OptionValues[SERVER_NAME],
     [SERVICE_DISCOVERY_TYPE]: NO_SERVICE_DISCOVERY,
     [WITH_ADMIN_UI]: true,
     ...customOptions,
@@ -227,6 +229,7 @@ export function getServerConfigForGatewayApplication(customOptions: any = {}): a
     ...commonDefaultOptions,
     [CLIENT_FRAMEWORK]: ANGULAR,
     [SERVER_PORT]: OptionValues[SERVER_PORT],
+    [SERVER_NAME]: OptionValues[SERVER_NAME],
     [SERVICE_DISCOVERY_TYPE]: CONSUL,
     [WITH_ADMIN_UI]: true,
     ...customOptions,
@@ -254,10 +257,12 @@ export function getConfigForGatewayApplication(customOptions: any = {}): any {
 
 export function getServerConfigForMicroserviceApplication(customOptions: any = {}): any {
   const DEFAULT_SERVER_PORT = 8081;
+  const DEFAULT_SERVER_NAME = '';
   const options = {
     ...commonDefaultOptions,
     [CACHE_PROVIDER]: HAZELCAST,
     [SERVER_PORT]: DEFAULT_SERVER_PORT,
+    [SERVER_NAME]: DEFAULT_SERVER_NAME,
     [SERVICE_DISCOVERY_TYPE]: CONSUL,
     [SKIP_USER_MANAGEMENT]: true,
     [CLIENT_FRAMEWORK]: NO_CLIENT_FRAMEWORK,

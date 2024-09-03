@@ -58,6 +58,7 @@ export type AbstractJSONGeneratorJhipsterContent = {
   packageName?: string;
   packageFolder?: string;
   serverPort?: string;
+  serverName?: string;
   authenticationType?: string;
   buildTool?: string;
   cacheProvider?: string;

@@ -1,0 +1,211 @@
+<div cdkDrag [cdkDragDisabled]="!isDialog" [ngClass]="{ 'dialog-mask': isDialog }">
+  <form
+    [ngClass]="{ 'dialog col-12 sm:col-11': isDialog, 'card card-flat card-center': !isDialog }"
+    class="max-w-70rem"
+    name="editForm"
+    novalidate
+    (ngSubmit)="save()"
+    [formGroup]="editForm"
+    ngaFormValidation
+    translatePrefix="<%- entityTranslationKey %>.validate"
+  >
+    <p-blockUI [blocked]="inProgress">
+      <em class="pi pi-spin pi-spinner text-4xl"></em>
+    </p-blockUI>
+
+    <div [ngClass]="{ 'dialog-header dialog-movable': isDialog, 'card-header': !isDialog }">
+      @if (!isDialog) {
+        <button
+          pButton
+          (click)="previousState()"
+          type="button"
+          icon="pi pi-arrow-left"
+          class="mr-2 p-button-text p-button-plain"
+        ></button>
+      }
+      <div [ngClass]="{ 'dialog-title': isDialog, 'card-title': !isDialog }" cdkDragHandle>
+        @if (isNew) {
+          <span ngaTranslate="<%- i18nKeyPrefix %>.form.newTitle">Create a <%= entityClassHumanized %></span>
+        } @else if (isEdit) {
+          <span ngaTranslate="<%- i18nKeyPrefix %>.form.editTitle">Edit a <%= entityClassHumanized %></span>
+        } @else if (isView) {
+          <span ngaTranslate="<%- i18nKeyPrefix %>.form.viewTitle">View a <%= entityClassHumanized %></span>
+        }
+      </div>
+      @if (isDialog) {
+        <button
+          pButton
+          (click)="previousState()"
+          type="button"
+          icon="pi pi-times"
+          class="dialog-header-icon p-link"
+        ></button>
+      }
+    </div>
+
+    <div [ngClass]="{ 'dialog-body': isDialog, 'card-body': !isDialog, 'view-form': isView }">
+<% if (wizard) { %>
+        <nga-wizard (controller)="initWizard($event)" (wizardChange)="wizardChange($event)">
+            <nga-step
+                    [formGroupName]="df.baseForm"
+                    [checkForm]="true"
+                    [title]="'<%- i18nKeyPrefix %>.form.baseForm.title' | translate"
+                    [subtitle]="'<%- i18nKeyPrefix %>.form.baseForm.subtitle' | translate"
+                    [detail]="'<%- i18nKeyPrefix %>.form.baseForm.detail' | translate"
+            >
+<% } %>
+
+      <div class="p-fluid formgrid grid ">
+<%_ for (const field of fields.filter(field => !field.hidden)) {
+  const fieldName = field.fieldName;
+  const fieldNameHumanized = field.fieldNameHumanized;
+  const fieldType = field.fieldType;
+  const fieldTypeBlobContent = field.fieldTypeBlobContent;
+  const readonly = field.readonly;
+  let fieldInputType = 'text';
+  const translationKey = field.fieldTranslationKey;
+  if (field.fieldTypeNumeric) {
+    fieldInputType = 'number';
+  } else if (field.fieldTypeLocalDate) {
+    fieldInputType = 'date';
+  } else if (field.fieldTypeTimed) {
+    fieldInputType = 'datetime-local';
+  } else if (field.fieldTypeBoolean) {
+    fieldInputType = 'checkbox';
+  } else if (field.fieldTypeBinary && !field.blobContentTypeText) {
+    fieldInputType = 'hidden';
+  }
+
+  const currencies = ['amount', 'price', 'cost', 'value', 'total', 'subtotal', 'balance', 'rate', 'fee', 'charge', 'payment', 'revenue', 'income', 'expense', 'salary', 'wage', 'budget', 'fund', 'capital', 'investment', 'profit', 'loss', 'debt', 'credit', 'debit', 'tax', 'discount', 'refund', 'fine', 'premium'];
+    const separator = field.fieldTypeNumeric && (currencies.find(value => fieldName.toLowerCase().includes(value)));
+  if (field.id) {
+    continue;
+  }
+_%>
+        <div class="col-12 md:col-6">
+          <div class="field form-control">
+            <label [for]="df.<%= fieldName %>"<% if (field.fieldValidationRequired) { %> class="item-required" <% } %> ngaTranslate="<%- i18nKeyPrefix %>.<%= fieldName %>"><%= fieldNameHumanized %></label>
+            @if (isView) {
+              <nga-view [value]="item?.<%= fieldName %><% if (field.fieldIsEnum) { %> | translateHelper : df.Enum.<%= field.tsType %><% } else if (field.fieldTypeBoolean) { %> | toString | translateHelper : df.Enum.Boolean <% } else if (field.fieldTypeTimed) { %> | datetime<% } else if (separator) { %> | separator<% } %>" />
+            } @else {
+<%_ if (field.fieldTypeBoolean) { _%>
+              <p-checkbox [name]="df.<%= fieldName %>" [inputId]="df.<%= fieldName %>" [binary]="true" [formControlName]="df.<%= fieldName %>"/>
+<%_ } else if (field.fieldTypeNumeric) { _%>
+              <p-inputNumber [name]="df.<%= fieldName %>" [inputId]="df.<%= fieldName %>" [formControlName]="df.<%= fieldName %>"/>
+<%_  } else if (field.fieldTypeTimed) { _%>
+              <p-calendar
+                  [name]="df.<%= fieldName %>"
+                  [inputId]="df.<%= fieldName %>"
+                  [formControlName]="df.<%= fieldName %>"
+                  [dir]="dir"
+                  [isJalali]="isJalali"
+                  [showButtonBar]="true"
+              ></p-calendar>
+<%_  } else if (field.fieldIsEnum) { _%>
+              <p-dropdown
+                      [name]="df.<%= fieldName %>"
+                      [inputId]="df.<%= fieldName %>"
+                      [formControlName]="df.<%= fieldName %>"
+                      [options]="<%= field.tsType %>Collection"
+                      optionLabel="label"
+                      optionValue="value"
+                      [showClear]="true"
+              />
+<%_  } else { _%>
+              <input pInputText type="text" [name]="df.<%= fieldName %>" [id]="df.<%= fieldName %>" [formControlName]="df.<%= fieldName %>" />
+<%_  } _%>
+              <nga-validation [controlName]="df.<%= fieldName %>" />
+            }
+          </div>
+        </div>
+<%_ } _%>
+<%_ for (const relationship of relationships.filter(rel => rel.otherEntity.primaryKey)) {
+    const { otherEntity, otherEntityName, propertyName, otherEntityField, relationshipRequired, relationshipFieldNamePlural } = relationship;
+
+    const formControlName = propertyName + 'Id' + (relationship.collection ? 's' : '');
+    const definition = otherEntity.entityAngularName === entityAngularName ? '' : 'df' + otherEntity.entityAngularName + 'Definition().'
+_%>
+   <%_ if (relationship.persistableRelationship) { _%>
+
+          <div class="col-12 md:col-6">
+              <div class="field form-control">
+                  <label [for]="df.<%= propertyName %>"<% if (relationshipRequired) { %> class="item-required" <% } %> ngaTranslate="<%- i18nKeyPrefix %>.<%= propertyName %>"><%= relationshipFieldNamePlural %></label>
+                  @if (isView) {
+                  <nga-view [value]="item?.<%= propertyName %>" />
+                  } @else {
+   <%_ if (!relationship.collection) { _%>
+                  <p-dropdown
+                          [name]="df.<%= propertyName %>"
+                          [inputId]="df.<%= propertyName %>"
+                          [formControlName]="df.<%= formControlName %>"
+                          [options]="<%= otherEntity.entityAngularName %>Collection"
+                          [optionLabel]="df.<%= definition %><%= otherEntityField %>"
+                          [optionValue]="df.<%= definition %><%= otherEntityField %>"
+                          [showClear]="true"
+                  />
+   <%_ } else { _%>
+                  <p-multiSelect
+                          [name]="df.<%= propertyName %>"
+                          [inputId]="df.<%= propertyName %>"
+                          [formControlName]="df.<%= formControlName %>"
+                          [options]="<%= otherEntity.entityAngularName %>Collection"
+                          [optionValue]="df.<%= definition %><%= otherEntityField %>"
+                          [optionLabel]="df.<%= definition %><%= otherEntityField %>"
+                          [showClear]="true"
+                  />
+   <%_ } _%>
+                  <nga-validation [controlName]="df.<%= formControlName %>" />
+                  }
+              </div>
+          </div>
+   <%_ } _%>
+
+<%_ } _%>
+
+      </div>
+<% if (wizard) { %>
+        </nga-step>
+    </nga-wizard>
+<% } %>
+
+    </div>
+    <div [ngClass]="{ 'dialog-footer': isDialog, 'card-footer': !isDialog }">
+      <button
+        pButton
+        (click)="previousState()"
+        type="button"
+        icon="pi pi-ban"
+        class="p-button-outlined p-button-secondary"
+        [label]="'<%- i18nKeyPrefix %>.form.cancel' | ngaTranslate : 'Cancel'"
+      ></button>
+<%_ if (wizard) { _%>
+      <button
+        pButton
+        (click)="previous()"
+        [disabled]="isFirst()"
+        type="button"
+        icon="pi pi-arrow-circle-left"
+        [label]="'<%- i18nKeyPrefix %>.form.previous' | ngaTranslate: 'Previous'"
+      ></button>
+      <button
+        pButton
+        (click)="validateAndNext()"
+        [disabled]="isLast()"
+        type="button"
+        icon="pi pi-arrow-circle-right"
+        [label]="'<%- i18nKeyPrefix %>.form.next' | ngaTranslate: 'Previous'"
+      ></button>
+<%_ } _%>
+      @if (!isView) {
+        <button
+          pButton
+          [loading]="inProgress"
+          type="submit"
+          icon="pi pi-check"
+          class="p-button-success"
+          [label]="'<%- i18nKeyPrefix %>.form.submit' | ngaTranslate : 'Save'"
+        ></button>
+      }
+    </div>
+  </form>
+</div>

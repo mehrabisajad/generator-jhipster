@@ -1,0 +1,69 @@
+import { Routes } from '@angular/router';
+
+import { UserHasAccess } from "avanng/router";
+import { authorityOrAdmin } from "avanng/common/core";
+import { FormType } from "avanng/forms";
+import { <%= entityAngularName %>Component } from '../list/<%= entityFileName %>.component';
+<%_ if (!readOnly) { _%>
+import { <%= entityAngularName %>FormComponent } from '../form/<%= entityFileName %>-form.component';
+<%_ } _%>
+import { <%= entityAngularName ;%>RoutingResolve } from './<%= entityFileName %>-routing.resolve';
+import { <%= entityAngularName ;%>Authority } from "../<%= entityFileName %>.authority";
+
+export const <%= entityAngularName ;%>Route: Routes = [
+  {
+    path: '',
+    component: <%= entityAngularName %>Component,
+    data: {
+<%_ if (primaryKey.typeLong && primaryKey.autoGenerate) { _%>
+      defaultSort: '<%- primaryKey.name %>,asc',
+<%_ } _%>
+      authorities: authorityOrAdmin(<%= entityAngularName ;%>Authority.LIST_<%= entityAngularName %>),
+    },
+    canActivate: [UserHasAccess]
+  },
+<%_ if (!readOnly) { _%>
+  {
+    path: ':<%= primaryKey.name %>/view',
+    component: <%= entityAngularName %>FormComponent,
+    resolve: {
+      <%= entityInstance %>: <%= entityAngularName %>RoutingResolve
+    },
+    data: {
+      authorities: authorityOrAdmin(<%= entityAngularName ;%>Authority.VIEW_<%= entityAngularName %>),
+      type: FormType.VIEW,
+    },
+    canActivate: [UserHasAccess]
+  },
+  {
+    path: 'new',
+    component: <%= entityAngularName %>FormComponent,
+    resolve: {
+      <%= entityInstance %>: <%= entityAngularName %>RoutingResolve
+    },
+<%_ if (entityAngularAuthorities) { _%>
+    data: {
+      authorities: authorityOrAdmin(<%= entityAngularName ;%>Authority.NEW_<%= entityAngularName %>),
+      type: FormType.NEW,
+    },
+<%_ } _%>
+    canActivate: [UserHasAccess]
+  },
+<%_ } _%>
+<%_ if (!readOnly && updatableEntity) { _%>
+  {
+    path: ':<%= primaryKey.name %>/edit',
+    component: <%= entityAngularName %>FormComponent,
+    resolve: {
+      <%= entityInstance %>: <%= entityAngularName %>RoutingResolve
+    },
+<%_ if (entityAngularAuthorities) { _%>
+    data: {
+      authorities: authorityOrAdmin(<%= entityAngularName ;%>Authority.EDIT_<%= entityAngularName %>),
+      type: FormType.EDIT,
+    },
+<%_ } _%>
+    canActivate: [UserHasAccess]
+  },
+<%_ } _%>
+];

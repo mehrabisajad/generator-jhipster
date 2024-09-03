@@ -28,6 +28,7 @@ const tokens = [
   { name: 'CLIENT_ROOT_FOLDER', pattern: 'clientRootFolder', type: 'binary' },
   { name: 'NO_FLUENT_METHOD', pattern: 'noFluentMethod', type: 'unary' },
   { name: 'READ_ONLY', pattern: 'readOnly', type: 'unary' },
+  { name: 'WIZARD', pattern: 'wizard', type: 'unary' },
   { name: 'EMBEDDED', pattern: 'embedded', type: 'unary' },
   { name: 'DTO', pattern: 'dto', type: 'binary' },
   { name: 'PAGINATE', pattern: 'paginate', type: 'binary' },

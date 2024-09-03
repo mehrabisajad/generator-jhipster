@@ -1,0 +1,309 @@
+<%_
+  const notSortableFieldsAfterSearchArray = searchEngineNo ? [] : fields
+      .filter(field => !field.hidden && !field.fieldTypeBoolean && !field.fieldTypeNumeric && !field.fieldTypeTemporal);
+
+  const notSortableFieldsAfterSearchFieldNames = notSortableFieldsAfterSearchArray
+      .map(field => field.fieldName);
+
+  const notSortableFieldsAfterSearch = notSortableFieldsAfterSearchArray
+      .map(field => `'${field.fieldName}'`)
+      .join(', ');
+
+  const componentName = entityAngularName + 'Component';
+_%>
+import { Component, inject, HostListener } from '@angular/core';
+import { finalize } from 'rxjs/operators';
+import { TableModule } from 'avan-primeng/table';
+import { DialogService, DynamicDialogRef } from 'avan-primeng/dynamicdialog';
+
+import { as, invokePerItem } from 'avanng/common/core';
+import { SharedListModule } from 'avanng/shared';
+import { ActionMenu, getColumn, indexable, ListRouterComponent, Outlet, ReLoadAfterResult } from 'avanng/list';
+import { Mediator, PageableResponse } from 'avanng/domain';
+import { ExportComponent, ExportData } from 'avanng/export';
+import { PipeFactory } from 'avanng/pipe';
+import { DropdownItemsForEnum, EnumSelectItem } from 'avanng/enum';
+import { FormType, validateForm } from 'avanng/forms';
+
+<%
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const hasStatusField = this.hasStatusField(fields, this);
+const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
+%>
+<%_ if (!readOnly) { _%>
+    import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+    <%_ if (hasStatusField) { _%>
+    import { <%= hasStatusField.tsType %> } from '@domain/enumerations/status.model';
+    <%_ } _%>
+<%_ } else { _%>
+    import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+<%_ } _%>
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
+import { <%= entityAngularName ;%>PageableQuery } from '@application/query/<%= entityFolderName %>/<%= entityFileName %>-pageable.query';
+<%_ if (!readOnly) { _%>
+import { <%= entityAngularName ;%>FormDialogComponent } from '../form/<%= entityFileName %>-form-dialog.component';
+import { <%= entityAngularName ;%>DeleteDialogComponent } from '../delete/<%= entityFileName %>-delete-dialog.component';
+<%_ if (hasStatusField) { _%>
+import { <%= entityAngularName ;%>ChangeStatusDialogComponent } from '../change-status/<%= entityFileName %>-change-status-dialog.component';
+<%_ } _%>
+<%_ } _%>
+import { <%= entityAngularName ;%>Definition } from '../<%= entityFileName %>.df';
+<%_ if (!readOnly) { _%>
+import { <%= entityAngularName ;%>Authority } from "../<%= entityFileName %>.authority";
+<%_  } _%>
+
+@Component({
+    standalone: true,
+    selector: '<%= jhiPrefixDashed %>-<%= entityFileName %>',
+    templateUrl: './<%= entityFileName %>.component.html',
+    imports: [ SharedListModule,  TableModule ],
+})
+export class <%= componentName %> extends ListRouterComponent<I<%= entityAngularNameX %>> {
+    df = inject(<%= entityAngularName %>Definition);
+    mediator = inject(Mediator);
+    dialogService = inject(DialogService);
+    <% if (enumImports.size) { %>pipeFactory = inject(PipeFactory);<% } %>
+
+    componentName = this.df.ComponentName;
+<%_ if (entityTranslationKey !== entityInstance ) { _%>
+    translatePrefix = '<%= entityTranslationKey %>';
+<%_  } _%>
+
+<%_ if (readOnly) { _%>
+    actionable = false;
+<%_  } _%>
+
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+    @DropdownItemsForEnum(<%- importedType %>)
+    <%- importedType %>Collection: EnumSelectItem[] = [];
+    <%_ }); _%>
+
+    columns = [
+<%_ for (const field of fields) {
+        const { fieldName, fieldValidationRequired, id } = field;
+        const tsType = field.tsType;
+
+        const currencies = ['amount', 'price', 'cost', 'value', 'total', 'subtotal', 'balance', 'rate', 'fee', 'charge', 'payment', 'revenue', 'income', 'expense', 'salary', 'wage', 'budget', 'fund', 'capital', 'investment', 'profit', 'loss', 'debt', 'credit', 'debit', 'tax', 'discount', 'refund', 'fine', 'premium'];
+        if (id) {
+          continue;
+        }
+    _%>
+        getColumn({
+           name: this.df.<%= fieldName %>,
+    <%_ if (tsType === 'number') { _%>
+           type: 'number',
+        <%_ if (currencies.find(value => fieldName.toLowerCase().includes(value))) { _%>
+           pipes: [this.pipeFactory.separator],
+        <%_ } _%>
+    <%_ } else if (tsType === 'Date') { _%>
+           type: 'date',
+           pipes: [this.pipeFactory.datetime()],
+    <%_ } else if (field.fieldIsEnum) { _%>
+           type: 'enum',
+           options: this.<%=tsType%>Collection,
+           pipes: [this.pipeFactory.translateHelper(this.df.Enum.<%=tsType%>)],
+    <%_ } _%>
+        }),
+    <%_ } _%>
+    ];
+
+    <%_ if (anyFieldIsDateDerived) { _%>
+    objectToStringFormMapper = {
+        <%_ for (const field of fields.filter(field => field.fieldTypeTemporal)) { _%>
+        <%= field.fieldName %>(<%= field.fieldName %>?: Date | Date[] | null) {
+          return invokePerItem(as<Date | Date[]>(<%= field.fieldName %>), _<%= field.fieldName %> => _<%= field.fieldName %>.toISOString());
+        },
+        <%_ } _%>
+    };
+
+    stringToObjectFormMapper = {
+        <%_ for (const field of fields.filter(field => field.fieldTypeTemporal)) { _%>
+         <%= field.fieldName %>(<%= field.fieldName %>?: string | string[] | null) {
+            return invokePerItem(<%= field.fieldName %>, _<%= field.fieldName %> => new Date(_<%= field.fieldName %>));
+         },
+        <%_ } _%>
+    };
+
+    <%_ } _%>
+
+
+  shortcuts = [
+    { key: 'Enter', command: () => this.transition() },
+    { key: 'Alt+R', command: () => this.loadAll() },
+    { key: 'Control+Shift+F', command: () => (this.activeFilter ? this.closeFilter() : this.openFilter()) },
+    { key: 'Alt+S', command: () => this.outlet( { export: {} }) },
+    { key: 'Alt+T', command: () => this.exchangeSearch() },
+    { key: ['Alt+key+', 'Alt+Equal'], command: () => this.transition({ page: this.page + 1 }) },
+    { key: 'Alt+key-', command: () => this.transition({ page: this.page - 1 }) },
+<%_ if (!readOnly) { _%>
+    {
+      key: 'Alt+N',
+      condition: () => this.accountService.hasAnyAuthorityOrAdmin(this.df.Authority.CREATE_<%= entityAngularName %>),
+      command: () => this.router.navigate(['new'], { relativeTo: this.activatedRoute }).then()
+    }
+<%_ } _%>
+  ];
+
+<%_ if (!readOnly) { _%>
+  getItemIdentifier = (<%= entityInstance %>: I<%= entityAngularName %>): <%- this.getTypescriptKeyType(primaryKey) %> => <%= entityInstance %>.<%= primaryKey.name %>!;
+
+  createMenu(<%= entityInstance %>: I<%= entityAngularName %>): ActionMenu {
+    const menu: ActionMenu = new ActionMenu();
+
+    if (this.accountService.hasAnyAuthorityOrAdmin(this.df.Authority.VIEW_<%= entityAngularName %>)) {
+      const label = this.translateService.instant('table.action.view');
+      menu.add({
+        id: 'view',
+        icon: 'pi pi-eye',
+        tooltip: label,
+        label,
+        command: () => this.outlet({ view: <%= entityInstance %> }),
+      });
+    }
+
+    if (this.accountService.hasAnyAuthorityOrAdmin(this.df.Authority.EDIT_<%= entityAngularName %>)) {
+      const label = this.translateService.instant('table.action.edit');
+      menu.add({
+        id: 'edit',
+        icon: 'pi pi-pencil',
+        tooltip: label,
+        label,
+        command: () => this.outlet({ edit: <%= entityInstance %> }),
+      });
+    }
+
+<%_ if (hasStatusField) { _%>
+    if (this.accountService.hasAnyAuthorityOrAdmin(this.df.Authority.CHANGE_STATUS_<%= entityAngularName %>)) {
+      const label = this.translateService.instant(
+         this.translatePrefix + (<%= entityInstance %>.status === <%= hasStatusField.tsType %>.ACTIVE ? 'home.action.inactivation' : 'home.action.activation'),
+      );
+      const iconClass = <%= entityInstance %>.status === <%= hasStatusField.tsType %>.ACTIVE ? 'pi pi-times' : 'pi pi-check';
+      const status = <%= entityInstance %>.status === <%= hasStatusField.tsType %>.ACTIVE ? <%= hasStatusField.tsType %>.INACTIVE : <%= hasStatusField.tsType %>.ACTIVE;
+      menu.add({
+        id: 'changeStatus',
+        tooltip: label,
+        label,
+        icon: iconClass,
+        command: () => this.outlet({ changeStatus: [<%= entityInstance %>, status] }, this.df.<%= primaryKey.name %>),
+      });
+    }
+
+<%_ } _%>
+    if (this.accountService.hasAnyAuthorityOrAdmin(this.df.Authority.DELETE_<%= entityAngularName %>)) {
+      const label = this.translateService.instant('table.action.delete');
+      menu.add({
+        id: 'delete',
+        tooltip: label,
+        label,
+        icon: 'pi pi-trash',
+        command: () => {
+          this.outlet({ delete: <%= entityInstance %> }, this.df.<%= primaryKey.name %>, this.df.title);
+        },
+      });
+    }
+
+    return menu;
+  }
+<%_ } _%>
+
+<%_ if (!readOnly) { _%>
+  @Outlet()
+  @ReLoadAfterResult
+  create(): DynamicDialogRef {
+    return this.dialogService.open(<%= entityAngularName %>FormDialogComponent, { data: { type: FormType.NEW } });
+  }
+
+  @Outlet()
+  @ReLoadAfterResult
+  edit(<%= entityInstance %>: I<%= entityAngularName %>): DynamicDialogRef {
+    return this.dialogService.open(<%= entityAngularName %>FormDialogComponent, { data: { <%= entityInstance %>, type: FormType.EDIT } });
+  }
+
+  @Outlet()
+  view(<%= entityInstance %>: I<%= entityAngularName %>): DynamicDialogRef {
+    return this.dialogService.open(<%= entityAngularName %>FormDialogComponent, { data: { <%= entityInstance %>, type: FormType.VIEW } });
+  }
+<%_ if (hasStatusField) { _%>
+  @Outlet()
+  changeStatus(<%= entityInstance %>: I<%= entityAngularName %>, status: <%= hasStatusField.tsType %>): DynamicDialogRef {
+    return this.dialogService.open(<%= entityAngularName %>ChangeStatusDialogComponent, { data: { <%= entityInstance %>, status } });
+  }
+<%_ } _%>
+
+  @Outlet()
+  delete(<%= entityInstance %>: I<%= entityAngularName %>): DynamicDialogRef {
+    return this.dialogService.open(<%= entityAngularName %>DeleteDialogComponent, { data: { <%= entityInstance %> } });
+  }
+<%_ } _%>
+
+  @Outlet()
+  export(): DynamicDialogRef {
+    return this.dialogService.open(ExportComponent, {
+      data: {
+        name: this.componentName,
+        service: this.mediator,
+        request: Mediator.prototype.send,
+        requestParams: new <%= entityAngularName %>PageableQuery({
+          ...this.lazy ? {
+            __type__: 'query',
+            filter: this.getActiveFilter(),
+          } : {},
+          ...this.getSearchQueryString(),
+        }),
+        options: {
+          name: this.translateService.instant(this.translatePrefix + 'home.title'),
+          columns: this.columns,
+          page: this.page,
+          itemPerPage: this.itemsPerPage,
+          order: this.sort,
+        },
+      } as ExportData,
+    });
+  }
+
+  loadAll(force = false): void {
+    if (this.searchForm.invalid) {
+      validateForm(this.searchForm);
+      return;
+    }
+
+    if (!force && this.canLoadEager()) {
+      this.tryLoadEager();
+      return;
+    }
+
+    this.inProgress = true;
+    this.loadSubs.unsubscribe();
+
+    const query = new <%= entityAngularName %>PageableQuery({
+      ...(this.lazy
+        ? {
+            filter: this.getActiveFilter(),
+            page: this.page,
+            size: this.itemsPerPage,
+            order: this.sort,
+          }
+        : {}),
+      ...this.getSearchQueryString(),
+    });
+
+    this.loadSubs.sink = this.mediator
+      .send<PageableResponse<I<%= entityAngularNameX %>>>(query)
+      .pipe(finalize(() => (this.inProgress = false)))
+      .subscribe({
+        next: res => this.onSuccess(res),
+        error: () => this.onError()
+      });
+  }
+
+  private onSuccess(pageable: PageableResponse<I<%= entityAngularNameX %>>): void {
+    this.setItems(pageable.items, pageable.totalCount);
+    this.setEagerItems(pageable.items);
+  }
+
+  private onError(): void {
+    this.clearItems();
+  }
+}

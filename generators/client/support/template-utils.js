@@ -82,7 +82,38 @@ export const generateEntityClientEnumImports = (fields, clientFramework) => {
       const importType = `${fieldType}`;
       const basePath = clientFramework === VUE ? '@' : 'app';
       const modelPath = clientFramework === ANGULAR ? 'entities' : 'shared/model';
-      const importPath = `${basePath}/${modelPath}/enumerations/${enumFileName}.model`;
+      const importPath =
+        clientFramework === ANGULAR
+          ? `../enumerations/${enumFileName}.model`
+          : `${basePath}/${modelPath}/enumerations/${enumFileName}.model`;
+      uniqueEnums[fieldType] = field.fieldType;
+      typeImports.set(importType, importPath);
+    }
+  });
+  return typeImports;
+};
+
+/**
+ * @private
+ * Generate Entity Client Enum Imports
+ *
+ * @param {Array|Object} fields - array of the entity fields
+ * @param {string} clientFramework the client framework, 'angular' or 'react'.
+ * @returns typeImports: Map
+ */
+export const generateEntityClientEnumImportsForApplication = (fields, clientFramework) => {
+  const typeImports = new Map();
+  const uniqueEnums = {};
+  fields.forEach(field => {
+    const { enumFileName, fieldType } = field;
+    if (field.fieldIsEnum && (!uniqueEnums[fieldType] || (uniqueEnums[fieldType] && field.fieldValues.length !== 0))) {
+      const importType = `${fieldType}`;
+      const basePath = clientFramework === VUE ? '@' : 'app';
+      const modelPath = clientFramework === ANGULAR ? 'entities' : 'shared/model';
+      const importPath =
+        clientFramework === ANGULAR
+          ? `@domain/enumerations/${enumFileName}.model`
+          : `${basePath}/${modelPath}/enumerations/${enumFileName}.model`;
       uniqueEnums[fieldType] = field.fieldType;
       typeImports.set(importType, importPath);
     }
@@ -169,7 +200,7 @@ export const generateTypescriptTestEntity = (references, additionalFields = {}) 
           return [[fieldName, fakeData]];
         }
         if (fieldTypeTimed || fieldTypeLocalDate) {
-          return [[fieldName, `dayjs(${fakeData})`]];
+          return [[fieldName, `new Date(${fakeData})`]];
         }
         return [[fieldName, fakeData]];
       }
@@ -216,4 +247,26 @@ export const getEntityParentPathAddition = clientRootFolder => {
     return '';
   }
   return `${entityFolderPathAddition}/`;
+};
+
+/**
+ * @private
+ * Check if the entity has a 'status' field
+ *
+ * @param {Array|Object} fields - array of the entity fields
+ * @returns typeImports: Map
+ */
+export const hasStatusField = fields => {
+  return fields.find(field => field.fieldName === 'status');
+};
+
+/**
+ * @private
+ * Check if the entity has a 'status' field
+ *
+ * @param {Array|Object} fields - array of the entity fields
+ * @returns typeImports: Map
+ */
+export const hasBooleanField = fields => {
+  return fields.some(field => field.fieldTypeBoolean);
 };

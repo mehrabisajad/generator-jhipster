@@ -107,7 +107,7 @@ describe('jdl - JHipsterEntityExporter', () => {
           jestExpect(returned).toMatchInlineSnapshot('[]');
         });
         it('should not create a .jhipster folder', () => {
-          expect(doesDirectoryExist('.jhipster')).to.be.false;
+          expect(doesDirectoryExist('.avan')).to.be.false;
         });
       });
       describe('when exporting the same entity', () => {

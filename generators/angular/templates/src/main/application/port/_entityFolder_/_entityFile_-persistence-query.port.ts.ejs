@@ -1,0 +1,27 @@
+import { Observable } from "rxjs";
+import { FilterWithPagination } from "avanng/common/core";
+import { PageableResponse } from "avanng/domain";
+<%
+const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
+%>
+<%_ if (!readOnly) { _%>
+import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+<%_ } else { _%>
+import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+<%_ } _%>
+
+
+export interface <%= entityAngularName %>PersistenceQueryPort {
+
+    findPageable(req?: FilterWithPagination): Observable<PageableResponse<I<%= entityAngularNameX %>>>
+
+<%_ if (otherRelationships.length) { _%>
+    findAll(): Observable<I<%= entityAngularNameX %>[]>;
+
+<%_ } _%>
+<%_ if (!readOnly) { _%>
+    find(id: <%= tsKeyType %>): Observable<I<%= entityAngularNameX %> | null>
+
+<%_ } _%>
+
+}

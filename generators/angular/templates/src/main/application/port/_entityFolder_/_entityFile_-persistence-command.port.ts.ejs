@@ -1,0 +1,16 @@
+<%
+const hasStatusField = this.hasStatusField(fields)
+%>
+import { Observable } from "rxjs";
+import { I<%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+
+export interface <%= entityAngularName %>PersistenceCommandPort {
+
+  create(item: I<%= entityAngularName %>): Observable<void>
+  update(item: I<%= entityAngularName %>): Observable<void>
+<%_ if (hasStatusField) { _%>
+  changeStatus(item: I<%= entityAngularName %>): Observable<void>
+<%_ } _%>
+  delete(id: <%= tsKeyType %>): Observable<void>;
+
+}

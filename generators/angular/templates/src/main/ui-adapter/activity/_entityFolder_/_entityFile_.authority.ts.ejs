@@ -1,0 +1,16 @@
+<%
+const hasStatusField = this.hasStatusField(fields, this)
+%>
+export const <%= entityAngularName %>Authority = {
+LIST_<%= entityAngularName %>: 'LIST_<%= entityAngularName %>',
+<%_ if (!readOnly) { _%>
+VIEW_<%= entityAngularName %>: 'VIEW_<%= entityAngularName %>',
+CREATE_<%= entityAngularName %>: 'CREATE_<%= entityAngularName %>',
+EDIT_<%= entityAngularName %>: 'EDIT_<%= entityAngularName %>',
+DELETE_<%= entityAngularName %>: 'DELETE_<%= entityAngularName %>',
+<%_ if (hasStatusField) { _%>
+CHANGE_STATUS_<%= entityAngularName %>: 'CHANGE_STATUS_<%= entityAngularName %>',
+<%_ } _%>
+<%_ } _%>
+}
+

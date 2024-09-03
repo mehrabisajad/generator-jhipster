@@ -33,7 +33,7 @@ import { JSONEntity, JSONField, JSONRelationship } from './types.js';
 
 const { BlobTypes, CommonDBTypes, RelationalOnlyDBTypes } = fieldTypes;
 const { BUILT_IN_ENTITY } = relationshipOptions;
-const { FILTER, NO_FLUENT_METHOD, READ_ONLY, EMBEDDED } = unaryOptions;
+const { FILTER, NO_FLUENT_METHOD, READ_ONLY, WIZARD, EMBEDDED } = unaryOptions;
 const { ANGULAR_SUFFIX, CLIENT_ROOT_FOLDER, DTO, MICROSERVICE, PAGINATION, SEARCH, SERVICE } = binaryOptions.Options;
 
 const { ANY, IMAGE, TEXT } = BlobTypes;
@@ -313,6 +313,9 @@ function addEntityOptionsToJDL(entity: JSONEntity, entityName: string): void {
   }
   if (entity.readOnly === true) {
     addUnaryOptionToJDL(READ_ONLY, entityName);
+  }
+  if (entity.wizard === true) {
+    addUnaryOptionToJDL(WIZARD, entityName);
   }
   if (entity.embedded === true) {
     addUnaryOptionToJDL(EMBEDDED, entityName);

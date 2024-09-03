@@ -143,6 +143,9 @@ describe('jdl - JSONToJDLEntityConverter', () => {
             jdlObject.getOptions().filter(option => option.name === unaryOptions.READ_ONLY && option.entityNames.has('Employee')).length,
           ).to.equal(1);
           expect(
+            jdlObject.getOptions().filter(option => option.name === unaryOptions.WIZARD && option.entityNames.has('Employee')).length,
+          ).to.equal(1);
+          expect(
             jdlObject.getOptions().filter(option => option.name === unaryOptions.EMBEDDED && option.entityNames.has('Employee')).length,
           ).to.equal(1);
         });
@@ -289,6 +292,6 @@ describe('jdl - JSONToJDLEntityConverter', () => {
 
 function readJsonEntity(entityName) {
   return JSON.parse(
-    fs.readFileSync(path.join(__dirname, '..', '__test-files__', 'jhipster_app', '.jhipster', `${entityName}.json`), 'utf-8').toString(),
+    fs.readFileSync(path.join(__dirname, '..', '__test-files__', 'jhipster_app', '.avan', `${entityName}.json`), 'utf-8').toString(),
   );
 }

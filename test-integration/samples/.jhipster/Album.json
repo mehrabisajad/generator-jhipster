@@ -11,6 +11,7 @@
   "name": "Album",
   "pagination": "no",
   "readOnly": false,
+  "wizard": false,
   "relationships": [
     {
       "otherEntityField": "name",

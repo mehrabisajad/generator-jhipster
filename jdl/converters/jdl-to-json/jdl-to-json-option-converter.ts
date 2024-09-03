@@ -24,7 +24,7 @@ import JDLApplication from '../../models/jdl-application.js';
 import AbstractJDLOption from '../../models/abstract-jdl-option.js';
 import JDLBinaryOption from '../../models/jdl-binary-option.js';
 
-const { FILTER, NO_FLUENT_METHOD, READ_ONLY, EMBEDDED, SKIP_CLIENT, SKIP_SERVER } = unaryOptions;
+const { FILTER, NO_FLUENT_METHOD, READ_ONLY, WIZARD, EMBEDDED, SKIP_CLIENT, SKIP_SERVER } = unaryOptions;
 
 const { ServiceTypes } = entityOptions;
 const { NO: NO_SEARCH_ENGINE } = searchEngineTypes;
@@ -101,6 +101,7 @@ function getJSONOptionKeyAndValue(jdlOption: AbstractJDLOption): { key: string; 
     case SKIP_CLIENT:
     case SKIP_SERVER:
     case READ_ONLY:
+    case WIZARD:
     case EMBEDDED:
       return { key: jdlOption.name, value: true };
     case MICROSERVICE:

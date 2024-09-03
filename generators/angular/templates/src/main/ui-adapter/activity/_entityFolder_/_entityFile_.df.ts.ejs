@@ -1,0 +1,59 @@
+<%
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const hasBooleanField = this.hasBooleanField(fields);
+%>
+import { Injectable } from '@angular/core';
+import { Definition } from 'avanng/core';
+<% if (enumImports.size || hasBooleanField) { %>import { useEnum } from 'avanng/enum'; <% } %>
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+    import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
+import { <%= entityAngularName %>Authority } from "./<%= entityFileName %>.authority";
+
+<%_ for (const relationshipsByType of Object.values(differentRelationships).filter(relationshipsByType => relationshipsByType.some(relationship => relationship.otherEntity.entityAngularName !== entityAngularName))) {
+    const { otherEntity } = relationshipsByType[0];
+_%>
+import { <%- otherEntity.entityAngularName %>Definition } from '../<%= otherEntity.entityFolderName %>/<%= otherEntity.entityFileName %>.df';
+<%_ } _%>
+
+@Injectable({ providedIn: 'root' })
+export class <%= entityAngularName %>Definition extends Definition {
+    public readonly ComponentName = '<%- i18nKeyPrefix %>';
+    public readonly Authority = <%= entityAngularName %>Authority;
+
+<%_ for (const field of fields) {
+    const { fieldName, fieldValidationRequired, id } = field;
+_%>
+    public readonly <%= fieldName %> = '<%= fieldName %>';
+<%_ } _%>
+<%_ for (const relationship of relationships) {
+    const { propertyName, relationshipName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+_%>
+    public readonly <%= propertyName %> = '<%= propertyName %>';
+    public readonly <%= propertyName %>Id<% if (collection) { %>s<% } %> = '<%= propertyName %>Id<% if (collection) { %>s<% } %>';
+<%_ } _%>
+
+<% if (wizard) { %>public readonly baseForm = 'baseForm';<% } %>
+
+<%_ if (enumImports.size || hasBooleanField) { %>
+    public readonly Enum = {
+<%_ if (hasBooleanField) { %>
+        Boolean: useEnum(Boolean, 'Boolean.'),
+<%_ } %>
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+        <%- importedType %>: useEnum(<%- importedType %>, '<%- frontendAppName %>.<%- importedType %>.'),
+<%_ }); _%>
+    };
+<%_ } %>
+
+<%_ for (const relationshipsByType of Object.values(differentRelationships).filter(relationshipsByType => relationshipsByType.some(relationship => relationship.otherEntity.entityAngularName !== entityAngularName))) {
+    const { otherEntity } = relationshipsByType[0];
+    if (relationships.find(relationship => otherEntity === relationship.otherEntity)) {
+_%>
+
+    public df<%- otherEntity.entityAngularName %>Definition(): <%- otherEntity.entityAngularName %>Definition {
+        return this.inject(<%- otherEntity.entityAngularName %>Definition);
+    }
+<%_ } } _%>
+
+};

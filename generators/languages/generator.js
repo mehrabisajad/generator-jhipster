@@ -199,17 +199,17 @@ export default class LanguagesGenerator extends BaseApplicationGenerator {
           }
         }
 
-        source.addEntityTranslationKey = ({ translationKey, translationValue, language }) => {
-          this.mergeDestinationJson(`${application.clientSrcDir}i18n/${language}/global.json`, {
-            global: {
-              menu: {
-                entities: {
-                  [translationKey]: translationValue,
-                },
-              },
-            },
-          });
-        };
+        // source.addEntityTranslationKey = ({ translationKey, translationValue, language }) => {
+        //   this.mergeDestinationJson(`${application.clientSrcDir}i18n/${language}/global.json`, {
+        //     global: {
+        //       menu: {
+        //         entities: {
+        //           [translationKey]: translationValue,
+        //         },
+        //       },
+        //     },
+        //   });
+        // };
       },
     });
   }
@@ -245,7 +245,7 @@ export default class LanguagesGenerator extends BaseApplicationGenerator {
     return this.delegateTasksToBlueprint(() => this.default);
   }
 
-  // Public API method used by the getter and also by Blueprints
+  /*// Public API method used by the getter and also by Blueprints
   get writing() {
     return this.asWritingTaskGroup({
       async writeClientTranslations({ application }) {
@@ -304,7 +304,7 @@ export default class LanguagesGenerator extends BaseApplicationGenerator {
       },
     });
   }
-
+*/
   get [BaseApplicationGenerator.WRITING]() {
     return this.delegateTasksToBlueprint(() => this.writing);
   }

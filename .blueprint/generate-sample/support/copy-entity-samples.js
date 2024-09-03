@@ -106,7 +106,7 @@ export default function copyEntitySamples(dest, type) {
   if (type === 'mongodb' || type === 'couchbase') {
     type = 'document';
   }
-  const entitiesFolder = join(dest, '.jhipster');
+  const entitiesFolder = join(dest, '.avan');
   mkdirSync(entitiesFolder, { recursive: true });
   const entities = entitiesByType[type];
   for (const entity of entities) {

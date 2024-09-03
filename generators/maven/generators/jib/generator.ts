@@ -33,7 +33,7 @@ export default class JibGenerator extends BaseApplicationGenerator {
   get postWriting() {
     return this.asPostWritingTaskGroup({
       addJibPlugin({ application, source }) {
-        const { baseName, serverPort, javaDependencies, dockerContainers, dockerServicesDir } = application;
+        const { baseName, serverPort, serverName, javaDependencies, dockerContainers, dockerServicesDir } = application;
         const { cacheProviderHazelcast, cacheProviderInfinispan } = application as any;
         source.addMavenDefinition?.({
           properties: [

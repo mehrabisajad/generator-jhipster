@@ -25,7 +25,7 @@ const sortJsonFileContent = (contents: Exclude<File['contents'], null>) => {
   return Buffer.from(`${JSON.stringify(sortKeys(JSON.parse(contents.toString('utf8')), { deep: true }), null, 2)}\n`);
 };
 
-export default function createSortConfigFilesTransform(pattern = '**/{.yo-rc.json,.jhipster/*.json}') {
+export default function createSortConfigFilesTransform(pattern = '**/{.yo-rc.json,.avan/*.json}') {
   return transformContents<MemFsEditorFile>(contents => sortJsonFileContent(contents!), {
     filter: file => Boolean(file.contents),
     pattern,

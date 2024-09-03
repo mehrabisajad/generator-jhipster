@@ -12,4 +12,4 @@ export const jdlSamplesFolder = join(testIntegrationFolder, 'jdl-samples');
 export const dailyBuildsFolder = join(testIntegrationFolder, 'daily-builds');
 export const jdlEntitiesSamplesFolder = join(samplesFolder, 'jdl-entities');
 
-export const entitiesSamplesDir = join(samplesFolder, '.jhipster');
+export const entitiesSamplesDir = join(samplesFolder, '.avan');

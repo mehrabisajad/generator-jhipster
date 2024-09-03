@@ -23,6 +23,7 @@ const Options: any = {
   SKIP_SERVER: applicationOptions.OptionNames.SKIP_SERVER,
   NO_FLUENT_METHOD: 'noFluentMethod',
   READ_ONLY: 'readOnly',
+  WIZARD: 'wizard',
   FILTER: 'filter',
   EMBEDDED: 'embedded',
 };

@@ -49,7 +49,7 @@ export const customizeForMicroservices = (applicationsWithEntities: Record<strin
         relatedBaseNames.map(baseName => {
           const appConfig = applicationsWithEntities[baseName]?.config ?? {};
           appConfig.gatewayServerPort = appConfig.gatewayServerPort || gatewayServerPort;
-          const { clientFramework, serverPort, applicationIndex, devServerPort } = appConfig;
+          const { clientFramework, serverPort, serverName, applicationIndex, devServerPort } = appConfig;
           return [baseName, { clientFramework, serverPort, applicationIndex, devServerPort }];
         }),
       );

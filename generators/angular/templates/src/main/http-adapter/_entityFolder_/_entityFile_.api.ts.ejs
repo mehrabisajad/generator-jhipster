@@ -1,0 +1,15 @@
+<%
+const hasStatusField = this.hasStatusField(fields, this)
+%>
+export const <%= entityAngularName %>Apis = {
+    <%= entityInstancePlural %>: ['<%= serverName %>', '<%= entityApiUrl %>'],
+<%_ if (!readOnly) { _%>
+    <%= entityInstancePlural %>ById: ['<%= serverName %>', '<%= entityApiUrl %>', '{id}'],
+    <%_ if (otherRelationships.length) { _%>
+    <%= entityInstancePlural %>All: ['<%= serverName %>', '<%= entityApiUrl %>', 'all'],
+    <%_ } _%>
+    <%_ if (hasStatusField) { _%>
+    <%= entityInstancePlural %>ChangeStatus: ['<%= serverName %>', '<%= entityApiUrl %>', 'changeStatus'],
+    <%_ } _%>
+<%_ } _%>
+};

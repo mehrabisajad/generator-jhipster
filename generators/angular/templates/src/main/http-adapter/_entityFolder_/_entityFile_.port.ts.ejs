@@ -1,0 +1,73 @@
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { FilterWithPagination } from "avanng/common/core";
+import { PageableResponse } from "avanng/domain";
+import { totalCount } from "avanng/http";
+
+<%
+const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
+const hasStatusField = this.hasStatusField(fields, this)
+%>
+<%_ if (!readOnly) { _%>
+import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+<%_ } else { _%>
+import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+<%_ } _%>
+import { <%= entityAngularName %>PersistenceQueryPort } from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-query.port";
+<%_ if (!readOnly) { _%>
+import { <%= entityAngularName %>PersistenceCommandPort } from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
+<%_ } _%>
+import { <%= entityAngularName %>Service } from "@http-adapter/<%= entityFolderName %>/<%= entityFileName %>.service";
+
+@Injectable({ providedIn: 'root' })
+export class <%= entityAngularName %>Port implements <% if (!readOnly) { %><%= entityAngularName %>PersistenceCommandPort, <% } %><%= entityAngularName %>PersistenceQueryPort {
+
+  constructor(private <%= entityInstance %>Service: <%= entityAngularName %>Service) {}
+
+<%_ if (!readOnly) { _%>
+  create(<%= entityInstance %>: I<%= entityAngularName %>): Observable<void> {
+    return this.<%= entityInstance %>Service.create(<%= entityInstance %>).pipe(map(() => undefined));
+  }
+
+  update(<%= entityInstance %>: I<%= entityAngularName %>): Observable<void> {
+    return this.<%= entityInstance %>Service.update(<%= entityInstance %>).pipe(map(() => undefined));
+  }
+
+<%_ if (hasStatusField) { _%>
+  changeStatus(<%= entityInstance %>: I<%= entityAngularName %>): Observable<void> {
+    return this.<%= entityInstance %>Service.changeStatus(<%= entityInstance %>).pipe(map(() => undefined));
+  }
+
+<%_ } _%>
+  delete(id: number): Observable<void> {
+    return this.<%= entityInstance %>Service.delete(id).pipe(map(() => undefined));
+  }
+
+<%_ } _%>
+  findPageable(req?: FilterWithPagination): Observable<PageableResponse<I<%= entityAngularNameX %>>> {
+    return this.<%= entityInstance %>Service.query(req).pipe(
+      map(res => {
+        const items = res.body ?? [];
+        return {
+          totalCount: totalCount(res.headers, items),
+          items,
+        };
+      })
+    );
+  }
+
+<%_ if (otherRelationships.length) { _%>
+  findAll(): Observable<I<%= entityAngularNameX %>[]> {
+    return this.<%= entityInstance %>Service.findAll().pipe(map(res => res.body ?? []));
+  }
+
+<%_ } _%>
+<%_ if (!readOnly) { _%>
+  find(id: number): Observable<I<%= entityAngularName %> | null> {
+    return this.<%= entityInstance %>Service.find(id).pipe(map(res => res.body));
+  }
+
+<%_ } _%>
+}
+

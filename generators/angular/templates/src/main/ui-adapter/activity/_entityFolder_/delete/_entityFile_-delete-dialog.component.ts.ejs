@@ -1,0 +1,54 @@
+import { Component, inject, HostListener } from '@angular/core';
+import { finalize } from 'rxjs/operators';
+
+import { SharedDialogModule } from 'avanng/shared';
+import { cast } from 'avanng/common/core';
+import { DialogComponent } from 'avanng/dialog';
+import { Mediator } from 'avanng/domain';
+
+import { I<%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
+import { <%= entityAngularName %>DeleteCommand } from '@application/command/<%= entityFolderName %>/<%= entityFileName %>-delete.command';
+
+export interface <%= entityAngularName %>DeleteDialogData {
+<%= entityInstance %>: I<%= entityAngularName %> | null | undefined;
+}
+
+@Component({
+  standalone: true,
+  templateUrl: './<%= entityFileName %>-delete-dialog.component.html',
+  imports: [ SharedDialogModule ],
+})
+export class <%= entityAngularName %>DeleteDialogComponent extends DialogComponent {
+  <%= entityInstance %>?: I<%= entityAngularName %> | null;
+
+  mediator = inject(Mediator);
+
+  shortcuts = [
+    { key: 'Alt+Y', command: () => this.confirmDelete() },
+    { key: ['Alt+Q', 'Alt+N'], command: () => this.close() },
+  ];
+
+  resolve(): void {
+    const data = cast<<%= entityAngularName %>DeleteDialogData>(this.dialogData);
+
+    if (!data?.<%= entityInstance %>) {
+      this.close();
+      return;
+    }
+
+    this.<%= entityInstance %> = data.<%= entityInstance %>
+  }
+
+  confirmDelete(): void {
+    if (this.<%= entityInstance %>?.<%= primaryKey.name %>) {
+      this.inProgress = true;
+      this.subs.sink = this.mediator
+        .send(new <%= entityAngularName %>DeleteCommand(this.<%= entityInstance %>.<%= primaryKey.name %>))
+        .pipe(finalize(() => (this.inProgress = false)))
+        .subscribe(() => {
+          this.alertService.addSuccess('<%- i18nKeyPrefix %>.delete.deleted');
+          this.close('deleted');
+        });
+    }
+  }
+}

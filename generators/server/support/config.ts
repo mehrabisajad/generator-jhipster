@@ -52,6 +52,7 @@ export const loadServerConfig = ({ config, application }: { config: any; applica
       'packageName',
       'packageFolder',
       'serverPort',
+      'serverName',
       'buildTool',
       'databaseType',
       'databaseMigration',

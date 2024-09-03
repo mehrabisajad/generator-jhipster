@@ -74,5 +74,6 @@
   "clientRootFolder": "toto",
   "applications": "*",
   "readOnly": true,
+  "wizard": true,
   "embedded": true
 }

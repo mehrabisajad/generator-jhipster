@@ -16,34 +16,109 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -%>
+<%
+const hasStatusField = fields.some(field => field.fieldName === 'status')
+%>
 {
     "<%= frontendAppName %>": {
         "<%= entityTranslationKey %>" : {
+            "__authority__": {
+                "LIST_<%= entityAngularName %>": "List <%= entityClassPluralHumanized %>",
+<%_ if (!readOnly) { _%>
+                "VIEW_<%= entityAngularName %>": "View <%= entityClassPluralHumanized %>",
+                "CREATE_<%= entityAngularName %>": "Create <%= entityClassPluralHumanized %>",
+                "EDIT_<%= entityAngularName %>": "Edit <%= entityAngularName %>",
+                "DELETE_<%= entityAngularName %>": "Delete <%= entityClassPluralHumanized %>",
+    <%_ if (hasStatusField) { _%>
+                "CHANGE_STATUS_<%= entityAngularName %>": "Change Status <%= entityClassPluralHumanized %>",
+    <%_ } _%>
+<%_ } _%>
+            },
             "home": {
                 "title": "<%= entityClassPluralHumanized %>",
-                "refreshListLabel": "Refresh list",
-<%_ if (!readOnly) { _%>
-                "createLabel": "Create a new <%= entityClassHumanized %>",
-                "createOrEditLabel": "Create or edit a <%= entityClassHumanized %>",
-<%_ } _%>
+                "invalid": "Please select the necessary items first.",
 <%_ if (searchEngineAny) { _%>
                 "search": "Search for <%= entityClassHumanized %>",
 <%_ } _%>
                 "notFound": "No <%= entityClassPluralHumanized %> found"
+<%_ if (!readOnly) { _%>
+                ,"action": {
+                    "create": "Create a new <%= entityClassHumanized %>"
+<%_ if (hasStatusField) { _%>,
+                    "deactivation": "Deactivation",
+                    "activation": "Activation"
+<%_ } _%>
+                }
+<%_ } _%>
+            }
+<%_ if (!readOnly) { _%>
+            ,"form": {
+                "newTitle": "Create <%= entityClassHumanized %>",
+                "editTitle": "Edit <%= entityClassHumanized %>",
+                "viewTitle": "View <%= entityClassHumanized %>",
+                "cancel": "Cancel",
+                "submit": "Save",
+                "created": "A <%= entityClassHumanized %> was successfully created.",
+                "updated": "The <%= entityClassHumanized %> was successfully updated."
             },
-<%_ if (!microserviceAppName && !readOnly) { _%>
-            "created": "A new <%= entityClassHumanized %> is created with identifier {{ param }}",
-            "updated": "A <%= entityClassHumanized %> is updated with identifier {{ param }}",
-            "deleted": "A <%= entityClassHumanized %> is deleted with identifier {{ param }}",
+            "delete": {
+                "title": "Confirm Deletion",
+                "question": "Are you sure you want to delete <%= entityClassHumanized %> {{ id }}?",
+                "cancel": "Cancel",
+                "submit": "Delete",
+                "deleted": "The <%= entityClassHumanized %> was successfully deleted."
+            }
+    <%_ if (hasStatusField) { _%>
+            ,"changeStatus": {
+                "ACTIVE": {
+                    "title": "Confirm Activation",
+                    "question": "Are you sure you want to activate <%= entityClassHumanized %> {{ id }}?",
+                    "cancel": "Cancel",
+                    "submit": "Activation",
+                    "submitted": "The <%= entityClassHumanized %> was successfully activated."
+                },
+                "INACTIVE": {
+                    "title": "Confirm Deactivation",
+                    "question": "Are you sure you want to deactivate <%= entityClassHumanized %> {{ id }}?",
+                    "cancel": "Cancel",
+                    "submit": "Deactivation",
+                    "submitted": "The <%= entityClassHumanized %> was successfully deactivated."
+                }
+              }
+    <%_ } _%>
 <%_ } _%>
 <%_ if (!readOnly) { _%>
-            "delete": {
-                "question": "Are you sure you want to delete <%= entityClassHumanized %> {{ id }}?"
-            },
-<%_ } _%>
-            "detail": {
-                "title": "<%= entityClassHumanized %>"
+            ,"validate" : {
+    <%_ let addComma = false; for (const field of fields) {
+        const fieldName = field.fieldName;
+        const fieldNameHumanized = field.fieldNameHumanized;
+        if (field.fieldValidate === true) {
+            let i = 0;
+            _%>
+            <% if (addComma) { %>,<% } %>"<%= fieldName %>": {
+            <%_ if (field.fieldValidationRequired) { _%>"required" : "<%= fieldNameHumanized %> is required."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMinLength) { _%><% if (i>0) { %>,<% } %>"minlength" : "<%= fieldNameHumanized %> is required to be at least <%= field.fieldValidateRulesMinlength %> characters."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMaxLength) { _%><% if (i>0) { %>,<% } %>"maxlength": "<%= fieldNameHumanized %> cannot be longer than <%= field.fieldValidateRulesMaxlength %> characters."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMin) { _%><% if (i>0) { %>,<% } %>"min": "<%= fieldNameHumanized %> should be at least <%= field.fieldValidateRulesMin %>."<%_ i++; } _%>
+            <%_ if (field.fieldValidationMax) { _%><% if (i>0) { %>,<% } %>"max": "<%= fieldNameHumanized %> cannot be more than <%= field.fieldValidateRulesMax %>."<%_ i++; } _%>
+            <%_ if (field.fieldValidationPattern) { _%><% if (i>0) { %>,<% } %>"pattern": "<%= fieldNameHumanized %> should follow pattern for <%= field.fieldValidateRulesPattern.replace(/\\/g, '\\\\') %>."<%_ i++; } _%>
             }
+            <%_ addComma = true; } _%>
+            <%_ } _%>
+            <%_ for (const relationship of relationships) {
+                const ownerSide = relationship.ownerSide;
+                const relationshipName = relationship.relationshipName;
+                const relationshipNameHumanized = relationship.relationshipNameHumanized;
+            if (relationship.relationshipRequired) {
+            _%>
+                <% if (addComma) { %>,<% } %>"<%= relationshipName %>": {
+                "required" : "<%= relationshipNameHumanized %> is required."
+                }
+            <%_ addComma = true; } _%>
+            <%_ } _%>
+            }
+<%_ } _%>
+            ,"rowIndex": "#"
 <%_ for (const field of fields) { -%>
             ,
             "<%= field.fieldName %>": "<%= field.fieldNameHumanized %>"

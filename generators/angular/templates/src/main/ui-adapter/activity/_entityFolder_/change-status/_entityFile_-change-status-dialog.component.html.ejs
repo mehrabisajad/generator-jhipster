@@ -1,0 +1,40 @@
+<div cdkDrag class="dialog-mask">
+  <form
+    class="dialog col-12 sm:col-11 max-w-45rem"
+    name="changeStatusForm"
+    (ngSubmit)="confirmChangeStatus()"
+  >
+    <div class="dialog-header dialog-movable">
+      <div class="dialog-title" cdkDragHandle>
+        <span [ngaTranslate]="'<%- i18nKeyPrefix %>.changeStatus' + status + '.title'">Confirm change status operation</span>
+      </div>
+      <button pButton type="button" icon="pi pi-times" class="dialog-header-icon p-link" (click)="close()"></button>
+    </div>
+
+    <div class="dialog-body">
+      <p [ngaTranslate]="'<%- i18nKeyPrefix %>.changeStatus.' + status + '.question'" [translateValues]="{ id: <%= entityInstance %>?.<%= primaryKey.name %> }">
+        Are you sure you want to change status this <%= entityClassHumanized %>?
+      </p>
+    </div>
+
+    <div class="dialog-footer">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-ban"
+        [label]="'<%- i18nKeyPrefix %>.changeStatus.' + status + '.cancel' | ngaTranslate : 'Cancel'"
+        class="p-button-outlined p-button-secondary"
+        (click)="close()"
+      ></button>
+
+      <button
+        pButton
+        type="submit"
+        [ngClass]="{ 'p-button-success': status === df.Enum.Status.ACTIVE, 'p-button-danger': status === df.Enum.Status.INACTIVE }"
+        [icon]="status === df.Enum.Status.ACTIVE ? 'pi pi-check' : 'pi pi-times'"
+        [loading]="inProgress"
+        [label]="'<%- i18nKeyPrefix %>.changeStatus.' + status + '.submit' | ngaTranslate: 'Change'"
+      ></button>
+    </div>
+  </form>
+</div>

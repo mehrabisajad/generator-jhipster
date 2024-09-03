@@ -4,7 +4,7 @@ import { camelCase } from 'lodash-es';
  * get the frontend application name.
  */
 export const getFrontendAppName = ({ baseName }: { baseName: string }) => {
-  const name = camelCase(baseName) + (baseName.endsWith('App') ? '' : 'App');
+  const name = camelCase(baseName) + (baseName.endsWith('App') ? '' : '');
   return name.match(/^\d/) ? 'App' : name;
 };
 

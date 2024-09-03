@@ -61,6 +61,7 @@ class JSONEntity {
     this.jpaMetamodelFiltering = merged.jpaMetamodelFiltering;
     this.fluentMethods = merged.fluentMethods;
     this.readOnly = merged.readOnly;
+    this.wizard = merged.wizard;
     this.embedded = merged.embedded;
     if (merged.clientRootFolder) {
       this.clientRootFolder = merged.clientRootFolder;

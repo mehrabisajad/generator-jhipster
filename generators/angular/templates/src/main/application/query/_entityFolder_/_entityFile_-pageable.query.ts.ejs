@@ -1,0 +1,35 @@
+import { random } from "avanng/common/core";
+import { Observable } from 'rxjs';
+import { BaseQueryHandler, PageableQuery, PageableResponse, safeQuery } from "avanng/domain";
+<%
+const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
+%>
+<%_ if (!readOnly) { _%>
+import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+<%_ } else { _%>
+import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+<%_ } _%>
+import { <%= entityAngularName %>PersistenceQueryPort } from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-query.port";
+
+const __NAME__ = random();
+
+export class <%= entityAngularName %>PageableQuery extends PageableQuery<I<%= entityAngularNameX %>> {
+  queryId = __NAME__;
+
+  constructor(query?: Partial<PageableQuery<I<%= entityAngularNameX %>>>) {
+    super();
+    Object.assign(this, query);
+  }
+
+}
+
+export class <%= entityAngularName %>PageableQueryHandler implements BaseQueryHandler<<%= entityAngularName %>PageableQuery, PageableResponse<I<%= entityAngularNameX %>>> {
+  queryId = __NAME__;
+
+  constructor(private <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
+  }
+
+  handle(query: <%= entityAngularName %>PageableQuery): Observable<PageableResponse<I<%= entityAngularNameX %>>> {
+    return this.<%= entityInstance %>PersistenceQueryPort.findPageable(safeQuery(query));
+  }
+}

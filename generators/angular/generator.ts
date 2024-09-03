@@ -26,10 +26,13 @@ import { defaultLanguage } from '../languages/support/index.js';
 import { clientFrameworkTypes } from '../../jdl/jhipster/index.js';
 import {
   generateEntityClientEnumImports as getClientEnumImportsFormat,
+  generateEntityClientEnumImportsForApplication as getClientEnumImportsFormatForApplication,
   getTypescriptKeyType as getTSKeyType,
   generateTestEntityId as getTestEntityId,
   generateTestEntityPrimaryKey as getTestEntityPrimaryKey,
   generateTypescriptTestEntity as generateTestEntity,
+  hasStatusField as getHasStatusField,
+  hasBooleanField as getHasBooleanField,
 } from '../client/support/index.js';
 import type { CommonClientServerApplication } from '../base-application/types.js';
 import { createNeedleCallback, mutateData } from '../base/support/index.js';
@@ -82,7 +85,7 @@ export default class AngularGenerator extends BaseApplicationGenerator {
   get preparing() {
     return this.asPreparingTaskGroup({
       prepareForTemplates({ application }) {
-        application.webappEnumerationsDir = `${application.clientSrcDir}app/entities/enumerations/`;
+        application.webappEnumerationsDir = `${application.clientSrcDir}../domain/enumerations/`;
         application.angularLocaleId = application.nativeLanguageDefinition.angularLocale ?? defaultLanguage.angularLocale!;
       },
       addNeedles({ source, application }) {
@@ -423,6 +426,15 @@ export default class AngularGenerator extends BaseApplicationGenerator {
   }
 
   /**
+   * Returns the typescript import section of enums referenced by all fields of the entity.
+   * @param fields returns the import of enums that are referenced by the fields
+   * @returns {typeImports:Map} the fields that potentially contains some enum types
+   */
+  generateEntityClientEnumImportsForApplication(fields) {
+    return getClientEnumImportsFormatForApplication(fields, ANGULAR);
+  }
+
+  /**
    * Get the typescript type of a non-composite primary key
    * @param primaryKey the primary key of the entity
    * @returns {string} the typescript type.
@@ -488,5 +500,13 @@ export default class AngularGenerator extends BaseApplicationGenerator {
    */
   addElementToMenu(routerName, iconName, enableTranslation, clientFramework, translationKeyMenu = camelCase(routerName)) {
     this.needleApi.clientAngular.addElementToMenu(routerName, iconName, enableTranslation, translationKeyMenu);
+  }
+
+  hasStatusField(fields, log) {
+    return getHasStatusField(fields);
+  }
+
+  hasBooleanField(fields, log) {
+    return getHasBooleanField(fields);
   }
 }

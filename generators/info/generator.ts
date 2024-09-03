@@ -110,7 +110,7 @@ export default class InfoGenerator extends BaseApplicationGenerator {
       },
 
       displayEntities() {
-        console.log('\n##### **JDL for the Entity configuration(s) `entityName.json` files generated in the `.jhipster` directory**\n');
+        console.log('\n##### **JDL for the Entity configuration(s) `entityName.json` files generated in the `.avan` directory**\n');
         const jdl = this.generateJDLFromEntities();
         console.log('<details>\n<summary>JDL entity definitions</summary>\n');
         console.log(`<pre>\n${jdl?.toString()}\n</pre>\n</details>\n`);

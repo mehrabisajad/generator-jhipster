@@ -1,0 +1,64 @@
+<%
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+%>
+import { random } from "avanng/common/core";
+import { BaseCommand, BaseCommandHandler, HandlerResponse, safeCommand } from "avanng/domain";
+import { <%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+    import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
+
+import { <%= entityAngularName %>PersistenceCommandPort} from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
+
+const __name__ = random();
+
+export class <%= entityAngularName %>CreateOrUpdateCommand implements BaseCommand<void> {
+  commandId = __name__;
+
+<%_ for (const field of fields) {
+    const { fieldName, fieldValidationRequired, id } = field;
+    const tsType = `${field.fieldIsEnum ? 'keyof typeof ' : ''}${field.tsType}`;
+_%>
+<%= fieldName %>?: <%= tsType %> | null;
+<%_ if (field.fieldTypeBinary && !field.blobContentTypeText) { _%>
+    <%= fieldName %>ContentType<% if (!id /* && !fieldValidationRequired */) { %>?<% } %>: string<% if (!id /* && !fieldValidationRequired */) { %> | null<% } %>,
+<%_ } _%>
+<%_ } _%>
+<%_ for (const relationship of relationships.filter(rel => rel.persistableRelationship || rel.relationshipEagerLoad)) {
+    const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+_%>
+<%= propertyName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
+<%_ } _%>
+
+  constructor(command?: Partial<<%= entityAngularName %>CreateOrUpdateCommand> | null) {
+    Object.assign(this, command);
+  }
+
+}
+
+export class <%= entityAngularName %>CreateOrUpdateCommandHandler implements BaseCommandHandler<<%= entityAngularName %>CreateOrUpdateCommand, void> {
+  commandId = __name__;
+
+  constructor(private <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
+
+  handle(command: <%= entityAngularName %>CreateOrUpdateCommand): HandlerResponse<void> {
+    const <%= entityInstance %> = new <%= entityAngularName %>(safeCommand(command));
+
+    if (<%= entityInstance %>.id) {
+      <%= entityInstance %>.prepareForUpdate();
+
+      return {
+        result: this.<%= entityInstance %>PersistenceCommandPort.update(<%= entityInstance %>),
+        domain: <%= entityInstance %>
+      };
+    }
+
+    <%= entityInstance %>.prepareForCreation();
+    return {
+      result: this.<%= entityInstance %>PersistenceCommandPort.create(<%= entityInstance %>),
+      domain: <%= entityInstance %>
+    };
+  }
+
+
+}

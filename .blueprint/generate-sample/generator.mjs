@@ -110,8 +110,8 @@ export default class extends BaseGenerator {
           */
           entitiesFiles.forEach(entity =>
             this.copyTemplate(
-              `../../../test-integration/samples/.jhipster/${entity}.json`,
-              `${this.projectFolder}/.jhipster/${entity}.json`,
+              `../../../test-integration/samples/.avan/${entity}.json`,
+              `${this.projectFolder}/.avan/${entity}.json`,
               { noGlob: true },
             ),
           );

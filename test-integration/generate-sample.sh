@@ -35,7 +35,7 @@ function generateProject() {
         echo "*** The folder is not empty: $JHI_FOLDER_APP"
         exit 1
     else
-        mkdir -p "$JHI_FOLDER_APP"/.jhipster/
+        mkdir -p "$JHI_FOLDER_APP"/.avan/
         echo "*** Empty folder, let's generate JHipster project in: $JHI_FOLDER_APP"
     fi
 

@@ -107,6 +107,7 @@ const optionNames = {
   REMEMBER_ME_KEY: 'rememberMeKey',
   SEARCH_ENGINE: 'searchEngine',
   SERVER_PORT: 'serverPort',
+  SERVER_NAME: 'serverName',
   SERVICE_DISCOVERY_TYPE: 'serviceDiscoveryType',
   SKIP_CLIENT: 'skipClient',
   SKIP_GIT: 'skipGit',
@@ -210,6 +211,7 @@ export const jhipsterOptionValues: Record<string, JDLApplicationOptionValue> = {
     [NO_SEARCH_ENGINE]: NO_SEARCH_ENGINE,
   },
   [optionNames.SERVER_PORT]: 8080,
+  [optionNames.SERVER_NAME]: '',
   [optionNames.SERVICE_DISCOVERY_TYPE]: {
     [EUREKA]: EUREKA,
     [CONSUL]: CONSUL,
@@ -275,6 +277,7 @@ export const jhipsterOptionTypes: Record<string, JDLApplicationOptionType> = {
   [optionNames.REMEMBER_ME_KEY]: { type: ApplicationOptionTypes.STRING },
   [optionNames.SEARCH_ENGINE]: { type: ApplicationOptionTypes.STRING },
   [optionNames.SERVER_PORT]: { type: ApplicationOptionTypes.INTEGER },
+  [optionNames.SERVER_NAME]: { type: ApplicationOptionTypes.STRING },
   [optionNames.SERVICE_DISCOVERY_TYPE]: { type: ApplicationOptionTypes.STRING },
   [optionNames.SKIP_CLIENT]: { type: ApplicationOptionTypes.BOOLEAN },
   [optionNames.SKIP_GIT]: { type: ApplicationOptionTypes.BOOLEAN },

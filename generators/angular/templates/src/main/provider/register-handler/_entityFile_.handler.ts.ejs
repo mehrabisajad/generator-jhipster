@@ -1,0 +1,29 @@
+<%
+const hasStatusField = this.hasStatusField(fields, this);
+%>
+import { inject } from "@angular/core";
+import { Mediator } from "avanng/domain";
+import { <%= entityAngularName %>PageableQueryHandler } from "@application/query/<%= entityFolderName %>/<%= entityFileName %>-pageable.query";
+import { <%= entityAngularName %>FindByIdQueryHandler } from "@application/query/<%= entityFolderName %>/<%= entityFileName %>-find-by-id.query";
+import { <%= entityAngularName %>FindAllQueryHandler } from "@application/query/<%= entityFolderName %>/<%= entityFileName %>-find-all.query";
+import { <%= entityAngularName %>CreateOrUpdateCommandHandler } from "@application/command/<%= entityFolderName %>/<%= entityFileName %>-create-or-update.command";
+import { <%= entityAngularName %>ChangeStatusCommandHandler } from "@application/command/<%= entityFolderName %>/<%= entityFileName %>-change-status.command";
+import { <%= entityAngularName %>DeleteCommandHandler } from "@application/command/<%= entityFolderName %>/<%= entityFileName %>-delete.command";
+import { <%= entityAngularName %>Port } from "@http-adapter/<%= entityFolderName %>/<%= entityFileName %>.port";
+
+export function register<%= entityAngularName %>Handlers(mediator: Mediator): void {
+    const <%= entityInstance %>PersistencePort = inject(<%= entityAngularName %>Port);
+
+    mediator.register(new <%= entityAngularName %>PageableQueryHandler(<%= entityInstance %>PersistencePort));
+<%_ if (!readOnly) { _%>
+    mediator.register(new <%= entityAngularName %>FindByIdQueryHandler(<%= entityInstance %>PersistencePort));
+    <%_ if (otherRelationships.length) { _%>
+    mediator.register(new <%= entityAngularName %>FindAllQueryHandler(<%= entityInstance %>PersistencePort));
+    <%_ } _%>
+    mediator.register(new <%= entityAngularName %>CreateOrUpdateCommandHandler(<%= entityInstance %>PersistencePort));
+    <%_ if (hasStatusField) { _%>
+    mediator.register(new <%= entityAngularName %>ChangeStatusCommandHandler(<%= entityInstance %>PersistencePort));
+    <%_ } _%>
+    mediator.register(new <%= entityAngularName %>DeleteCommandHandler(<%= entityInstance %>PersistencePort));
+<%_ } _%>
+}

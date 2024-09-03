@@ -1,0 +1,59 @@
+<%
+const enumImports = this.generateEntityClientEnumImports(fields);
+const hasStatusField = this.hasStatusField(fields, this)
+%>
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { _, Body, Get, <% if (!readOnly) { %>CrudService <% } else { %>QueryService<% } %>, Patch, ResponseConverter, Retry } from 'avanng/http';
+<%
+const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
+%>
+<%_ if (!readOnly) { _%>
+    import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+<%_ } else { _%>
+    import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+<%_ } _%>
+import { <%= entityAngularName %>Apis } from "@http-adapter/<%= entityFolderName %>/<%= entityFileName %>.api";
+
+@Injectable({ providedIn: 'root' })
+export class <%= entityAngularName %>Service extends <% if (!readOnly) { %>CrudService <% } else { %>QueryService<% } %><I<%= entityAngularNameX %>> {
+  queryUrl = <%= entityAngularName %>Apis.<%= entityInstancePlural %>;
+<%_ if (!readOnly) { _%>
+  findUrl = <%= entityAngularName %>Apis.<%= entityInstancePlural %>ById;
+  createUrl = <%= entityAngularName %>Apis.<%= entityInstancePlural %>;
+  updateUrl = <%= entityAngularName %>Apis.<%= entityInstancePlural %>;
+  deleteUrl = <%= entityAngularName %>Apis.<%= entityInstancePlural %>ById;
+<%_ } _%>
+
+<%_ if (anyFieldIsDateDerived) { _%>
+  convertItemFromServer = <%= entityAngularName %>Service.convertItemFromServer;
+
+  static convertItemFromServer(<%= entityInstance %>: I<%= entityAngularNameX %>): I<%= entityAngularNameX %> {
+    return { ...<%= entityInstance %>,
+        <%_ for (const field of fields.filter(field => field.fieldTypeTemporal)) { _%>
+            <%= field.fieldName %>: <%= entityInstance %>.<%= field.fieldName %> ? new Date(<%= entityInstance %>.<%= field.fieldName %>) : undefined,
+        <%_ } _%>
+        };
+  }
+
+<%_ } _%>
+<%_ if (otherRelationships.length) { _%>
+    @Retry()
+    @Get(<%= entityAngularName %>Apis.<%= entityInstancePlural %>All, { observe: 'response' })
+    <%_ if (anyFieldIsDateDerived) { _%>
+    @ResponseConverter(<%= entityAngularName %>Service.convertItemFromServer)
+    <%_ } _%>
+    findAll(): Observable<HttpResponse<void>> {
+        throw _();
+    }
+
+<%_ } _%>
+<%_ if (hasStatusField && !readOnly) { _%>
+  @Retry()
+  @Patch(<%= entityAngularName %>Apis.<%= entityInstancePlural %>ChangeStatus, { observe: 'response' })
+  changeStatus(@Body() <%= entityInstance %>: I<%= entityAngularName %>): Observable<HttpResponse<void>> {
+    throw _(<%= entityInstance %>);
+  }
+<%_ } _%>
+}

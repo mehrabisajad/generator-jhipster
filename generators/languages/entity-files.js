@@ -29,7 +29,7 @@ export const entityClientI18nFiles = {
       templates: [
         {
           sourceFile: context => `entity/i18n/entity_${context.lang}.json.ejs`,
-          destinationFile: context => `${context.clientSrcDir}i18n/${context.lang}/${context.entityTranslationKey}.json`,
+          destinationFile: context => `${context.clientSrcDir}/../ui-adapter/i18n/${context.lang}/${context.entityTranslationKey}.json`,
         },
       ],
     },
@@ -38,12 +38,12 @@ export const entityClientI18nFiles = {
 
 export const userTranslationfiles = {
   userTranslationfiles: [
-    {
-      from: context => `${CLIENT_MAIN_SRC_DIR}/i18n/${context.lang}/`,
-      to: context => `${context.clientSrcDir}/i18n/${context.lang}/`,
-      transform: false,
-      templates: ['user-management.json'],
-    },
+    // {
+    //   from: context => `${CLIENT_MAIN_SRC_DIR}/i18n/${context.lang}/`,
+    //   to: context => `${context.clientSrcDir}/i18n/${context.lang}/`,
+    //   transform: false,
+    //   templates: ['user-management.json'],
+    // },
   ],
 };
 
@@ -53,7 +53,8 @@ export const enumClientI18nFiles = {
       templates: [
         {
           sourceFile: 'entity/i18n/enum.json.ejs',
-          destinationFile: context => `${context.clientSrcDir}i18n/${context.lang}/${context.clientRootFolder}${context.enumInstance}.json`,
+          destinationFile: context =>
+            `${context.clientSrcDir}/../ui-adapter/i18n/${context.lang}/${context.clientRootFolder}${context.enumInstance}.json`,
         },
       ],
     },

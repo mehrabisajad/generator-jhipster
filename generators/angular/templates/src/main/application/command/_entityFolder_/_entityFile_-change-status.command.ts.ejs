@@ -1,0 +1,44 @@
+<%
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const hasStatusField = this.hasStatusField(fields);
+%>
+import { random } from "avanng/common/core";
+import { BaseCommand, BaseCommandHandler, HandlerResponse, safeCommand } from "avanng/domain";
+import { <%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+    import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
+
+import { <%= entityAngularName %>PersistenceCommandPort} from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
+
+const __name__ = random();
+
+export class <%= entityAngularName %>ChangeStatusCommand implements BaseCommand<void> {
+  commandId = __name__;
+
+  public id?: number | null;
+  public newStatus?: keyof typeof <%= hasStatusField.tsType %> | null;
+
+  constructor(command?: Partial<<%= entityAngularName %>ChangeStatusCommand> | null) {
+    Object.assign(this, command);
+  }
+
+}
+
+export class <%= entityAngularName %>ChangeStatusCommandHandler implements BaseCommandHandler<<%= entityAngularName %>ChangeStatusCommand, void> {
+  commandId = __name__;
+
+  constructor(private <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
+
+  handle(command: <%= entityAngularName %>ChangeStatusCommand): HandlerResponse<void> {
+    const <%= entityInstance %> = new <%= entityAngularName %>(safeCommand(command));
+
+    if (<%= entityInstance %>.id && command.newStatus) {
+      <%= entityInstance %>.setStatus(command.newStatus);
+
+      return { result: this.<%= entityInstance %>PersistenceCommandPort.changeStatus(<%= entityInstance %>), domain: <%= entityInstance %> };
+    }
+
+    throw new Error('id or status is null');
+  }
+}

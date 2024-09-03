@@ -20,6 +20,6 @@ import { transformFileField } from '@yeoman/transform';
 import { ConflicterFile } from '@yeoman/conflicter';
 
 const createForceWriteConfigFilesTransform = () =>
-  transformFileField<'conflicter', ConflicterFile>('conflicter', 'force', { pattern: '**/.jhipster/*.json' });
+  transformFileField<'conflicter', ConflicterFile>('conflicter', 'force', { pattern: '**/.avan/*.json' });
 
 export default createForceWriteConfigFilesTransform;
