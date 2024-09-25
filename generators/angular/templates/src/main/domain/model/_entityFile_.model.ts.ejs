@@ -25,10 +25,10 @@ _%>
   <%_ } _%>
 <%_ } _%>
 <%_ for (const relationship of relationships) {
-      const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+      const { propertyName, relationshipFieldName, otherEntity, collection, otherEntityField } = relationship;
 _%>
   <%= propertyName %>?: <% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>Pick<<% } %>I<%= otherEntity.entityAngularName %><% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>, '<%= otherEntity.primaryKey.name %>'<% if (otherEntity.primaryKey.name !== otherEntityField) { %> | '<%= otherEntityField %>'<% } %>><% } %><% if (collection) { %>[]<% } %> | null;
-  <%= propertyName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
+  <%= relationshipFieldName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
 <%_ } _%>
 }
 
@@ -43,10 +43,10 @@ _%>
   <%_ } _%>
 <%_ } _%>
 <%_ for (const relationship of relationships) {
-      const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+      const { propertyName, relationshipFieldName, otherEntity, collection, otherEntityField } = relationship;
 _%>
   <%= propertyName %>?: <% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>Pick<<% } %>I<%= otherEntity.entityAngularName %><% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>, '<%= otherEntity.primaryKey.name %>'<% if (otherEntity.primaryKey.name !== otherEntityField) { %> | '<%= otherEntityField %>'<% } %>><% } %><% if (collection) { %>[]<% } %> | null;
-  <%= propertyName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
+  <%= relationshipFieldName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
 <%_ } _%>
 
     constructor(<%= entityInstance %>?: Partial<I<%= entityAngularName %>> | null) {

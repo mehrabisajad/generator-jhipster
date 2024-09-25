@@ -7,7 +7,7 @@
     (ngSubmit)="save()"
     [formGroup]="editForm"
     ngaFormValidation
-    translatePrefix="<%- entityTranslationKey %>.validate"
+    translatePrefix="<%- i18nKeyPrefix %>.validate"
   >
     <p-blockUI [blocked]="inProgress">
       <em class="pi pi-spin pi-spinner text-4xl"></em>
@@ -92,7 +92,7 @@ _%>
               <p-checkbox [name]="df.<%= fieldName %>" [inputId]="df.<%= fieldName %>" [binary]="true" [formControlName]="df.<%= fieldName %>"/>
 <%_ } else if (field.fieldTypeNumeric) { _%>
               <p-inputNumber [name]="df.<%= fieldName %>" [inputId]="df.<%= fieldName %>" [formControlName]="df.<%= fieldName %>"/>
-<%_  } else if (field.fieldTypeTimed) { _%>
+<%_  } else if (field.fieldTypeTimed || field.fieldTypeLocalDate) { _%>
               <p-calendar
                   [name]="df.<%= fieldName %>"
                   [inputId]="df.<%= fieldName %>"
@@ -184,7 +184,7 @@ _%>
         (click)="previous()"
         [disabled]="isFirst()"
         type="button"
-        icon="pi pi-arrow-circle-left"
+        icon="pi pi-angle-left"
         [label]="'<%- i18nKeyPrefix %>.form.previous' | ngaTranslate: 'Previous'"
       ></button>
       <button
@@ -192,8 +192,8 @@ _%>
         (click)="validateAndNext()"
         [disabled]="isLast()"
         type="button"
-        icon="pi pi-arrow-circle-right"
-        [label]="'<%- i18nKeyPrefix %>.form.next' | ngaTranslate: 'Previous'"
+        icon="pi pi-angle-right"
+        [label]="'<%- i18nKeyPrefix %>.form.next' | ngaTranslate: 'Next'"
       ></button>
 <%_ } _%>
       @if (!isView) {

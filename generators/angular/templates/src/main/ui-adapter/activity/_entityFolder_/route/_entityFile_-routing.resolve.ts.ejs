@@ -4,7 +4,7 @@ import { of, EMPTY, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { Mediator } from 'avanng/domain';
 
-import { I<%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+import { I<%= entityAngularName %>, <%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
 import { <%= entityAngularName %>FindByIdQuery } from '@application/query/<%= entityFolderName %>/<%= entityFileName %>-find-by-id.query';
 
 export const <%= entityAngularName %>RoutingResolve = (route: ActivatedRouteSnapshot): Observable<null | I<%= entityAngularName %>> => {
@@ -25,5 +25,5 @@ export const <%= entityAngularName %>RoutingResolve = (route: ActivatedRouteSnap
         }),
       );
   }
-  return of(null);
+  return of(new <%= entityAngularName %>());
 };

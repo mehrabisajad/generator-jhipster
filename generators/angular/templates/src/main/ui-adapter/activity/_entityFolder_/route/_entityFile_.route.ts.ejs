@@ -41,12 +41,10 @@ export const <%= entityAngularName ;%>Route: Routes = [
     resolve: {
       <%= entityInstance %>: <%= entityAngularName %>RoutingResolve
     },
-<%_ if (entityAngularAuthorities) { _%>
     data: {
-      authorities: authorityOrAdmin(<%= entityAngularName ;%>Authority.NEW_<%= entityAngularName %>),
+      authorities: authorityOrAdmin(<%= entityAngularName ;%>Authority.CREATE_<%= entityAngularName %>),
       type: FormType.NEW,
     },
-<%_ } _%>
     canActivate: [UserHasAccess]
   },
 <%_ } _%>
@@ -57,12 +55,10 @@ export const <%= entityAngularName ;%>Route: Routes = [
     resolve: {
       <%= entityInstance %>: <%= entityAngularName %>RoutingResolve
     },
-<%_ if (entityAngularAuthorities) { _%>
     data: {
       authorities: authorityOrAdmin(<%= entityAngularName ;%>Authority.EDIT_<%= entityAngularName %>),
       type: FormType.EDIT,
     },
-<%_ } _%>
     canActivate: [UserHasAccess]
   },
 <%_ } _%>

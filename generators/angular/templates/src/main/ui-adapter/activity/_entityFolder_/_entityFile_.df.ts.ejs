@@ -27,10 +27,10 @@ _%>
     public readonly <%= fieldName %> = '<%= fieldName %>';
 <%_ } _%>
 <%_ for (const relationship of relationships) {
-    const { propertyName, relationshipName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+    const { propertyName, relationshipFieldName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
 _%>
     public readonly <%= propertyName %> = '<%= propertyName %>';
-    public readonly <%= propertyName %>Id<% if (collection) { %>s<% } %> = '<%= propertyName %>Id<% if (collection) { %>s<% } %>';
+    public readonly <%= relationshipFieldName %>Id<% if (collection) { %>s<% } %> = '<%= relationshipFieldName %>Id<% if (collection) { %>s<% } %>';
 <%_ } _%>
 
 <% if (wizard) { %>public readonly baseForm = 'baseForm';<% } %>

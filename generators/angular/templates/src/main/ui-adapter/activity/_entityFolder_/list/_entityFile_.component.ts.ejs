@@ -32,9 +32,6 @@ const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularNa
 %>
 <%_ if (!readOnly) { _%>
     import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
-    <%_ if (hasStatusField) { _%>
-    import { <%= hasStatusField.tsType %> } from '@domain/enumerations/status.model';
-    <%_ } _%>
 <%_ } else { _%>
     import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
 <%_ } _%>
@@ -113,7 +110,7 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
     objectToStringFormMapper = {
         <%_ for (const field of fields.filter(field => field.fieldTypeTemporal)) { _%>
         <%= field.fieldName %>(<%= field.fieldName %>?: Date | Date[] | null) {
-          return invokePerItem(as<Date | Date[]>(<%= field.fieldName %>), _<%= field.fieldName %> => _<%= field.fieldName %>.toISOString());
+          return invokePerItem(<%= field.fieldName %>, _<%= field.fieldName %> => _<%= field.fieldName %>.toISOString());
         },
         <%_ } _%>
     };
