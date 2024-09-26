@@ -31,7 +31,7 @@ export class <%= entityAngularName %>ChangeStatusCommandHandler implements BaseC
   constructor(private <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
 
   handle(command: <%= entityAngularName %>ChangeStatusCommand): HandlerResponse<void> {
-    const <%= entityInstance %> = new <%= entityAngularName %>(safeCommand(command));
+    const <%= entityInstance %> = new <%= entityAngularName %>({ id: command.id });
 
     if (<%= entityInstance %>.id && command.newStatus) {
       <%= entityInstance %>.setStatus(command.newStatus);

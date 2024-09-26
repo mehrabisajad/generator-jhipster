@@ -144,6 +144,7 @@
               <th
                 [id]="'col-' + col.name"
                 [pSortableColumn]="col.serverName"
+                [pSortableColumnDisabled]="!sortable || !col.sortable"
                 [style.min-width]="col.minWidth ?? '50px'"
                 [style.max-width]="col.maxWidth ?? ''"
                 pResizableColumn
@@ -153,7 +154,9 @@
               >
                 <div class="table-header-column">
                   <span>{{ col.label }}</span>
-                  <p-sortIcon [field]="col.serverName"></p-sortIcon>
+                  @if (sortable && col.sortable) {
+                    <p-sortIcon [field]="col.serverName"></p-sortIcon>
+                  }
                 </div>
               </th>
             }

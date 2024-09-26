@@ -48,7 +48,7 @@
         <nga-wizard (controller)="initWizard($event)" (wizardChange)="wizardChange($event)">
             <nga-step
                     [formGroupName]="df.baseForm"
-                    [checkForm]="true"
+                    [checkForm]="!isView"
                     [title]="'<%- i18nKeyPrefix %>.form.baseForm.title' | translate"
                     [subtitle]="'<%- i18nKeyPrefix %>.form.baseForm.subtitle' | translate"
                     [detail]="'<%- i18nKeyPrefix %>.form.baseForm.detail' | translate"

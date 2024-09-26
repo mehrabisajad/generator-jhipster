@@ -10,12 +10,13 @@ describe('<%= entityAngularName %> Model Test', () => {
       _<%= entityInstance %>.prepareForUpdate();
     };
 
-    await expect(prepareForCreation(sampleWithNewData)).resolves.not.toThrow();
-    await expect(prepareForUpdate(sampleWithNewData)).rejects.toThrow();
+    await expect(prepareForCreation(new <%= entityAngularName %>(sampleWithNewData))).resolves.not.toThrow();
+    await expect(prepareForUpdate(new <%= entityAngularName %>(sampleWithNewData))).rejects.toThrow();
   });
 
   it('should update <%= entityAngularName %> model', async () => {
-    const <%= entityInstancePlural %> = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData];
+    const <%= entityInstancePlural %> = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData]
+        .map(_<%= entityInstance %> => new <%= entityAngularName %>(_<%= entityInstance %>));
 
     for (const <%= entityInstance %> of <%= entityInstancePlural %>) {
       const prepareForCreation = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
