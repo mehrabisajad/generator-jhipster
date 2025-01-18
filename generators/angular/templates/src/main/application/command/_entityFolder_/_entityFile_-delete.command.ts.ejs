@@ -16,7 +16,7 @@ export class <%= entityAngularName %>DeleteCommand implements BaseCommand<void> 
 export class <%= entityAngularName %>DeleteCommandHandler implements BaseCommandHandler<<%= entityAngularName %>DeleteCommand, void> {
   commandId = __name__;
 
-  constructor(private <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
+  constructor(private readonly <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
 
   handle(command: <%= entityAngularName %>DeleteCommand): HandlerResponse<void> {
 

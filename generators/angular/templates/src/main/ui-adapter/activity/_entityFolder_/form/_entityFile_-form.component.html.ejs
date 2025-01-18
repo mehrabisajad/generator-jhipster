@@ -1,20 +1,20 @@
-<div cdkDrag [cdkDragDisabled]="!isDialog" [ngClass]="{ 'dialog-mask': isDialog }">
+<div cdkDrag [cdkDragDisabled]="!isDialog()" [ngClass]="{ 'dialog-mask': isDialog() }">
   <form
-    [ngClass]="{ 'dialog col-12 sm:col-11': isDialog, 'card card-flat card-center': !isDialog }"
+    [ngClass]="{ 'dialog col-12 sm:col-11': isDialog(), 'card card-flat card-center': !isDialog() }"
     class="max-w-70rem"
     name="editForm"
     novalidate
     (ngSubmit)="save()"
     [formGroup]="editForm"
     ngaFormValidation
-    translatePrefix="<%- i18nKeyPrefix %>.validate"
+    translatePrefix="<%- i18nKeyPrefix %>.validate."
   >
     <p-blockUI [blocked]="inProgress">
       <em class="pi pi-spin pi-spinner text-4xl"></em>
     </p-blockUI>
 
-    <div [ngClass]="{ 'dialog-header dialog-movable': isDialog, 'card-header': !isDialog }">
-      @if (!isDialog) {
+    <div [ngClass]="{ 'dialog-header dialog-movable': isDialog(), 'card-header': !isDialog() }">
+      @if (!isDialog()) {
         <button
           pButton
           (click)="previousState()"
@@ -23,16 +23,16 @@
           class="mr-2 p-button-text p-button-plain"
         ></button>
       }
-      <div [ngClass]="{ 'dialog-title': isDialog, 'card-title': !isDialog }" cdkDragHandle>
+      <div [ngClass]="{ 'dialog-title': isDialog(), 'card-title': !isDialog() }" cdkDragHandle>
         @if (isNew) {
-          <span ngaTranslate="<%- i18nKeyPrefix %>.form.newTitle">Create a <%= entityClassHumanized %></span>
+          <h4 ngaTranslate="<%- i18nKeyPrefix %>.form.newTitle">Create a <%= entityClassHumanized %></h4>
         } @else if (isEdit) {
-          <span ngaTranslate="<%- i18nKeyPrefix %>.form.editTitle">Edit a <%= entityClassHumanized %></span>
+          <h4 ngaTranslate="<%- i18nKeyPrefix %>.form.editTitle">Edit a <%= entityClassHumanized %></h4>
         } @else if (isView) {
-          <span ngaTranslate="<%- i18nKeyPrefix %>.form.viewTitle">View a <%= entityClassHumanized %></span>
+          <h4 ngaTranslate="<%- i18nKeyPrefix %>.form.viewTitle">View a <%= entityClassHumanized %></h4>
         }
       </div>
-      @if (isDialog) {
+      @if (isDialog()) {
         <button
           pButton
           (click)="previousState()"
@@ -43,7 +43,7 @@
       }
     </div>
 
-    <div [ngClass]="{ 'dialog-body': isDialog, 'card-body': !isDialog, 'view-form': isView }">
+    <div [ngClass]="{ 'dialog-body': isDialog(), 'card-body': !isDialog(), 'view-form': isView }">
 <% if (wizard) { %>
         <nga-wizard (controller)="initWizard($event)" (wizardChange)="wizardChange($event)">
             <nga-step
@@ -86,7 +86,7 @@ _%>
           <div class="field form-control">
             <label [for]="df.<%= fieldName %>"<% if (field.fieldValidationRequired) { %> class="item-required" <% } %> ngaTranslate="<%- i18nKeyPrefix %>.<%= fieldName %>"><%= fieldNameHumanized %></label>
             @if (isView) {
-              <nga-view [value]="item?.<%= fieldName %><% if (field.fieldIsEnum) { %> | translateHelper : df.Enum.<%= field.tsType %><% } else if (field.fieldTypeBoolean) { %> | toString | translateHelper : df.Enum.Boolean <% } else if (field.fieldTypeTimed) { %> | datetime<% } else if (separator) { %> | separator<% } %>" />
+              <nga-view [value]="item()?.<%= fieldName %><% if (field.fieldIsEnum) { %> | translateHelper : df.Enum.<%= field.tsType %><% } else if (field.fieldTypeBoolean) { %> | toString | translateHelper : df.Enum.Boolean <% } else if (field.fieldTypeTimed) { %> | datetime<% } else if (separator) { %> | separator<% } %>" />
             } @else {
 <%_ if (field.fieldTypeBoolean) { _%>
               <p-checkbox [name]="df.<%= fieldName %>" [inputId]="df.<%= fieldName %>" [binary]="true" [formControlName]="df.<%= fieldName %>"/>
@@ -120,9 +120,9 @@ _%>
         </div>
 <%_ } _%>
 <%_ for (const relationship of relationships.filter(rel => rel.otherEntity.primaryKey)) {
-    const { otherEntity, otherEntityName, propertyName, otherEntityField, relationshipRequired, relationshipFieldNamePlural } = relationship;
+    const { otherEntity, relationshipFieldName, propertyName, otherEntityField, relationshipRequired, relationshipFieldNamePlural } = relationship;
 
-    const formControlName = propertyName + 'Id' + (relationship.collection ? 's' : '');
+    const formControlName = relationshipFieldName + 'Id' + (relationship.collection ? 's' : '');
     const definition = otherEntity.entityAngularName === entityAngularName ? '' : 'df' + otherEntity.entityAngularName + 'Definition().'
 _%>
    <%_ if (relationship.persistableRelationship) { _%>
@@ -131,7 +131,7 @@ _%>
               <div class="field form-control">
                   <label [for]="df.<%= propertyName %>"<% if (relationshipRequired) { %> class="item-required" <% } %> ngaTranslate="<%- i18nKeyPrefix %>.<%= propertyName %>"><%= relationshipFieldNamePlural %></label>
                   @if (isView) {
-                  <nga-view [value]="item?.<%= propertyName %>" />
+                  <nga-view [value]="item()?.<%= propertyName %>" />
                   } @else {
    <%_ if (!relationship.collection) { _%>
                   <p-dropdown
@@ -139,8 +139,8 @@ _%>
                           [inputId]="df.<%= propertyName %>"
                           [formControlName]="df.<%= formControlName %>"
                           [options]="<%= otherEntity.entityAngularName %>Collection"
-                          [optionLabel]="df.<%= definition %><%= otherEntityField %>"
                           [optionValue]="df.<%= definition %><%= otherEntityField %>"
+                          [optionLabel]="df.<%= definition %><%= otherEntityField %>"
                           [showClear]="true"
                   />
    <%_ } else { _%>
@@ -149,8 +149,8 @@ _%>
                           [inputId]="df.<%= propertyName %>"
                           [formControlName]="df.<%= formControlName %>"
                           [options]="<%= otherEntity.entityAngularName %>Collection"
-                          [optionValue]="df.<%= definition %><%= otherEntityField %>"
                           [optionLabel]="df.<%= definition %><%= otherEntityField %>"
+                          [optionValue]="df.<%= definition %><%= otherEntityField %>"
                           [showClear]="true"
                   />
    <%_ } _%>
@@ -169,7 +169,7 @@ _%>
 <% } %>
 
     </div>
-    <div [ngClass]="{ 'dialog-footer': isDialog, 'card-footer': !isDialog }">
+    <div [ngClass]="{ 'dialog-footer': isDialog(), 'card-footer': !isDialog() }">
       <button
         pButton
         (click)="previousState()"
@@ -200,6 +200,7 @@ _%>
         <button
           pButton
           [loading]="inProgress"
+          <%_ if (wizard) { _%>[disabled]="!isComplete()"<%_ } _%>
           type="submit"
           icon="pi pi-check"
           class="p-button-success"

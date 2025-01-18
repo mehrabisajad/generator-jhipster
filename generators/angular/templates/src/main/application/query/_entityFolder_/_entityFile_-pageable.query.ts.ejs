@@ -26,7 +26,7 @@ export class <%= entityAngularName %>PageableQuery extends PageableQuery<I<%= en
 export class <%= entityAngularName %>PageableQueryHandler implements BaseQueryHandler<<%= entityAngularName %>PageableQuery, PageableResponse<I<%= entityAngularNameX %>>> {
   queryId = __NAME__;
 
-  constructor(private <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
+  constructor(private readonly <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
   }
 
   handle(query: <%= entityAngularName %>PageableQuery): Observable<PageableResponse<I<%= entityAngularNameX %>>> {

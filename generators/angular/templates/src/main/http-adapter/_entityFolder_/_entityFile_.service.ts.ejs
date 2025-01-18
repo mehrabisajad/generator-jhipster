@@ -38,7 +38,7 @@ export class <%= entityAngularName %>Service extends <% if (!readOnly) { %>CrudS
   }
 
 <%_ } _%>
-<%_ if (otherRelationships.length) { _%>
+<%_ if (otherRelationships.filter(o => !o.otherEntity.readOnly).length) { _%>
     @Retry()
     @Get(<%= entityAngularName %>Apis.<%= entityInstancePlural %>All, { observe: 'response' })
     <%_ if (anyFieldIsDateDerived) { _%>

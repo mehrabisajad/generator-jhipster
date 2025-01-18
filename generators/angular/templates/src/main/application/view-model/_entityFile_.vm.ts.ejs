@@ -22,7 +22,12 @@ const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
 <%_ for (const relationshipsByType of Object.values(differentRelationships).filter(relationshipsByType => relationshipsByType.some(relationship => relationship.otherEntity.entityAngularName !== entityAngularName))) {
       const { otherEntity } = relationshipsByType[0];
 _%>
-import { I<%- otherEntity.entityAngularName %> } from 'app/entities/<%= otherEntity.entityClientRootFolder %><%= otherEntity.entityFolderName %>/<%= otherEntity.entityFileName %>.model';
+<%_ if (otherEntity.readOnly) { _%>
+    import { I<%- otherEntity.entityAngularName%>VM } from './<%= otherEntity.entityFileName %>.vm'
+<%_ } else { _%>
+    import { I<%- otherEntity.entityAngularName %> } from '@domain/model/<%= otherEntity.entityFileName %>.model';
+<%_ } _%>
+
 <%_ } _%>
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
 import { <%- importedType %> } from '<%- importedPath %>';
@@ -40,8 +45,9 @@ _%>
 <%_ } _%>
 <%_ for (const relationship of relationships.filter(rel => rel.persistableRelationship || rel.relationshipEagerLoad)) {
       const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+      const otherEntityEntityAngularNameX = otherEntity.entityAngularName + (otherEntity.readOnly ? 'VM' : '');
 _%>
-  <%= propertyName %>?: <% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>Pick<<% } %>I<%= otherEntity.entityAngularName %><% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>, '<%= otherEntity.primaryKey.name %>'<% if (otherEntity.primaryKey.name !== otherEntityField) { %> | '<%= otherEntityField %>'<% } %>><% } %><% if (collection) { %>[]<% } %> | null;
+  <%= propertyName %>?: <% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>Pick<<% } %>I<%= otherEntityEntityAngularNameX %><% if (!otherEntity.embedded && (dtoMapstruct || otherEntity.builtInUser)) { %>, '<%= otherEntity.primaryKey.name %>'<% if (otherEntity.primaryKey.name !== otherEntityField) { %> | '<%= otherEntityField %>'<% } %>><% } %><% if (collection) { %>[]<% } %> | null;
 <%_ } _%>
 }
 <%_ if (!readOnly && primaryKey) { _%>

@@ -23,7 +23,7 @@ import { <%= entityAngularName %>Service } from "@http-adapter/<%= entityFolderN
 @Injectable({ providedIn: 'root' })
 export class <%= entityAngularName %>Port implements <% if (!readOnly) { %><%= entityAngularName %>PersistenceCommandPort, <% } %><%= entityAngularName %>PersistenceQueryPort {
 
-  constructor(private <%= entityInstance %>Service: <%= entityAngularName %>Service) {}
+  constructor(private readonly <%= entityInstance %>Service: <%= entityAngularName %>Service) {}
 
 <%_ if (!readOnly) { _%>
   create(<%= entityInstance %>: I<%= entityAngularName %>): Observable<void> {
@@ -57,7 +57,7 @@ export class <%= entityAngularName %>Port implements <% if (!readOnly) { %><%= e
     );
   }
 
-<%_ if (otherRelationships.length) { _%>
+<%_ if (otherRelationships.filter(o => !o.otherEntity.readOnly).length) { _%>
   findAll(): Observable<I<%= entityAngularNameX %>[]> {
     return this.<%= entityInstance %>Service.findAll().pipe(map(res => res.body ?? []));
   }

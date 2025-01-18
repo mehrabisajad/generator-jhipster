@@ -15,7 +15,7 @@ export interface <%= entityAngularName %>PersistenceQueryPort {
 
     findPageable(req?: FilterWithPagination): Observable<PageableResponse<I<%= entityAngularNameX %>>>
 
-<%_ if (otherRelationships.length) { _%>
+<%_ if (otherRelationships.filter(o => !o.otherEntity.readOnly).length) { _%>
     findAll(): Observable<I<%= entityAngularNameX %>[]>;
 
 <%_ } _%>

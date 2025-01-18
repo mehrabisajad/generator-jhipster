@@ -17,9 +17,11 @@ export function register<%= entityAngularName %>Handlers(mediator: Mediator): vo
     mediator.register(new <%= entityAngularName %>PageableQueryHandler(<%= entityInstance %>PersistencePort));
 <%_ if (!readOnly) { _%>
     mediator.register(new <%= entityAngularName %>FindByIdQueryHandler(<%= entityInstance %>PersistencePort));
-    <%_ if (otherRelationships.length) { _%>
+<%_ } _%>
+<%_ if (otherRelationships.filter(o => !o.otherEntity.readOnly).length) { _%>
     mediator.register(new <%= entityAngularName %>FindAllQueryHandler(<%= entityInstance %>PersistencePort));
-    <%_ } _%>
+<%_ } _%>
+<%_ if (!readOnly) { _%>
     mediator.register(new <%= entityAngularName %>CreateOrUpdateCommandHandler(<%= entityInstance %>PersistencePort));
     <%_ if (hasStatusField) { _%>
     mediator.register(new <%= entityAngularName %>ChangeStatusCommandHandler(<%= entityInstance %>PersistencePort));

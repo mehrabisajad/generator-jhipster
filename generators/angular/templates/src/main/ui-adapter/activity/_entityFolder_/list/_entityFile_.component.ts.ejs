@@ -10,15 +10,16 @@
       .join(', ');
 
   const componentName = entityAngularName + 'Component';
+  const hasBooleanField = this.hasBooleanField(fields);
 _%>
 import { Component, inject, HostListener } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { TableModule } from 'avan-primeng/table';
 import { DialogService, DynamicDialogRef } from 'avan-primeng/dynamicdialog';
 
-import { as, invokePerItem } from 'avanng/common/core';
+import { <% if (hasBooleanField) { %> Boolean, <% } %>toDateFormMapper, toISODateStringFormMapper } from 'avanng/common/core';
 import { SharedListModule } from 'avanng/shared';
-import { ActionMenu, getColumn, indexable, ListRouterComponent, Outlet, ReLoadAfterResult } from 'avanng/list';
+import { ActionMenu, filterFormMapper, getColumn, indexable, ListRouterComponent, Outlet, ReLoadAfterResult } from 'avanng/list';
 import { Mediator, PageableResponse } from 'avanng/domain';
 import { ExportComponent, ExportData } from 'avanng/export';
 import { PipeFactory } from 'avanng/pipe';
@@ -29,6 +30,16 @@ import { FormType, validateForm } from 'avanng/forms';
 const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
 const hasStatusField = this.hasStatusField(fields, this);
 const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
+let hasCurrencyField = false;
+
+for (const field of fields) {
+    const currencies = ['amount', 'price', 'cost', 'value', 'total', 'subtotal', 'balance', 'rate', 'fee', 'charge', 'payment', 'revenue', 'income', 'expense', 'salary', 'wage', 'budget', 'fund', 'capital', 'investment', 'profit', 'loss', 'debt', 'credit', 'debit', 'tax', 'discount', 'refund', 'fine', 'premium'];
+    const { fieldName } = field;
+    if (currencies.find(value => fieldName.toLowerCase().includes(value))) {
+        hasCurrencyField = true;
+        break;
+    }
+}
 %>
 <%_ if (!readOnly) { _%>
     import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
@@ -55,13 +66,13 @@ import { <%= entityAngularName ;%>Authority } from "../<%= entityFileName %>.aut
     standalone: true,
     selector: '<%= jhiPrefixDashed %>-<%= entityFileName %>',
     templateUrl: './<%= entityFileName %>.component.html',
-    imports: [ SharedListModule,  TableModule ],
+    imports: [ SharedListModule, TableModule ],
 })
 export class <%= componentName %> extends ListRouterComponent<I<%= entityAngularNameX %>> {
     df = inject(<%= entityAngularName %>Definition);
     mediator = inject(Mediator);
     dialogService = inject(DialogService);
-    <% if (enumImports.size) { %>pipeFactory = inject(PipeFactory);<% } %>
+    <% if (enumImports.size || anyFieldIsDateDerived || hasCurrencyField) { %>pipeFactory = inject(PipeFactory);<% } %>
 
     componentName = this.df.ComponentName;
 <%_ if (entityTranslationKey !== entityInstance ) { _%>
@@ -75,11 +86,16 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
     @DropdownItemsForEnum(<%- importedType %>)
     <%- importedType %>Collection: EnumSelectItem[] = [];
-    <%_ }); _%>
+<%_ }); _%>
+
+<%_ if (hasBooleanField) { _%>
+    @DropdownItemsForEnum(Boolean)
+    BooleanCollection: EnumSelectItem[] = [];
+<%_ } _%>
 
     columns = [
 <%_ for (const field of fields) {
-        const { fieldName, fieldValidationRequired, id } = field;
+        const { fieldName, id } = field;
         const tsType = field.tsType;
 
         const currencies = ['amount', 'price', 'cost', 'value', 'total', 'subtotal', 'balance', 'rate', 'fee', 'charge', 'payment', 'revenue', 'income', 'expense', 'salary', 'wage', 'budget', 'fund', 'capital', 'investment', 'profit', 'loss', 'debt', 'credit', 'debit', 'tax', 'discount', 'refund', 'fine', 'premium'];
@@ -92,7 +108,7 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
     <%_ if (tsType === 'number') { _%>
            type: 'number',
         <%_ if (currencies.find(value => fieldName.toLowerCase().includes(value))) { _%>
-           pipes: [this.pipeFactory.separator],
+           pipes: [this.pipeFactory.separator()],
         <%_ } _%>
     <%_ } else if (tsType === 'Date') { _%>
            type: 'date',
@@ -101,6 +117,12 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
            type: 'enum',
            options: this.<%=tsType%>Collection,
            pipes: [this.pipeFactory.translateHelper(this.df.Enum.<%=tsType%>)],
+    <%_ } else if (tsType === 'boolean') { _%>
+           type: 'enum',
+           options: this.BooleanCollection,
+           pipes: [this.pipeFactory.translateHelper(this.df.Enum.Boolean)],
+           icons: { true: 'check', false: 'close' },
+           styleClass: {true: 'status success', false: 'status danger' },
     <%_ } _%>
         }),
     <%_ } _%>
@@ -108,21 +130,12 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
 
     <%_ if (anyFieldIsDateDerived) { _%>
     objectToStringFormMapper = {
-        <%_ for (const field of fields.filter(field => field.fieldTypeTemporal)) { _%>
-        <%= field.fieldName %>(<%= field.fieldName %>?: Date | Date[] | null) {
-          return invokePerItem(<%= field.fieldName %>, _<%= field.fieldName %> => _<%= field.fieldName %>.toISOString());
-        },
-        <%_ } _%>
+        ...filterFormMapper(toISODateStringFormMapper(<%= fields.filter(field => field.fieldTypeTemporal).map(field => 'this.df.'+field.fieldName).join() %>)),
     };
 
     stringToObjectFormMapper = {
-        <%_ for (const field of fields.filter(field => field.fieldTypeTemporal)) { _%>
-         <%= field.fieldName %>(<%= field.fieldName %>?: string | string[] | null) {
-            return invokePerItem(<%= field.fieldName %>, _<%= field.fieldName %> => new Date(_<%= field.fieldName %>));
-         },
-        <%_ } _%>
+        ...filterFormMapper(toDateFormMapper(<%= fields.filter(field => field.fieldTypeTemporal).map(field => 'this.df.'+field.fieldName).join() %>)),
     };
-
     <%_ } _%>
 
 
@@ -138,7 +151,7 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
     {
       key: 'Alt+N',
       condition: () => this.accountService.hasAnyAuthorityOrAdmin(this.df.Authority.CREATE_<%= entityAngularName %>),
-      command: () => this.router.navigate(['new'], { relativeTo: this.activatedRoute }).then()
+      command: () => this.routeToCreate()
     }
 <%_ } _%>
   ];
@@ -206,10 +219,12 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
 <%_ } _%>
 
 <%_ if (!readOnly) { _%>
+  routeToCreate = (): Promise<boolean> => this.router.navigate(['new'], { relativeTo: this.activatedRoute }).then();
+
   @Outlet()
   @ReLoadAfterResult
-  create(): DynamicDialogRef {
-    return this.dialogService.open(<%= entityAngularName %>FormDialogComponent, { data: { type: FormType.NEW } });
+  create(<%= entityInstance %>: I<%= entityAngularName %>): DynamicDialogRef {
+    return this.dialogService.open(<%= entityAngularName %>FormDialogComponent, { data: { <%= entityInstance %>, type: FormType.NEW } });
   }
 
   @Outlet()
@@ -224,12 +239,14 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
   }
 <%_ if (hasStatusField) { _%>
   @Outlet()
+  @ReLoadAfterResult
   changeStatus(<%= entityInstance %>: I<%= entityAngularName %>, status: <%= hasStatusField.tsType %>): DynamicDialogRef {
     return this.dialogService.open(<%= entityAngularName %>ChangeStatusDialogComponent, { data: { <%= entityInstance %>, status } });
   }
 <%_ } _%>
 
   @Outlet()
+  @ReLoadAfterResult
   delete(<%= entityInstance %>: I<%= entityAngularName %>): DynamicDialogRef {
     return this.dialogService.open(<%= entityAngularName %>DeleteDialogComponent, { data: { <%= entityInstance %> } });
   }
@@ -250,11 +267,15 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
           ...this.getSearchQueryString(),
         }),
         options: {
-          name: this.translateService.instant(this.translatePrefix + 'home.title'),
+          fileName: this.translateService.instant(this.translatePrefix + 'home.title'),
+          indexColumn: this.indexColumn,
           columns: this.columns,
           page: this.page,
           itemPerPage: this.itemsPerPage,
           order: this.sort,
+          disablePage: !this.pageable,
+          disableOrder: !this.sortable,
+          disableColumn: !this.columns.length,
         },
       } as ExportData,
     });

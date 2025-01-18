@@ -1,15 +1,29 @@
+<%
+const enumImports = this.generateEntityClientEnumImports(fields);
+const hasStatusField = this.hasStatusField(fields, this)
+%>
 import { <%= entityAngularName %> } from './<%= entityFileName %>.model';
+<%_ enumImports.forEach((importedPath, importedType) => { _%>
+    import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
 import { sampleWithNewData, sampleWithFullData, sampleWithPartialData, sampleWithRequiredData } from './<%= entityFileName %>.test-samples';
 
 describe('<%= entityAngularName %> Model Test', () => {
-  it('should create <%= entityAngularName %> model', async () => {
-    const prepareForCreation = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
-      _<%= entityInstance %>.prepareForCreation();
-    };
-    const prepareForUpdate = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
-      _<%= entityInstance %>.prepareForUpdate();
-    };
+  const prepareForCreation = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
+    _<%= entityInstance %>.prepareForCreation();
+  };
 
+  const prepareForUpdate = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
+    _<%= entityInstance %>.prepareForUpdate();
+  };
+<%_ if (hasStatusField) { _%>
+
+  const setStatus = async (_<%= entityInstance %>: <%= entityAngularName %>, status: keyof typeof <%= hasStatusField.tsType %>): Promise<void> => {
+    _<%= entityInstance %>.setStatus(status);
+  };
+<%_ } _%>
+
+  it('should create <%= entityAngularName %> model', async () => {
     await expect(prepareForCreation(new <%= entityAngularName %>(sampleWithNewData))).resolves.not.toThrow();
     await expect(prepareForUpdate(new <%= entityAngularName %>(sampleWithNewData))).rejects.toThrow();
   });
@@ -19,15 +33,21 @@ describe('<%= entityAngularName %> Model Test', () => {
         .map(_<%= entityInstance %> => new <%= entityAngularName %>(_<%= entityInstance %>));
 
     for (const <%= entityInstance %> of <%= entityInstancePlural %>) {
-      const prepareForCreation = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
-        _<%= entityInstance %>.prepareForCreation();
-      };
-      const prepareForUpdate = async (_<%= entityInstance %>: <%= entityAngularName %>): Promise<void> => {
-        _<%= entityInstance %>.prepareForUpdate();
-      };
-
       await expect(prepareForUpdate(<%= entityInstance %>)).resolves.not.toThrow();
       await expect(prepareForCreation(<%= entityInstance %>)).rejects.toThrow();
     }
   });
+
+<%_ if (hasStatusField) { _%>
+  it('should hange status <%= entityAngularName %> model', async () => {
+    const <%= entityInstancePlural %> = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData]
+        .map(_<%= entityInstance %> => new <%= entityAngularName %>(_<%= entityInstance %>));
+
+    for (const <%= entityInstance %> of <%= entityInstancePlural %>) {
+      await expect(setStatus(<%= entityInstance %>, 'ACTIVE')).resolves.not.toThrow();
+    }
+
+    await expect(setStatus(new <%= entityAngularName %>(sampleWithNewData), 'ACTIVE')).rejects.toThrow();
+  });
+<%_ } _%>
 });

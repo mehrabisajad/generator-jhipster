@@ -2,22 +2,29 @@ import { random } from "avanng/common/core";
 import { Observable } from 'rxjs';
 import { BaseQueryHandler, safeQuery } from "avanng/domain";
 import { BaseQuery } from "avanng/domain/base-query";
-import { I<%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
+<%
+const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
+%>
+<%_ if (!readOnly) { _%>
+    import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+<%_ } else { _%>
+    import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+<%_ } _%>
 import { <%= entityAngularName %>PersistenceQueryPort } from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-query.port";
 
 const __NAME__ = random();
 
-export class <%= entityAngularName %>FindAllQuery implements BaseQuery<I<%= entityAngularName %>[]> {
+export class <%= entityAngularName %>FindAllQuery implements BaseQuery<I<%= entityAngularNameX %>[]> {
   queryId = __NAME__;
 }
 
-export class <%= entityAngularName %>FindAllQueryHandler implements BaseQueryHandler<<%= entityAngularName %>FindAllQuery, I<%= entityAngularName %>[]> {
+export class <%= entityAngularName %>FindAllQueryHandler implements BaseQueryHandler<<%= entityAngularName %>FindAllQuery, I<%= entityAngularNameX %>[]> {
   queryId = __NAME__;
 
-  constructor(private <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
+  constructor(private readonly <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
   }
 
-  handle(query: <%= entityAngularName %>FindAllQuery): Observable<I<%= entityAngularName %>[]> {
+  handle(query: <%= entityAngularName %>FindAllQuery): Observable<I<%= entityAngularNameX %>[]> {
     return this.<%= entityInstance %>PersistenceQueryPort.findAll();
   }
 }

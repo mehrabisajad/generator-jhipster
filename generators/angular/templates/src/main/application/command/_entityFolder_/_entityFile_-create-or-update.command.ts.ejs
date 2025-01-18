@@ -7,6 +7,25 @@ import { <%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.mo
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
     import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
+<%_ for (const relationship of relationships) {
+    const { propertyName, relationshipFieldName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+        if (!relationship.otherEntity.readOnly) {
+        const enumImports2 = this.generateEntityClientEnumImportsForApplication(relationship.otherEntity.fields);
+_%>
+<%_ enumImports2.forEach((importedPath, importedType) => { _%>
+import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
+<%_ } } _%>
+<%_ for (const relationshipsByType of Object.values(differentRelationships)) {
+        for (const relationship of relationshipsByType) {
+            if (relationship.collection && relationship.relationshipType !== 'many-to-many') { _%>
+<%_             if (!relationship.otherEntity.readOnly) {
+                    const enumImports2 = this.generateEntityClientEnumImportsForApplication(relationship.otherEntity.fields);
+_%>
+<%_ enumImports2.forEach((importedPath, importedType) => { _%>
+    import { <%- importedType %> } from '<%- importedPath %>';
+<%_ }); _%>
+<%_ } } } } _%>
 
 import { <%= entityAngularName %>PersistenceCommandPort} from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
 
@@ -25,10 +44,50 @@ _%>
 <%_ } _%>
 <%_ } _%>
 <%_ for (const relationship of relationships.filter(rel => rel.persistableRelationship || rel.relationshipEagerLoad)) {
-    const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
+        const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
 _%>
-<%= propertyName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
+<%_     if (!relationship.otherEntity.readOnly && relationship.relationshipType === 'many-to-many') { _%>
+    <%= relationship.propertyName %>?: {
+    <%_ for (const field2 of relationship.otherEntity.fields) {
+        const { fieldName, id } = field2;
+        const tsType = `${field2.fieldIsEnum ? 'keyof typeof ' : ''}${field2.tsType}`;
+    _%>
+    <%= fieldName %>?: <%= tsType %> | null;
+    <%_ if (field2.fieldTypeBinary && !field2.blobContentTypeText) { _%>
+        <%= fieldName %>ContentType<% if (!id /* && !fieldValidationRequired */) { %>?<% } %>: string<% if (!id /* && !fieldValidationRequired */) { %> | null<% } %>,
+    <%_ } _%>
+    <%_ } _%>
+    <%_ for (const relationship2 of relationship.otherEntity.relationships.filter(rel => rel.persistableRelationship || rel.relationshipEagerLoad)) {
+        const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship2;
+    _%>
+    <%_ } _%>
+    }[] | null;
 <%_ } _%>
+    <%= relationship.relationshipFieldName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
+<%_ } _%>
+<%_ for (const relationshipsByType of Object.values(differentRelationships)) {
+        for (const relationship of relationshipsByType) {
+if (relationship.collection && relationship.relationshipType !== 'many-to-many') { _%>
+<%_ if (!relationship.otherEntity.readOnly) { _%>
+<%= relationship.propertyName %>?: {
+        <%_ for (const field2 of relationship.otherEntity.fields) {
+            const { fieldName, id } = field2;
+            const tsType = `${field2.fieldIsEnum ? 'keyof typeof ' : ''}${field2.tsType}`;
+        _%>
+        <%= fieldName %>?: <%= tsType %> | null;
+        <%_ if (field2.fieldTypeBinary && !field2.blobContentTypeText) { _%>
+            <%= fieldName %>ContentType<% if (!id /* && !fieldValidationRequired */) { %>?<% } %>: string<% if (!id /* && !fieldValidationRequired */) { %> | null<% } %>,
+        <%_ } _%>
+        <%_ } _%>
+        <%_ for (const relationship2 of relationship.otherEntity.relationships.filter(rel => rel.persistableRelationship || rel.relationshipEagerLoad)) {
+            const { propertyName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship2;
+        _%>
+        <%= propertyName %>Id<% if (collection) { %>s<% } %>?: <%= otherEntity.tsKeyType %><% if (collection) { %>[]<% } %> | null;
+        <%_ } _%>
+        }[] | null;
+<%_ } _%>
+<%= relationship.relationshipFieldName %>Ids?: <%= relationship.otherEntity.tsKeyType %>[] | null;
+<%_ } } } _%>
 
   constructor(command?: Partial<<%= entityAngularName %>CreateOrUpdateCommand> | null) {
     Object.assign(this, command);
@@ -39,7 +98,7 @@ _%>
 export class <%= entityAngularName %>CreateOrUpdateCommandHandler implements BaseCommandHandler<<%= entityAngularName %>CreateOrUpdateCommand, void> {
   commandId = __name__;
 
-  constructor(private <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
+  constructor(private readonly <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
 
   handle(command: <%= entityAngularName %>CreateOrUpdateCommand): HandlerResponse<void> {
     const <%= entityInstance %> = new <%= entityAngularName %>(safeCommand(command));

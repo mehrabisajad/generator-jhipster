@@ -28,7 +28,7 @@ export class <%= entityAngularName %>ChangeStatusCommand implements BaseCommand<
 export class <%= entityAngularName %>ChangeStatusCommandHandler implements BaseCommandHandler<<%= entityAngularName %>ChangeStatusCommand, void> {
   commandId = __name__;
 
-  constructor(private <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
+  constructor(private readonly <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
 
   handle(command: <%= entityAngularName %>ChangeStatusCommand): HandlerResponse<void> {
     const <%= entityInstance %> = new <%= entityAngularName %>({ id: command.id });

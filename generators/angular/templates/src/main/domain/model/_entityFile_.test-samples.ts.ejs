@@ -17,22 +17,50 @@
  limitations under the License.
 -%>
 <%_
-  const enumImports = this.generateEntityClientEnumImports(fields);
+const enumImports = this.generateEntityClientEnumImports(fields);
+const relationshipExtra = {};
+relationships
+   .filter(relationship => relationship.relationshipRequired)
+   .forEach(relationship => {
+       var generateFakeData = relationship.otherEntity.generateFakeData('ts');
+       // if (relationship.otherEntity.readOnly) {
+         generateFakeData = generateFakeData[relationship.otherEntityField];
+         let name = relationship.relationshipFieldName + 'Id' + (relationship.collection ? 's' : '');
+         relationshipExtra[name] = JSON.stringify(relationship.collection ? [generateFakeData] : generateFakeData);
+       // } else {
+       //   relationshipExtra[relationship.propertyName] = JSON.stringify(relationship.collection ? [generateFakeData] : generateFakeData);
+       // }
+   });
+
+for (const relationshipsByType of Object.values(differentRelationships)) {
+    for (const relationship of relationshipsByType) {
+        if (relationship.relationshipRequired && relationship.collection && relationship.relationshipType !== 'many-to-many') {
+            var generateFakeData = relationship.otherEntity.generateFakeData('ts');
+            // if (relationship.otherEntity.readOnly) {
+                generateFakeData = generateFakeData[relationship.otherEntityField];
+                let name = relationship.relationshipFieldName + 'Ids';
+                relationshipExtra[name] = JSON.stringify(relationship.collection ? [generateFakeData] : generateFakeData);
+            // } else {
+            //     relationshipExtra[relationship.propertyName] = JSON.stringify([generateFakeData])
+            // }
+        }
+    }
+}
 _%>
 
 <%_ enumImports.forEach( (importedPath, importedType) => { _%>
-import { <%- importedType %> } from '<%- importedPath %>';
+    import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
 
-import { <%= entityAngularName %> } from './<%= entityFileName %>.model';
+import { I<%= entityAngularName %> } from './<%= entityFileName %>.model';
 
-export const sampleWithRequiredData: <%= entityAngularName %> = new <%= entityAngularName %>(<%- this.generateTypescriptTestEntity(fields.filter(field => field.id || field.fieldValidationRequired).map(field => field.reference)) %>);
+export const sampleWithRequiredData: I<%= entityAngularName %> = <%- this.generateTypescriptTestEntity(fields.filter(field => field.id || field.fieldValidationRequired).map(field => field.reference), relationshipExtra) %>;
 
-export const sampleWithPartialData: <%= entityAngularName %> = new <%= entityAngularName %>(<%- this.generateTypescriptTestEntity(fields.filter(field => field.id || field.fieldValidationRequired || (!field.transient && faker.datatype.boolean())).map(field => field.reference)) %>);
+export const sampleWithPartialData: I<%= entityAngularName %> = <%- this.generateTypescriptTestEntity(fields.filter(field => field.id || field.fieldValidationRequired || (!field.transient && faker.datatype.boolean())).map(field => field.reference), relationshipExtra) %>;
 
-export const sampleWithFullData: <%= entityAngularName %> = new <%= entityAngularName %>(<%- this.generateTypescriptTestEntity(fields.filter(field => !field.transient).map(field => field.reference)) %>);
+export const sampleWithFullData: I<%= entityAngularName %> = <%- this.generateTypescriptTestEntity(fields.filter(field => !field.transient).map(field => field.reference), relationshipExtra) %>;
 
-export const sampleWithNewData: <%= entityAngularName %> = new <%= entityAngularName %>(<%- this.generateTypescriptTestEntity(fields.filter(field => !field.id && field.fieldValidationRequired).map(field => field.reference), { [primaryKey.name]: null }) %>);
+export const sampleWithNewData: I<%= entityAngularName %> = <%- this.generateTypescriptTestEntity(fields.filter(field => !field.id && field.fieldValidationRequired).map(field => field.reference), { [primaryKey.name]: null, ...relationshipExtra }) %>;
 
 Object.freeze(sampleWithRequiredData);
 Object.freeze(sampleWithPartialData);

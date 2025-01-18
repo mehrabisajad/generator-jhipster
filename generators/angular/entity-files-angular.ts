@@ -45,7 +45,7 @@ const entityApplicationQueryCommon = clientApplicationTemplatesBlock({
   ],
 });
 const entityApplicationQueryFindAll = clientApplicationTemplatesBlock({
-  condition: generator => generator.otherRelationships.length,
+  condition: generator => generator.otherRelationships.filter(o => !o.otherEntity.readOnly).length,
   relativePath: '../../',
   templates: ['application/query/_entityFolder_/_entityFile_-find-all.query.ts'],
 });

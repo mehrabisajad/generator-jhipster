@@ -5,11 +5,11 @@ export const <%= entityAngularName %>Apis = {
     <%= entityInstancePlural %>: ['<%= serverName %>', '<%= entityApiUrl %>'],
 <%_ if (!readOnly) { _%>
     <%= entityInstancePlural %>ById: ['<%= serverName %>', '<%= entityApiUrl %>', '{id}'],
-    <%_ if (otherRelationships.length) { _%>
+<%_ } _%>
+<%_ if (otherRelationships.filter(o => !o.otherEntity.readOnly).length) { _%>
     <%= entityInstancePlural %>All: ['<%= serverName %>', '<%= entityApiUrl %>', 'all'],
-    <%_ } _%>
-    <%_ if (hasStatusField) { _%>
+<%_ } _%>
+<%_ if (!readOnly && hasStatusField) { _%>
     <%= entityInstancePlural %>ChangeStatus: ['<%= serverName %>', '<%= entityApiUrl %>', 'changeStatus'],
-    <%_ } _%>
 <%_ } _%>
 };

@@ -6,7 +6,7 @@
     [formGroup]="searchForm"
     (ngSubmit)="transition()"
     ngaFormValidation
-    [translatePrefix]="translatePrefix + 'validate'"
+    [translatePrefix]="translatePrefix + 'validate.'"
   >
     <nga-page-header (back)="previousState()" [title]="translatePrefix + 'home.title' | ngaTranslate : '<%= entityClassPluralHumanized %>'">
       <ng-container page-header-action>
@@ -77,8 +77,7 @@
           class="ml-2"
           [tooltip]="'toolbar.selectColumn' | ngaTranslate: 'Select Column'"
           tooltipPosition="top"
-        >
-        </nga-column-selector-overlay>
+        />
         <button
           pButton
           icon="pi pi-file-excel"
@@ -97,7 +96,7 @@
           [ngClass]="'p-button-success'"
           *ngaHasAnyAuthorityOrAdmin="df.Authority.CREATE_<%= entityAngularName %>"
           [label]="translatePrefix + 'home.action.create' | ngaTranslate : 'New'"
-          [routerLink]="['./new']"
+          (click)="routeToCreate()"
         ></button>
 <%_ } _%>
       </ng-container>
@@ -112,7 +111,7 @@
     >
       <p-table
         datatable
-        [value]="items"
+        [value]="items()"
         [loading]="inProgress"
         [sortField]="sortField"
         [sortOrder]="ascending ? 1 : -1"
@@ -173,8 +172,7 @@
               <th [id]="'filter-' + col.name">
                 @if (col.filterable) {
                   <div class="table-filter-column p-fluid">
-                    <nga-column-filter [column]="col" (applyFilter)="transition()">
-                    </nga-column-filter>
+                    <nga-column-filter [column]="col" (applyFilter)="transition()"/>
                   </div>
                 }
               </th>
@@ -205,7 +203,12 @@
                   [tooltipDisabled]="!isOverflown(cell, cellContent)"
                   [pTooltip]="item | value: col.serverName:col.pipes | toString">
                 <span class="p-column-title">{{ col.label }}</span>
-                <span #cellContent [className]="col.styleClass | invoke: item: col.serverName">
+                <span #cellContent
+                      [className]="col.styleClass | invoke: item: col.serverName"
+                      [ngClass]="{ clickable: col.clickable(item, col) }"
+                      (click)="col.click(item, col)"
+                      (keydown)="col.click(item, col)"
+                >
                   <em [ngaIcon]="col.icons | invoke: item: col.serverName"></em>
                   {{ item | value: col.serverName: col.pipes }}
                 </span>
@@ -220,6 +223,7 @@
                         pButton
                         type="button"
                         class="p-edit-item p-button-text"
+                        [ngClass]="action.styleClass"
                         [label]="action.showLabel ? action.label! : ''"
                         [icon]="action.icon ?? ''"
                         (click)="action.command()"
@@ -250,7 +254,6 @@
           <tr>
             <td [attr.colspan]="selectedColumns.length + (actionable || activeFilter ? 1 : 0) + (indexColumn ? 1 : 0) ">
               <nga-empty-table
-                [invalid]="searchForm.invalid"
                 [invalidMessage]="translatePrefix + 'home.invalid' | ngaTranslate: 'Please select the necessary items first.'"
                 [notFoundMessage]="translatePrefix + 'home.notFound' | ngaTranslate: 'No Information Found!'"
                 [filterable]="filterable && activeFilter"

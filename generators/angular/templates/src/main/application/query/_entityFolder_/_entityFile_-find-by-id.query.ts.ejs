@@ -17,7 +17,7 @@ export class <%= entityAngularName %>FindByIdQuery implements BaseQuery<I<%= ent
 export class <%= entityAngularName %>FindByIdQueryHandler implements BaseQueryHandler<<%= entityAngularName %>FindByIdQuery, I<%= entityAngularName %> | null> {
   queryId = __NAME__;
 
-  constructor(private <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
+  constructor(private readonly <%= entityInstance %>PersistenceQueryPort: <%= entityAngularName %>PersistenceQueryPort) {
   }
 
   handle(query: <%= entityAngularName %>FindByIdQuery): Observable<I<%= entityAngularName %> | null> {

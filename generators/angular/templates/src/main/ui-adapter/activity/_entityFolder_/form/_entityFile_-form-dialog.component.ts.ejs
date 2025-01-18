@@ -29,7 +29,7 @@ export interface <%= entityAngularName %>DialogData {
   template: `
     @if (inProgress) {
       <nga-dialog-skeleton className="col-12 sm:col-11 max-w-70rem" (onClose)="close()"
-                           [itemCount]="<%= fields.length %>"></nga-dialog-skeleton>
+                           [itemCount]="<%= fields.length %>"/>
     } @else {
       <<%= jhiPrefixDashed %>-<%= entityFileName %>-form
         [item]="<%= entityInstance %>"

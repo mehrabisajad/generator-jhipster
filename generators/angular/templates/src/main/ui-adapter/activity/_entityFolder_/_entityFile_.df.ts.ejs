@@ -4,7 +4,12 @@ const hasBooleanField = this.hasBooleanField(fields);
 %>
 import { Injectable } from '@angular/core';
 import { Definition } from 'avanng/core';
-<% if (enumImports.size || hasBooleanField) { %>import { useEnum } from 'avanng/enum'; <% } %>
+<%_ if (enumImports.size || hasBooleanField) { _%>
+    import { useEnum } from 'avanng/enum';
+<%_ } _%>
+<%_ if (hasBooleanField) { _%>
+    import { Boolean } from 'avanng/common/core';
+<%_ } _%>
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
     import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
@@ -22,7 +27,7 @@ export class <%= entityAngularName %>Definition extends Definition {
     public readonly Authority = <%= entityAngularName %>Authority;
 
 <%_ for (const field of fields) {
-    const { fieldName, fieldValidationRequired, id } = field;
+    const { fieldName } = field;
 _%>
     public readonly <%= fieldName %> = '<%= fieldName %>';
 <%_ } _%>
@@ -32,6 +37,12 @@ _%>
     public readonly <%= propertyName %> = '<%= propertyName %>';
     public readonly <%= relationshipFieldName %>Id<% if (collection) { %>s<% } %> = '<%= relationshipFieldName %>Id<% if (collection) { %>s<% } %>';
 <%_ } _%>
+<%_ for (const relationshipsByType of Object.values(differentRelationships)) {
+        for (const relationship of relationshipsByType) {
+if (relationship.collection && relationship.relationshipType !== 'many-to-many') { _%>
+    public readonly <%= relationship.propertyName %> = '<%= relationship.propertyName %>';
+    public readonly <%= relationship.relationshipFieldName %>Ids = '<%= relationship.relationshipFieldName %>Ids';
+<%_ } } } _%>
 
 <% if (wizard) { %>public readonly baseForm = 'baseForm';<% } %>
 
@@ -39,21 +50,22 @@ _%>
     public readonly Enum = {
 <%_ if (hasBooleanField) { %>
         Boolean: useEnum(Boolean, 'Boolean.'),
-<%_ } %>
+<%_ } _%>
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
         <%- importedType %>: useEnum(<%- importedType %>, '<%- frontendAppName %>.<%- importedType %>.'),
 <%_ }); _%>
     };
 <%_ } %>
 
-<%_ for (const relationshipsByType of Object.values(differentRelationships).filter(relationshipsByType => relationshipsByType.some(relationship => relationship.otherEntity.entityAngularName !== entityAngularName))) {
-    const { otherEntity } = relationshipsByType[0];
-    if (relationships.find(relationship => otherEntity === relationship.otherEntity)) {
+<%_ const dfAdded = [];
+        for (const relationshipsByType of Object.values(differentRelationships).filter(relationshipsByType => relationshipsByType.some(relationship => relationship.otherEntity.entityAngularName !== entityAngularName))) {
+  for (const relationship_2 of relationshipsByType) {
+    const { otherEntity } = relationship_2;
+    if (!dfAdded.includes(otherEntity.entityAngularName)) {
+      dfAdded.push(otherEntity.entityAngularName);
 _%>
 
-    public df<%- otherEntity.entityAngularName %>Definition(): <%- otherEntity.entityAngularName %>Definition {
-        return this.inject(<%- otherEntity.entityAngularName %>Definition);
-    }
-<%_ } } _%>
+    public df<%- otherEntity.entityAngularName %>Definition = (): <%- otherEntity.entityAngularName %>Definition => this.inject(<%- otherEntity.entityAngularName %>Definition);
+<%_ } } } _%>
 
 };
