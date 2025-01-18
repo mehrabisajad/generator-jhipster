@@ -187,7 +187,7 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
 <%_ if (hasStatusField) { _%>
     if (this.accountService.hasAnyAuthorityOrAdmin(this.df.Authority.CHANGE_STATUS_<%= entityAngularName %>)) {
       const label = this.translateService.instant(
-         this.translatePrefix + (<%= entityInstance %>.status === <%= hasStatusField.tsType %>.ACTIVE ? 'home.action.inactivation' : 'home.action.activation'),
+         this.translateKey(<%= entityInstance %>.status === <%= hasStatusField.tsType %>.ACTIVE ? 'home.action.inactivation' : 'home.action.activation'),
       );
       const iconClass = <%= entityInstance %>.status === <%= hasStatusField.tsType %>.ACTIVE ? 'pi pi-times' : 'pi pi-check';
       const status = <%= entityInstance %>.status === <%= hasStatusField.tsType %>.ACTIVE ? <%= hasStatusField.tsType %>.INACTIVE : <%= hasStatusField.tsType %>.ACTIVE;
@@ -267,7 +267,7 @@ export class <%= componentName %> extends ListRouterComponent<I<%= entityAngular
           ...this.getSearchQueryString(),
         }),
         options: {
-          fileName: this.translateService.instant(this.translatePrefix + 'home.title'),
+          fileName: this.translateService.instant(this.translateKey('home.title')),
           indexColumn: this.indexColumn,
           columns: this.columns,
           page: this.page,

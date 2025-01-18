@@ -6,9 +6,9 @@
     [formGroup]="searchForm"
     (ngSubmit)="transition()"
     ngaFormValidation
-    [translatePrefix]="translatePrefix + 'validate.'"
+    [translatePrefix]="translateKey('validate.')"
   >
-    <nga-page-header (back)="previousState()" [title]="translatePrefix + 'home.title' | ngaTranslate : '<%= entityClassPluralHumanized %>'">
+    <nga-page-header (back)="previousState()" [title]="translateKey('home.title') | ngaTranslate : '<%= entityClassPluralHumanized %>'">
       <ng-container page-header-action>
         @if (searchable && mediaScreen !== 'sm') {
           <button
@@ -95,7 +95,7 @@
           class="ml-2"
           [ngClass]="'p-button-success'"
           *ngaHasAnyAuthorityOrAdmin="df.Authority.CREATE_<%= entityAngularName %>"
-          [label]="translatePrefix + 'home.action.create' | ngaTranslate : 'New'"
+          [label]="translateKey('home.action.create') | ngaTranslate : 'New'"
           (click)="routeToCreate()"
         ></button>
 <%_ } _%>
@@ -105,7 +105,7 @@
     <nga-datatable-handler
       [searchable]="searchable"
       [isTopSearch]="isTopSearch"
-      [searchLabel]="translatePrefix + 'home.search' | ngaTranslate : 'Search'"
+      [searchLabel]="translateKey('home.search') | ngaTranslate : 'Search'"
       [isLoading]="inProgress"
       topSearchMaxWidth="100rem"
     >
@@ -254,8 +254,8 @@
           <tr>
             <td [attr.colspan]="selectedColumns.length + (actionable || activeFilter ? 1 : 0) + (indexColumn ? 1 : 0) ">
               <nga-empty-table
-                [invalidMessage]="translatePrefix + 'home.invalid' | ngaTranslate: 'Please select the necessary items first.'"
-                [notFoundMessage]="translatePrefix + 'home.notFound' | ngaTranslate: 'No Information Found!'"
+                [invalidMessage]="translateKey('home.invalid') | ngaTranslate: 'Please select the necessary items first.'"
+                [notFoundMessage]="translateKey('home.notFound') | ngaTranslate: 'No Information Found!'"
                 [filterable]="filterable && activeFilter"
                 (reload)="loadAll(true)"
                 (closeFilter)="closeFilter()"

@@ -34,6 +34,8 @@ export class <%= entityAngularName %>ChangeStatusDialogComponent extends DialogC
   df = inject(<%= entityAngularName %>Definition);
   mediator = inject(Mediator);
 
+  componentName = this.df.ComponentName;
+
   shortcuts = [
     { key: 'Alt+Y', command: () => this.confirmChangeStatus() },
     { key: ['Alt+Q', 'Alt+N'], command: () => this.close() },
@@ -58,7 +60,7 @@ export class <%= entityAngularName %>ChangeStatusDialogComponent extends DialogC
         .send(new <%= entityAngularName %>ChangeStatusCommand({ ...this.<%= entityInstance %>, newStatus: this.status }))
         .pipe(finalize(() => (this.inProgress = false)))
         .subscribe(() => {
-          this.alertService.addSuccess(`<%- i18nKeyPrefix %>.changeStatus.${this.status}.submitted`);
+          this.alertService.addSuccess(this.translateKey('changeStatus', this.status, 'submitted'));
           this.close('changed');
         });
     }

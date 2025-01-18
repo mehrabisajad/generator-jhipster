@@ -178,7 +178,7 @@ _%>
   }
 
   protected onSaveSuccess(result?: I<%= entityAngularName %> | null): void {
-    this.alertService.addSuccess(this.isNew ? '<%- i18nKeyPrefix %>.form.created' : '<%- i18nKeyPrefix %>.form.updated');
+    this.alertService.addSuccess(this.translateKey(this.isNew ? 'form.created' : 'form.updated'));
     this.previousState(result);
   }
 

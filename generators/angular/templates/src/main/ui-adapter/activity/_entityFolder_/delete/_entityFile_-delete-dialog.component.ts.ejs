@@ -8,6 +8,7 @@ import { Mediator } from 'avanng/domain';
 
 import { I<%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
 import { <%= entityAngularName %>DeleteCommand } from '@application/command/<%= entityFolderName %>/<%= entityFileName %>-delete.command';
+import { <%= entityAngularName %>Definition } from "../<%= entityFileName %>.df";
 
 export interface <%= entityAngularName %>DeleteDialogData {
 <%= entityInstance %>: I<%= entityAngularName %> | null | undefined;
@@ -21,7 +22,10 @@ export interface <%= entityAngularName %>DeleteDialogData {
 export class <%= entityAngularName %>DeleteDialogComponent extends DialogComponent {
   <%= entityInstance %>?: I<%= entityAngularName %> | null;
 
+  df = inject(<%= entityAngularName %>Definition);
   mediator = inject(Mediator);
+
+  componentName = this.df.ComponentName;
 
   shortcuts = [
     { key: 'Alt+Y', command: () => this.confirmDelete() },
@@ -46,7 +50,7 @@ export class <%= entityAngularName %>DeleteDialogComponent extends DialogCompone
         .send(new <%= entityAngularName %>DeleteCommand(this.<%= entityInstance %>.<%= primaryKey.name %>))
         .pipe(finalize(() => (this.inProgress = false)))
         .subscribe(() => {
-          this.alertService.addSuccess('<%- i18nKeyPrefix %>.delete.deleted');
+          this.alertService.addSuccess(this.translateKey('delete.deleted'));
           this.close('deleted');
         });
     }
