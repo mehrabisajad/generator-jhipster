@@ -2,8 +2,8 @@ import { random } from "avanng/common/core";
 import { Observable } from 'rxjs';
 import { BaseQueryHandler, safeQuery } from "avanng/domain";
 import { BaseQuery } from "avanng/domain/base-query";
-import { I<%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
-import { <%= entityAngularName %>PersistenceQueryPort } from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-query.port";
+import { I<%= entityAngularName %> } from '<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model';
+import { <%= entityAngularName %>PersistenceQueryPort } from "<%= dasherizedBaseName %>/application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-query.port";
 
 const __NAME__ = random();
 

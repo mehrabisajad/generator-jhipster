@@ -42,14 +42,14 @@ for (const field of fields) {
 }
 %>
 <%_ if (!readOnly) { _%>
-    import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+    import { I<%= entityAngularNameX %> } from "<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model";
 <%_ } else { _%>
-    import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+    import { I<%= entityAngularNameX %> } from "<%= dasherizedBaseName %>/application/view-model/<%= entityFileName %>.vm";
 <%_ } _%>
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
 import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
-import { <%= entityAngularName ;%>PageableQuery } from '@application/query/<%= entityFolderName %>/<%= entityFileName %>-pageable.query';
+import { <%= entityAngularName ;%>PageableQuery } from '<%= dasherizedBaseName %>/application/query/<%= entityFolderName %>/<%= entityFileName %>-pageable.query';
 <%_ if (!readOnly) { _%>
 import { <%= entityAngularName ;%>FormDialogComponent } from '../form/<%= entityFileName %>-form-dialog.component';
 import { <%= entityAngularName ;%>DeleteDialogComponent } from '../delete/<%= entityFileName %>-delete-dialog.component';

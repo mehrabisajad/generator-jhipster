@@ -27,7 +27,7 @@ import { WizardFormRouterComponent } from "avanng/wizard-forms";
 import { WizardModule } from "avanng/wizard";
 <% } %>
 
-import { I<%= entityAngularName %>, <%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
+import { I<%= entityAngularName %>, <%= entityAngularName %> } from '<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model';
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
     import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
@@ -36,18 +36,18 @@ import { I<%= entityAngularName %>, <%= entityAngularName %> } from '@domain/mod
 if (relationships.find(relationship => otherEntity === relationship.otherEntity)) {
 _%>
 <%_ if (otherEntity.readOnly) { _%>
-    import { I<%- otherEntity.entityAngularName%>VM } from '@application/view-model/<%= otherEntity.entityFileName %>.vm'
+    import { I<%- otherEntity.entityAngularName%>VM } from '<%= dasherizedBaseName %>/application/view-model/<%= otherEntity.entityFileName %>.vm'
 <%_ } else { _%>
-    import { I<%- otherEntity.entityAngularName %> } from '@domain/model/<%= otherEntity.entityFileName %>.model';
+    import { I<%- otherEntity.entityAngularName %> } from '<%= dasherizedBaseName %>/domain/model/<%= otherEntity.entityFileName %>.model';
 
 <%_ } _%>
 <%_ } } _%>
 <%_ for (const relationship of relationships.filter(rel => rel.otherEntity.primaryKey)) {
     const { otherEntity, otherEntityName, relationshipName, propertyName, otherEntityField, relationshipRequired, relationshipFieldNamePlural } = relationship;
 _%>
-import { <%= otherEntity.entityAngularName %>FindAllQuery } from '@application/query/<%= otherEntity.entityFolderName %>/<%= otherEntity.entityFileName %>-find-all.query';
+import { <%= otherEntity.entityAngularName %>FindAllQuery } from '<%= dasherizedBaseName %>/application/query/<%= otherEntity.entityFolderName %>/<%= otherEntity.entityFileName %>-find-all.query';
 <%_ } _%>
-import { <%= entityAngularName %>CreateOrUpdateCommand } from '@application/command/<%= entityFolderName %>/<%= entityFileName %>-create-or-update.command';
+import { <%= entityAngularName %>CreateOrUpdateCommand } from '<%= dasherizedBaseName %>/application/command/<%= entityFolderName %>/<%= entityFileName %>-create-or-update.command';
 import { <%= entityAngularName %>Definition } from "../<%= entityFileName %>.df";
 
 @Component({

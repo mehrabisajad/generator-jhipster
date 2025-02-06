@@ -507,6 +507,8 @@ export default class AngularGenerator extends BaseApplicationGenerator {
   }
 
   hasBooleanField(fields, log) {
+    // console.log("APPNAME frontendAppName", console.log(JSON.stringify(log)));
+    // console.log("APPNAME packageName", log?.dasherizedBaseName);
     return getHasBooleanField(fields);
   }
 }

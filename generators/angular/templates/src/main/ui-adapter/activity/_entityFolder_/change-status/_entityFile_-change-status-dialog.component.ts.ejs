@@ -10,11 +10,11 @@ import { cast } from 'avanng/common/core';
 import { DialogComponent } from 'avanng/dialog';
 import { Mediator } from 'avanng/domain';
 
-import { I<%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
+import { I<%= entityAngularName %> } from '<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model';
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
     import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
-import { <%= entityAngularName %>ChangeStatusCommand } from '@application/command/<%= entityFolderName %>/<%= entityFileName %>-change-status.command';
+import { <%= entityAngularName %>ChangeStatusCommand } from '<%= dasherizedBaseName %>/application/command/<%= entityFolderName %>/<%= entityFileName %>-change-status.command';
 import { <%= entityAngularName %>Definition } from "../<%= entityFileName %>.df";
 
 export interface <%= entityAngularName %>ChangeStatusDialogData {

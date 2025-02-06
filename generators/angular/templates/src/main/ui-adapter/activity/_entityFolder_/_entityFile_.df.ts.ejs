@@ -1,6 +1,6 @@
 <%
 const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
-const hasBooleanField = this.hasBooleanField(fields);
+const hasBooleanField = this.hasBooleanField(fields, this);
 %>
 import { Injectable } from '@angular/core';
 import { Definition } from 'avanng/core';

@@ -2,8 +2,8 @@
 const hasStatusField = this.hasStatusField(fields, this);
 %>
 import { Method } from "avanng/core";
-import { <%= entityAngularName %>Authority } from "@ui-adapter/activity/<%= entityFolderName %>/<%= entityFileName %>.authority";
-import { <%= entityAngularName %>Apis } from "@http-adapter/<%= entityFolderName %>/<%= entityFileName %>.api";
+import { <%= entityAngularName %>Authority } from "<%= dasherizedBaseName %>/ui-adapter/activity/<%= entityFolderName %>/<%= entityFileName %>.authority";
+import { <%= entityAngularName %>Apis } from "<%= dasherizedBaseName %>/http-adapter/<%= entityFolderName %>/<%= entityFileName %>.api";
 
 export const <%= entityAngularName %>Access = [
     {

@@ -6,8 +6,8 @@ import { cast } from 'avanng/common/core';
 import { DialogComponent } from 'avanng/dialog';
 import { Mediator } from 'avanng/domain';
 
-import { I<%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
-import { <%= entityAngularName %>DeleteCommand } from '@application/command/<%= entityFolderName %>/<%= entityFileName %>-delete.command';
+import { I<%= entityAngularName %> } from '<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model';
+import { <%= entityAngularName %>DeleteCommand } from '<%= dasherizedBaseName %>/application/command/<%= entityFolderName %>/<%= entityFileName %>-delete.command';
 import { <%= entityAngularName %>Definition } from "../<%= entityFileName %>.df";
 
 export interface <%= entityAngularName %>DeleteDialogData {

@@ -4,12 +4,12 @@ const hasStatusField = this.hasStatusField(fields);
 %>
 import { random } from "avanng/common/core";
 import { BaseCommand, BaseCommandHandler, HandlerResponse, safeCommand } from "avanng/domain";
-import { <%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+import { <%= entityAngularName %> } from "<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model";
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
     import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
 
-import { <%= entityAngularName %>PersistenceCommandPort} from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
+import { <%= entityAngularName %>PersistenceCommandPort} from "<%= dasherizedBaseName %>/application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
 
 const __name__ = random();
 

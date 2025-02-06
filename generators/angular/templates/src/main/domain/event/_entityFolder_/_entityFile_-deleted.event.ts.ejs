@@ -20,7 +20,7 @@ limitations under the License.
 const enumImports = this.generateEntityClientEnumImports(fields);
 %>
 import { DomainEvent, safeEvent } from "avanng/domain";
-import { I<%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+import { I<%= entityAngularName %> } from "../../model/<%= entityFileName %>.model";
 
 export class <%= entityAngularName %>DeletedEvent implements DomainEvent {
     public static readonly NAME = '<%= entityAngularName %>DeletedEvent';

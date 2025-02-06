@@ -12,11 +12,11 @@ import { Mediator } from 'avanng/domain';
 import { cast } from 'avanng/common/core';
 import { FormType } from "avanng/forms";
 
-import { I<%= entityAngularName %>, <%= entityAngularName %> } from '@domain/model/<%= entityFileName %>.model';
+import { I<%= entityAngularName %>, <%= entityAngularName %> } from '<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model';
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
     import { <%- importedType %> } from '<%- importedPath %>';
 <%_ }); _%>
-import { <%= entityAngularName %>FindByIdQuery } from '@application/query/<%= entityFolderName %>/<%= entityFileName %>-find-by-id.query';
+import { <%= entityAngularName %>FindByIdQuery } from '<%= dasherizedBaseName %>/application/query/<%= entityFolderName %>/<%= entityFileName %>-find-by-id.query';
 import { <%= entityAngularName %>FormComponent } from './<%= entityFileName %>-form.component';
 
 export interface <%= entityAngularName %>DialogData {

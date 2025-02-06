@@ -1,7 +1,7 @@
 import { random } from "avanng/common/core";
 import { BaseCommand, BaseCommandHandler, HandlerResponse } from "avanng/domain";
-import { <%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
-import { <%= entityAngularName %>PersistenceCommandPort} from "@application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
+import { <%= entityAngularName %> } from "<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model";
+import { <%= entityAngularName %>PersistenceCommandPort} from "<%= dasherizedBaseName %>/application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
 
 const __name__ = random();
 

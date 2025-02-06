@@ -10,11 +10,11 @@ import { _, Body, Get, <% if (!readOnly) { %>CrudService <% } else { %>QueryServ
 const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
 %>
 <%_ if (!readOnly) { _%>
-    import { I<%= entityAngularNameX %> } from "@domain/model/<%= entityFileName %>.model";
+    import { I<%= entityAngularNameX %> } from "<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model";
 <%_ } else { _%>
-    import { I<%= entityAngularNameX %> } from "@application/view-model/<%= entityFileName %>.vm";
+    import { I<%= entityAngularNameX %> } from "<%= dasherizedBaseName %>/application/view-model/<%= entityFileName %>.vm";
 <%_ } _%>
-import { <%= entityAngularName %>Apis } from "@http-adapter/<%= entityFolderName %>/<%= entityFileName %>.api";
+import { <%= entityAngularName %>Apis } from "<%= dasherizedBaseName %>/http-adapter/<%= entityFolderName %>/<%= entityFileName %>.api";
 
 @Injectable({ providedIn: 'root' })
 export class <%= entityAngularName %>Service extends <% if (!readOnly) { %>CrudService <% } else { %>QueryService<% } %><I<%= entityAngularNameX %>> {

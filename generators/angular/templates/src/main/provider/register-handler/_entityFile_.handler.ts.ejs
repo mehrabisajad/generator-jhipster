@@ -3,13 +3,13 @@ const hasStatusField = this.hasStatusField(fields, this);
 %>
 import { inject } from "@angular/core";
 import { Mediator } from "avanng/domain";
-import { <%= entityAngularName %>PageableQueryHandler } from "@application/query/<%= entityFolderName %>/<%= entityFileName %>-pageable.query";
-import { <%= entityAngularName %>FindByIdQueryHandler } from "@application/query/<%= entityFolderName %>/<%= entityFileName %>-find-by-id.query";
-import { <%= entityAngularName %>FindAllQueryHandler } from "@application/query/<%= entityFolderName %>/<%= entityFileName %>-find-all.query";
-import { <%= entityAngularName %>CreateOrUpdateCommandHandler } from "@application/command/<%= entityFolderName %>/<%= entityFileName %>-create-or-update.command";
-import { <%= entityAngularName %>ChangeStatusCommandHandler } from "@application/command/<%= entityFolderName %>/<%= entityFileName %>-change-status.command";
-import { <%= entityAngularName %>DeleteCommandHandler } from "@application/command/<%= entityFolderName %>/<%= entityFileName %>-delete.command";
-import { <%= entityAngularName %>Port } from "@http-adapter/<%= entityFolderName %>/<%= entityFileName %>.port";
+import { <%= entityAngularName %>PageableQueryHandler } from "<%= dasherizedBaseName %>/application/query/<%= entityFolderName %>/<%= entityFileName %>-pageable.query";
+import { <%= entityAngularName %>FindByIdQueryHandler } from "<%= dasherizedBaseName %>/application/query/<%= entityFolderName %>/<%= entityFileName %>-find-by-id.query";
+import { <%= entityAngularName %>FindAllQueryHandler } from "<%= dasherizedBaseName %>/application/query/<%= entityFolderName %>/<%= entityFileName %>-find-all.query";
+import { <%= entityAngularName %>CreateOrUpdateCommandHandler } from "<%= dasherizedBaseName %>/application/command/<%= entityFolderName %>/<%= entityFileName %>-create-or-update.command";
+import { <%= entityAngularName %>ChangeStatusCommandHandler } from "<%= dasherizedBaseName %>/application/command/<%= entityFolderName %>/<%= entityFileName %>-change-status.command";
+import { <%= entityAngularName %>DeleteCommandHandler } from "<%= dasherizedBaseName %>/application/command/<%= entityFolderName %>/<%= entityFileName %>-delete.command";
+import { <%= entityAngularName %>Port } from "<%= dasherizedBaseName %>/http-adapter/<%= entityFolderName %>/<%= entityFileName %>.port";
 
 export function register<%= entityAngularName %>Handlers(mediator: Mediator): void {
     const <%= entityInstance %>PersistencePort = inject(<%= entityAngularName %>Port);

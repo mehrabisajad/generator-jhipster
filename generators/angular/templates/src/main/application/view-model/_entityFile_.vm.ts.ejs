@@ -25,7 +25,7 @@ _%>
 <%_ if (otherEntity.readOnly) { _%>
     import { I<%- otherEntity.entityAngularName%>VM } from './<%= otherEntity.entityFileName %>.vm'
 <%_ } else { _%>
-    import { I<%- otherEntity.entityAngularName %> } from '@domain/model/<%= otherEntity.entityFileName %>.model';
+    import { I<%- otherEntity.entityAngularName %> } from '<%= dasherizedBaseName %>/domain/model/<%= otherEntity.entityFileName %>.model';
 <%_ } _%>
 
 <%_ } _%>

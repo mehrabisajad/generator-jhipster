@@ -2,7 +2,7 @@
 const hasStatusField = this.hasStatusField(fields)
 %>
 import { Observable } from "rxjs";
-import { I<%= entityAngularName %> } from "@domain/model/<%= entityFileName %>.model";
+import { I<%= entityAngularName %> } from "<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model";
 
 export interface <%= entityAngularName %>PersistenceCommandPort {
 
