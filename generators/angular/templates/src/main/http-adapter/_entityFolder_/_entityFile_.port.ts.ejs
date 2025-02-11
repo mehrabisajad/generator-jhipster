@@ -18,7 +18,7 @@ import { <%= entityAngularName %>PersistenceQueryPort } from "<%= dasherizedBase
 <%_ if (!readOnly) { _%>
 import { <%= entityAngularName %>PersistenceCommandPort } from "<%= dasherizedBaseName %>/application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
 <%_ } _%>
-import { <%= entityAngularName %>Service } from "<%= dasherizedBaseName %>/http-adapter/<%= entityFolderName %>/<%= entityFileName %>.service";
+import { <%= entityAngularName %>Service } from "./<%= entityFileName %>.service";
 
 @Injectable({ providedIn: 'root' })
 export class <%= entityAngularName %>Port implements <% if (!readOnly) { %><%= entityAngularName %>PersistenceCommandPort, <% } %><%= entityAngularName %>PersistenceQueryPort {

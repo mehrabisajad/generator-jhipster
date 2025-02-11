@@ -7,7 +7,7 @@ const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularNa
 <%_ if (!readOnly) { _%>
 import { I<%= entityAngularNameX %> } from "<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model";
 <%_ } else { _%>
-import { I<%= entityAngularNameX %> } from "<%= dasherizedBaseName %>/application/view-model/<%= entityFileName %>.vm";
+import { I<%= entityAngularNameX %> } from "../../view-model/<%= entityFileName %>.vm";
 <%_ } _%>
 
 

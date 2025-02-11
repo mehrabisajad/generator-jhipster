@@ -1,14 +1,14 @@
 import { random } from "avanng/common/core";
 import { BaseCommand, BaseCommandHandler, HandlerResponse } from "avanng/domain";
 import { <%= entityAngularName %> } from "<%= dasherizedBaseName %>/domain/model/<%= entityFileName %>.model";
-import { <%= entityAngularName %>PersistenceCommandPort} from "<%= dasherizedBaseName %>/application/port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
+import { <%= entityAngularName %>PersistenceCommandPort} from "../../port/<%= entityFolderName %>/<%= entityFileName %>-persistence-command.port";
 
 const __name__ = random();
 
 export class <%= entityAngularName %>DeleteCommand implements BaseCommand<void> {
   commandId = __name__;
 
-  constructor(public id?: <%= tsKeyType %> | null) {
+  constructor(public id: <%= tsKeyType %>) {
   }
 
 }
@@ -19,16 +19,11 @@ export class <%= entityAngularName %>DeleteCommandHandler implements BaseCommand
   constructor(private readonly <%= entityInstance %>PersistenceCommandPort: <%= entityAngularName %>PersistenceCommandPort) {}
 
   handle(command: <%= entityAngularName %>DeleteCommand): HandlerResponse<void> {
+    const <%= entityInstance %> = <%= entityAngularName %>.delete(command.id);
 
-    if (command.id) {
-      const <%= entityInstance %> = <%= entityAngularName %>.delete(command.id);
-
-      return {
-        result: this.<%= entityInstance %>PersistenceCommandPort.delete(<%= entityInstance %>.id!),
-        domain: <%= entityInstance %>
-      };
-    }
-
-    throw new Error('id is null');
+    return {
+      result: this.<%= entityInstance %>PersistenceCommandPort.delete(<%= entityInstance %>.id!),
+      domain: <%= entityInstance %>
+    };
   }
 }
