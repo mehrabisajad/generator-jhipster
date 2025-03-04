@@ -17,7 +17,7 @@
  limitations under the License.
 -%>
 <%
-const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields, dasherizedBaseName);
 %>
 <%_ for (const relationshipsByType of Object.values(differentRelationships).filter(relationshipsByType => relationshipsByType.some(relationship => relationship.otherEntity.entityAngularName !== entityAngularName))) {
       const { otherEntity } = relationshipsByType[0];

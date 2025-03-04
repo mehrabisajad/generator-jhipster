@@ -1,5 +1,5 @@
 <%
-const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields, dasherizedBaseName);
 const hasBooleanField = this.hasBooleanField(fields);
 %>
 import { Component, inject } from '@angular/core';

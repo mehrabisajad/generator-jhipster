@@ -27,7 +27,7 @@ import { DropdownItemsForEnum, EnumSelectItem } from 'avanng/enum';
 import { FormType, validateForm } from 'avanng/forms';
 
 <%
-const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields, dasherizedBaseName);
 const hasStatusField = this.hasStatusField(fields, this);
 const entityAngularNameX = readOnly ? entityAngularName + 'VM' : entityAngularName;
 let hasCurrencyField = false;

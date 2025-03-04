@@ -430,8 +430,8 @@ export default class AngularGenerator extends BaseApplicationGenerator {
    * @param fields returns the import of enums that are referenced by the fields
    * @returns {typeImports:Map} the fields that potentially contains some enum types
    */
-  generateEntityClientEnumImportsForApplication(fields) {
-    return getClientEnumImportsFormatForApplication(fields, ANGULAR);
+  generateEntityClientEnumImportsForApplication(fields, dasherizedBaseName) {
+    return getClientEnumImportsFormatForApplication(fields, ANGULAR, dasherizedBaseName);
   }
 
   /**

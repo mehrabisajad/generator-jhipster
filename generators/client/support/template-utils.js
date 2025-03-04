@@ -101,7 +101,7 @@ export const generateEntityClientEnumImports = (fields, clientFramework) => {
  * @param {string} clientFramework the client framework, 'angular' or 'react'.
  * @returns typeImports: Map
  */
-export const generateEntityClientEnumImportsForApplication = (fields, clientFramework) => {
+export const generateEntityClientEnumImportsForApplication = (fields, clientFramework, dasherizedBaseName) => {
   const typeImports = new Map();
   const uniqueEnums = {};
   fields.forEach(field => {
@@ -112,7 +112,7 @@ export const generateEntityClientEnumImportsForApplication = (fields, clientFram
       const modelPath = clientFramework === ANGULAR ? 'entities' : 'shared/model';
       const importPath =
         clientFramework === ANGULAR
-          ? `@domain/enumerations/${enumFileName}.model`
+          ? `${dasherizedBaseName}/domain/enumerations/${enumFileName}.model`
           : `${basePath}/${modelPath}/enumerations/${enumFileName}.model`;
       uniqueEnums[fieldType] = field.fieldType;
       typeImports.set(importType, importPath);

@@ -1,5 +1,5 @@
 <%
-const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields, dasherizedBaseName);
 const hasStatusField = this.hasStatusField(fields);
 %>
 import { random } from "avanng/common/core";

@@ -1,5 +1,5 @@
 <%
-const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields, dasherizedBaseName);
 %>
 import { random } from "avanng/common/core";
 import { BaseCommand, BaseCommandHandler, HandlerResponse, safeCommand } from "avanng/domain";
@@ -10,7 +10,7 @@ import { <%= entityAngularName %> } from "<%= dasherizedBaseName %>/domain/model
 <%_ for (const relationship of relationships) {
     const { propertyName, relationshipFieldName, relationshipRequired, otherEntity, collection, otherEntityField } = relationship;
         if (!relationship.otherEntity.readOnly) {
-        const enumImports2 = this.generateEntityClientEnumImportsForApplication(relationship.otherEntity.fields);
+        const enumImports2 = this.generateEntityClientEnumImportsForApplication(relationship.otherEntity.fields, dasherizedBaseName);
 _%>
 <%_ enumImports2.forEach((importedPath, importedType) => { _%>
 import { <%- importedType %> } from '<%- importedPath %>';
@@ -20,7 +20,7 @@ import { <%- importedType %> } from '<%- importedPath %>';
         for (const relationship of relationshipsByType) {
             if (relationship.collection && relationship.relationshipType !== 'many-to-many') { _%>
 <%_             if (!relationship.otherEntity.readOnly) {
-                    const enumImports2 = this.generateEntityClientEnumImportsForApplication(relationship.otherEntity.fields);
+                    const enumImports2 = this.generateEntityClientEnumImportsForApplication(relationship.otherEntity.fields, dasherizedBaseName);
 _%>
 <%_ enumImports2.forEach((importedPath, importedType) => { _%>
     import { <%- importedType %> } from '<%- importedPath %>';

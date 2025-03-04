@@ -1,5 +1,5 @@
 <%
-const enumImports = this.generateEntityClientEnumImportsForApplication(fields);
+const enumImports = this.generateEntityClientEnumImportsForApplication(fields, dasherizedBaseName);
 const hasStatusField = this.hasStatusField(fields, this)
 %>
 import { Component, inject, HostListener } from '@angular/core';
