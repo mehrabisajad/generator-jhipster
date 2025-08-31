@@ -10,7 +10,7 @@
   >
     <nga-page-header (back)="previousState()" [title]="translateKey('home.title') | ngaTranslate : '<%= entityClassPluralHumanized %>'">
       <ng-container page-header-action>
-        @if (searchable && mediaScreen !== 'sm') {
+        @if (searchable && !screen().isSm) {
           <button
             pButton
             type="button"
