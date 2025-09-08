@@ -125,8 +125,8 @@ _%>
     },
     { key: 'Alt+Q', command: () => this.previousState() },
 <%_ if (wizard) { _%>
-    { key: 'Control+keyArrowRight', command: () => this.dir !== 'rtl' ? this.next() : this.previous() },
-    { key: 'Control+keyArrowLeft', command: () => this.dir === 'rtl' ? this.next() : this.previous() },
+    { key: 'Control+keyArrowRight', command: () => this.nextByKeyArrow() },
+    { key: 'Control+keyArrowLeft', command: () => this.previousByKeyArrow() },
     { key: 'Control+keyArrowUp', command: () => this.first() },
     { key: 'Control+keyArrowDown', command: () => this.last() },
 <%_ } _%>

@@ -1,7 +1,7 @@
 <%
 const hasStatusField = this.hasStatusField(fields, this)
 %>
-<div cdkDrag class="dialog-mask">
+<div cdkDrag class="dialog-mask" [ngaTranslatePrefix]="translatePrefix()">
   <form
     class="dialog col-12 sm:col-11 max-w-45rem"
     name="changeStatusForm"
@@ -9,13 +9,13 @@ const hasStatusField = this.hasStatusField(fields, this)
   >
     <div class="dialog-header dialog-movable">
       <div class="dialog-title" cdkDragHandle>
-        <span [ngaTranslate]="translateKey('changeStatus', status, 'title')">Confirm change status operation</span>
+        <span [ngaTranslate]="['changeStatus', status, 'title'] | toPath">Confirm change status operation</span>
       </div>
       <button pButton type="button" icon="pi pi-times" class="dialog-header-icon p-link" (click)="close()"></button>
     </div>
 
     <div class="dialog-body">
-      <p [ngaTranslate]="translateKey('changeStatus', status, 'question')" [translateValues]="{ id: <%= entityInstance %>?.<%= primaryKey.name %> }">
+      <p [ngaTranslate]="['changeStatus', status, 'question'] | toPath" [translateValues]="{ id: <%= entityInstance %>?.<%= primaryKey.name %> }">
         Are you sure you want to change status this <%= entityClassHumanized %>?
       </p>
     </div>
@@ -25,7 +25,7 @@ const hasStatusField = this.hasStatusField(fields, this)
         pButton
         type="button"
         icon="pi pi-ban"
-        [label]="translateKey('changeStatus', status, 'cancel') | ngaTranslate : 'Cancel'"
+        [label]="['changeStatus', status, 'cancel'] | toPath | ngaTranslate : 'Cancel'"
         class="p-button-outlined p-button-secondary"
         (click)="close()"
       ></button>
@@ -36,7 +36,7 @@ const hasStatusField = this.hasStatusField(fields, this)
         [ngClass]="{ 'p-button-success': status === df.Enum.<%= hasStatusField.tsType %>.ACTIVE, 'p-button-danger': status === df.Enum.<%= hasStatusField.tsType %>.INACTIVE }"
         [icon]="status === df.Enum.<%= hasStatusField.tsType %>.ACTIVE ? 'pi pi-check' : 'pi pi-times'"
         [loading]="inProgress"
-        [label]="translateKey('changeStatus', status, 'submit') | ngaTranslate: 'Change'"
+        [label]="['changeStatus', status, 'submit'] | toPath | ngaTranslate: 'Change'"
       ></button>
     </div>
   </form>

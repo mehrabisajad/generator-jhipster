@@ -49,10 +49,10 @@ if (relationship.collection && relationship.relationshipType !== 'many-to-many')
 <%_ if (enumImports.size || hasBooleanField) { %>
     public readonly Enum = {
 <%_ if (hasBooleanField) { %>
-        Boolean: useEnum(Boolean, 'Boolean.'),
+        Boolean: useEnum(Boolean, '.Boolean.'),
 <%_ } _%>
 <%_ enumImports.forEach((importedPath, importedType) => { _%>
-        <%- importedType %>: useEnum(<%- importedType %>, '<%- frontendAppName %>.<%- importedType %>.'),
+        <%- importedType %>: useEnum(<%- importedType %>, '.<%- frontendAppName %>.<%- importedType %>.'),
 <%_ }); _%>
     };
 <%_ } %>

@@ -1,4 +1,4 @@
-<div class="card card-flat" [dir]="dir">
+<div class="card card-flat" [dir]="dir()" [ngaTranslatePrefix]="translatePrefix()">
   <form
     class="datatable focus"
     name="searchForm"
@@ -6,9 +6,9 @@
     [formGroup]="searchForm"
     (ngSubmit)="transition()"
     ngaFormValidation
-    [translatePrefix]="translateKey('validate.')"
+    translatePrefix="validate."
   >
-    <nga-page-header (back)="previousState()" [title]="translateKey('home.title') | ngaTranslate : '<%= entityClassPluralHumanized %>'">
+    <nga-page-header (back)="previousState()" [title]="'home.title' | ngaTranslate : '<%= entityClassPluralHumanized %>'">
       <ng-container page-header-action>
         @if (searchable && !screen().isSm) {
           <button
@@ -16,7 +16,7 @@
             type="button"
             (click)="exchangeSearch()"
             class="ml-2 p-button-text p-button-plain p-button-icon-only"
-            [pTooltip]="(isTopSearch ? 'toolbar.sideSearch' : 'toolbar.topSearch') | ngaTranslate : (isTopSearch ? 'Side Search' : 'Top Search' )"
+            [pTooltip]="(isTopSearch ? '.toolbar.sideSearch' : '.toolbar.topSearch') | ngaTranslate : (isTopSearch ? 'Side Search' : 'Top Search' )"
             tooltipPosition="top"
           >
             <em [ngaIcon]="isTopSearch ? 'side-search' : 'top-search'"></em>
@@ -26,9 +26,9 @@
           pButton
           type="button"
           icon="pi pi-chevron-left"
-          (click)="transition({ page: this.page - 1 })"
+          (click)="transition({ page: page - 1 })"
           class="ml-2 p-button-text p-button-plain"
-          [pTooltip]="'toolbar.previousPage' | ngaTranslate: 'Previous Page'"
+          [pTooltip]="'.toolbar.previousPage' | ngaTranslate: 'Previous Page'"
           tooltipPosition="top"
         ></button>
         <button
@@ -37,16 +37,16 @@
           icon="pi pi-refresh"
           (click)="loadAll(true)"
           class="ml-2 p-button-text p-button-plain"
-          [pTooltip]="'toolbar.refresh' | ngaTranslate : 'Refresh'"
+          [pTooltip]="'.toolbar.refresh' | ngaTranslate : 'Refresh'"
           tooltipPosition="top"
         ></button>
         <button
           pButton
           type="button"
           icon="pi pi-chevron-right"
-          (click)="this.transition({ page: this.page + 1 })"
+          (click)="transition({ page: page + 1 })"
           class="ml-2 p-button-text p-button-plain"
-          [pTooltip]="'toolbar.nextPage' | ngaTranslate: 'Next Page'"
+          [pTooltip]="'.toolbar.nextPage' | ngaTranslate: 'Next Page'"
           tooltipPosition="top"
         ></button>
         @if (filterable && !activeFilter) {
@@ -56,7 +56,7 @@
             icon="pi pi-filter"
             (click)="openFilter()"
             class="ml-2 p-button-text p-button-plain"
-            [pTooltip]="'toolbar.filter' | ngaTranslate : 'Filter'"
+            [pTooltip]="'.toolbar.filter' | ngaTranslate : 'Filter'"
             tooltipPosition="top"
           ></button>
         } @else if (filterable && activeFilter) {
@@ -66,7 +66,7 @@
             icon="pi pi-filter-slash"
             (click)="closeFilter()"
             class="ml-2 p-button-text p-button-plain"
-            [pTooltip]="'toolbar.deFilter' | ngaTranslate : 'De Filter'"
+            [pTooltip]="'.toolbar.deFilter' | ngaTranslate : 'De Filter'"
             tooltipPosition="top"
           ></button>
         }
@@ -75,7 +75,7 @@
           [(columns)]="columns"
           [(selection)]="selectedColumns"
           class="ml-2"
-          [tooltip]="'toolbar.selectColumn' | ngaTranslate: 'Select Column'"
+          [tooltip]="'.toolbar.selectColumn' | ngaTranslate: 'Select Column'"
           tooltipPosition="top"
         />
         <button
@@ -84,7 +84,7 @@
           (click)="outlet('export')"
           type="button"
           class="ml-2 p-button-text p-button-plain"
-          [pTooltip]="'toolbar.export' | ngaTranslate: 'Export'"
+          [pTooltip]="'.toolbar.export' | ngaTranslate: 'Export'"
           tooltipPosition="top"
         ></button>
 <%_ if (!readOnly) { _%>
@@ -95,7 +95,7 @@
           class="ml-2"
           [ngClass]="'p-button-success'"
           *ngaHasAnyAuthorityOrAdmin="df.Authority.CREATE_<%= entityAngularName %>"
-          [label]="translateKey('home.action.create') | ngaTranslate : 'New'"
+          [label]="'home.action.create' | ngaTranslate : 'New'"
           (click)="routeToCreate()"
         ></button>
 <%_ } _%>
@@ -105,7 +105,7 @@
     <nga-datatable-handler
       [searchable]="searchable"
       [isTopSearch]="isTopSearch"
-      [searchLabel]="translateKey('home.search') | ngaTranslate : 'Search'"
+      [searchLabel]="'home.search' | ngaTranslate : 'Search'"
       [isLoading]="inProgress"
       topSearchMaxWidth="100rem"
     >
@@ -126,7 +126,7 @@
         [rowsPerPageOptions]="itemsPerPages"
         [totalRecords]="totalItems"
         [showCurrentPageReport]="pageable"
-        [currentPageReportTemplate]="'table.pageReport' | ngaTranslate"
+        [currentPageReportTemplate]="'.table.pageReport' | ngaTranslate"
         [dataKey]="df.<%= primaryKey.name %>"
       >
         <ng-template pTemplate="header">
@@ -198,9 +198,9 @@
               </td>
             }
             @for (col of selectedColumns; track col.name) {
-              <td #cell
+              <td
                   tooltipPosition="top"
-                  [tooltipDisabled]="!isOverflown(cell, cellContent)"
+                  [tooltipOverflow]="cellContent"
                   [pTooltip]="item | value: col.serverName:col.pipes | toString">
                 <span class="p-column-title">{{ col.label }}</span>
                 <span #cellContent
@@ -254,8 +254,8 @@
           <tr>
             <td [attr.colspan]="selectedColumns.length + (actionable || activeFilter ? 1 : 0) + (indexColumn ? 1 : 0) ">
               <nga-empty-table
-                [invalidMessage]="translateKey('home.invalid') | ngaTranslate: 'Please select the necessary items first.'"
-                [notFoundMessage]="translateKey('home.notFound') | ngaTranslate: 'No Information Found!'"
+                [invalidMessage]="'home.invalid' | ngaTranslate: 'Please select the necessary items first.'"
+                [notFoundMessage]="'home.notFound' | ngaTranslate: 'No Information Found!'"
                 [filterable]="filterable && activeFilter"
                 (reload)="loadAll(true)"
                 (closeFilter)="closeFilter()"

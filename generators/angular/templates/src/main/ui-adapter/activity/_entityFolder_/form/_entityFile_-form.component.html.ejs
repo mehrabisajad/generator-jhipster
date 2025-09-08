@@ -1,4 +1,4 @@
-<div cdkDrag [cdkDragDisabled]="!isDialog()" [ngClass]="{ 'dialog-mask': isDialog() }">
+<div cdkDrag [cdkDragDisabled]="!isDialog()" [ngClass]="{ 'dialog-mask': isDialog() }" [ngaTranslatePrefix]="translatePrefix()">
   <form
     [ngClass]="{ 'dialog col-12 sm:col-11': isDialog(), 'card card-flat card-center': !isDialog() }"
     class="max-w-70rem"
@@ -7,7 +7,7 @@
     (ngSubmit)="save()"
     [formGroup]="editForm"
     ngaFormValidation
-    [translatePrefix]="translateKey('validate.')"
+    translatePrefix="validate."
   >
     <p-blockUI [blocked]="inProgress">
       <em class="pi pi-spin pi-spinner text-4xl"></em>
@@ -25,11 +25,11 @@
       }
       <div [ngClass]="{ 'dialog-title': isDialog(), 'card-title': !isDialog() }" cdkDragHandle>
         @if (isNew) {
-          <h4 [ngaTranslate]="translateKey('form.newTitle')">Create a <%= entityClassHumanized %></h4>
+          <h4 ngaTranslate="form.newTitle">Create a <%= entityClassHumanized %></h4>
         } @else if (isEdit) {
-          <h4 [ngaTranslate]="translateKey('form.editTitle')">Edit a <%= entityClassHumanized %></h4>
+          <h4 ngaTranslate="form.editTitle">Edit a <%= entityClassHumanized %></h4>
         } @else if (isView) {
-          <h4 [ngaTranslate]="translateKey('form.viewTitle')">View a <%= entityClassHumanized %></h4>
+          <h4 ngaTranslate="form.viewTitle">View a <%= entityClassHumanized %></h4>
         }
       </div>
       @if (isDialog()) {
@@ -49,9 +49,9 @@
             <nga-step
                     [formGroupName]="df.baseForm"
                     [checkForm]="!isView"
-                    [title]="translateKey('form.baseForm.title') | translate"
-                    [subtitle]="translateKey('form.baseForm.subtitle') | translate"
-                    [detail]="translateKey('form.baseForm.detail') | translate"
+                    [title]="'form.baseForm.title' | ngaTranslate"
+                    [subtitle]="'form.baseForm.subtitle' | ngaTranslate"
+                    [detail]="'form.baseForm.detail' | ngaTranslate"
             >
 <% } %>
 
@@ -84,7 +84,7 @@
 _%>
         <div class="col-12 md:col-6">
           <div class="field form-control">
-            <label [for]="df.<%= fieldName %>"<% if (field.fieldValidationRequired) { %> class="item-required" <% } %> [ngaTranslate]="translateKey(df.<%= fieldName %>)"><%= fieldNameHumanized %></label>
+            <label [for]="df.<%= fieldName %>"<% if (field.fieldValidationRequired) { %> class="item-required" <% } %> [ngaTranslate]="df.<%= fieldName %>"><%= fieldNameHumanized %></label>
             @if (isView) {
               <nga-view [value]="item()?.<%= fieldName %><% if (field.fieldIsEnum) { %> | translateHelper : df.Enum.<%= field.tsType %><% } else if (field.fieldTypeBoolean) { %> | toString | translateHelper : df.Enum.Boolean <% } else if (field.fieldTypeTimed) { %> | datetime<% } else if (separator) { %> | separator<% } %>" />
             } @else {
@@ -97,8 +97,8 @@ _%>
                   [name]="df.<%= fieldName %>"
                   [inputId]="df.<%= fieldName %>"
                   [formControlName]="df.<%= fieldName %>"
-                  [dir]="dir"
-                  [isJalali]="isJalali"
+                  [dir]="dir()"
+                  [isJalali]="isJalali()"
                   [showButtonBar]="true"
               ></p-calendar>
 <%_  } else if (field.fieldIsEnum) { _%>
@@ -176,7 +176,7 @@ _%>
         type="button"
         icon="pi pi-ban"
         class="p-button-outlined p-button-secondary"
-        [label]="translateKey('form.cancel') | ngaTranslate : 'Cancel'"
+        [label]="'form.cancel' | ngaTranslate : 'Cancel'"
       ></button>
 <%_ if (wizard) { _%>
       <button
@@ -185,7 +185,7 @@ _%>
         [disabled]="isFirst()"
         type="button"
         icon="pi pi-angle-left"
-        [label]="translateKey('form.previous') | ngaTranslate: 'Previous'"
+        [label]="'form.previous' | ngaTranslate: 'Previous'"
       ></button>
       <button
         pButton
@@ -193,7 +193,7 @@ _%>
         [disabled]="isLast()"
         type="button"
         icon="pi pi-angle-right"
-        [label]="translateKey('form.next') | ngaTranslate: 'Next'"
+        [label]="'form.next' | ngaTranslate: 'Next'"
       ></button>
 <%_ } _%>
       @if (!isView) {
@@ -204,7 +204,7 @@ _%>
           type="submit"
           icon="pi pi-check"
           class="p-button-success"
-          [label]="translateKey('form.submit') | ngaTranslate : 'Save'"
+          [label]="'form.submit' | ngaTranslate : 'Save'"
         ></button>
       }
     </div>
