@@ -22,7 +22,7 @@ export const importJDLTransform = ({
 }) =>
   Duplex.from(async function* (files: AsyncGenerator<MemFsEditorFile>) {
     const yoRcFilePath = join(destinationPath, '.yo-rc.json');
-    const entitiesFolder = join(destinationPath, '.jhipster');
+    const entitiesFolder = join(destinationPath, '.avan');
     const entitiesMatcher = new Minimatch(`${entitiesFolder}/*.json`);
     const entityFields: MemFsEditorFile[] = [];
 

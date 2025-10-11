@@ -286,7 +286,7 @@ describe('generator - app - --incremental-changelog', function () {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -344,7 +344,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'Customer.json')]);
+      runResult.assertFile([join('.avan', 'Customer.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([`${SERVER_MAIN_RES_DIR}config/liquibase/changelog/20200101000100_added_entity_Customer.xml`]);
@@ -405,7 +405,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'Customer.json')]);
+      runResult.assertFile([join('.avan', 'Customer.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([`${SERVER_MAIN_RES_DIR}config/liquibase/changelog/20200101000100_added_entity_Customer.xml`]);
@@ -466,7 +466,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'Customer.json')]);
+      runResult.assertFile([join('.avan', 'Customer.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([`${SERVER_MAIN_RES_DIR}config/liquibase/changelog/20200101000100_added_entity_Customer.xml`]);
@@ -527,7 +527,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'Customer.json')]);
+      runResult.assertFile([join('.avan', 'Customer.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([`${SERVER_MAIN_RES_DIR}config/liquibase/changelog/20200101000100_added_entity_Customer.xml`]);
@@ -578,7 +578,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -637,7 +637,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -701,7 +701,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -769,7 +769,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -872,7 +872,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -969,7 +969,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -1028,7 +1028,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -1082,7 +1082,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Another.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Another.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -1152,7 +1152,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Two.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Two.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -1205,7 +1205,7 @@ entity Customer {
       runResult.assertFile(['.yo-rc.json']);
     });
     it('should create entity config file', () => {
-      runResult.assertFile([join('.jhipster', 'One.json'), join('.jhipster', 'Two.json')]);
+      runResult.assertFile([join('.avan', 'One.json'), join('.avan', 'Two.json')]);
     });
     it('should create entity initial changelog', () => {
       runResult.assertFile([
@@ -1258,7 +1258,7 @@ entity Customer {
         });
 
         it('should create entity config file', () => {
-          runResult.assertFile([join('.jhipster', 'Smarty.json')]);
+          runResult.assertFile([join('.avan', 'Smarty.json')]);
         });
         it('should create entity initial fake data file', () => {
           runResult.assertFile([`${SERVER_MAIN_RES_DIR}config/liquibase/fake-data/20200101000100_entity_smarty.csv`]);

@@ -35,7 +35,7 @@ export const mergeYoRcContent = <
 };
 
 export const readEntityFile = <Content = Entity>(applicationPath: string, entity: string): Content => {
-  const entityFile = join(applicationPath, '.jhipster', `${upperFirst(entity)}.json`);
+  const entityFile = join(applicationPath, '.avan', `${upperFirst(entity)}.json`);
   try {
     return JSON.parse(readFileSync(entityFile, 'utf-8'));
   } catch (error: unknown) {

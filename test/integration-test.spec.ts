@@ -48,7 +48,7 @@ const itEntitiesSamplesPath = path.join(
   'templates',
   'test-integration',
   'samples',
-  '.jhipster',
+  '.avan',
 );
 const REMEMBER_ME_KEY = 'a5e93fdeb16e2ee2dc4a629b5dbdabb30f968e418dfc0483c53afdc695cfac96d06cf5c581cbefb93e3aaa241880857fcafe';
 const JWT_SECRET_KEY =

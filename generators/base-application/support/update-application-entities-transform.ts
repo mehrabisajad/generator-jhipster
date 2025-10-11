@@ -34,7 +34,7 @@ export const updateApplicationEntitiesTransform = ({
     },
     async function () {
       try {
-        entities.push(...(await readdir(join(destinationPath, '.jhipster'))).map(file => file.replace('.json', '')));
+        entities.push(...(await readdir(join(destinationPath, '.avan'))).map(file => file.replace('.json', '')));
       } catch {
         // Directory does not exist
       }

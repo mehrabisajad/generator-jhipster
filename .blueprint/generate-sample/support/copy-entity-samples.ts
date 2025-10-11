@@ -108,7 +108,7 @@ export default function copyEntitySamples(memFs: MemFsEditor, dest: string, type
   if (type === 'mongodb' || type === 'couchbase') {
     type = 'document';
   }
-  const entitiesFolder = join(dest, '.jhipster');
+  const entitiesFolder = join(dest, '.avan');
   const entities = entitiesByType[type];
   for (const entity of entities) {
     memFs.copy(join(entitiesSamplesDir, `${entity}.json`), join(entitiesFolder, `${entity}.json`));
