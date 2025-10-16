@@ -18,36 +18,53 @@
  */
 import { asWriteFilesBlock, asWriteFilesSection, asWritingEntitiesTask } from '../base-application/support/task-type-inference.ts';
 import { javaMainPackageTemplatesBlock } from '../java/support/index.ts';
+let block = javaMainPackageTemplatesBlock('_entityPackage_');
+
+const originalRenameTo = block.renameTo;
+
+block = {
+  path: `persistence-adapter/${block.path}`,
+  renameTo(...param: any[]): string {
+    // @ts-ignore
+    const originalResult = originalRenameTo?.(...param);
+    return `persistence-adapter/${originalResult}`;
+  },
+};
 
 const domainFiles = asWriteFilesBlock([
   {
+    condition: generator => !generator.reactive && !generator.embedded && generator.entityPersistenceLayer,
+    ...block,
+    templates: ['adapter/persistence/model/_persistClass_.java.jhi'],
+  },
+  {
     condition: generator => !generator.reactive && generator.entityDomainLayer,
-    ...javaMainPackageTemplatesBlock('_entityPackage_'),
+    ...block,
     templates: ['domain/_persistClass_.java.jhi.jakarta_persistence'],
   },
   {
     condition: generator => !generator.reactive && generator.requiresPersistableImplementation && generator.entityDomainLayer,
-    ...javaMainPackageTemplatesBlock('_entityPackage_'),
+    ...block,
     templates: ['domain/_persistClass_.java.jhi.jakarta_lifecycle_events'],
   },
   {
     condition: generator => !generator.reactive && generator.enableHibernateCache && generator.entityDomainLayer,
-    ...javaMainPackageTemplatesBlock('_entityPackage_'),
+    ...block,
     templates: ['domain/_persistClass_.java.jhi.hibernate_cache'],
   },
   {
     condition: generator => generator.reactive && generator.entityDomainLayer,
-    ...javaMainPackageTemplatesBlock('_entityPackage_'),
+    ...block,
     templates: ['domain/_persistClass_.java.jhi.spring_data_reactive'],
   },
   {
     condition: generator => generator.requiresPersistableImplementation && generator.entityDomainLayer,
-    ...javaMainPackageTemplatesBlock('_entityPackage_'),
+    ...block,
     templates: ['domain/_persistClass_.java.jhi.spring_data_persistable'],
   },
   {
     condition: generator => generator.reactive && generator.requiresPersistableImplementation && generator.entityDomainLayer,
-    ...javaMainPackageTemplatesBlock('_entityPackage_'),
+    ...block,
     templates: ['domain/_persistClass_Callback.java'],
   },
 ]);
@@ -57,32 +74,32 @@ const sqlFiles = asWriteFilesSection({
   repositoryFiles: [
     {
       condition: generator => !generator.reactive && !generator.embedded && generator.entityPersistenceLayer,
-      ...javaMainPackageTemplatesBlock('_entityPackage_/'),
-      templates: ['repository/_entityClass_Repository.java'],
+      ...block,
+      templates: ['adapter/persistence/repository/_entityClass_Repository.java'],
     },
     {
       condition: generator =>
         !generator.reactive && !generator.embedded && generator.containsBagRelationships && generator.entityPersistenceLayer,
-      ...javaMainPackageTemplatesBlock('_entityPackage_'),
+      ...block,
       templates: [
-        'repository/_entityClass_RepositoryWithBagRelationships.java',
-        'repository/_entityClass_RepositoryWithBagRelationshipsImpl.java',
+        'adapter/persistence/repository/_entityClass_RepositoryWithBagRelationships.java',
+        'adapter/persistence/repository/_entityClass_RepositoryWithBagRelationshipsImpl.java',
       ],
     },
     {
       condition: ctx => ctx.reactive && !ctx.embedded && ctx.entityPersistenceLayer && !ctx.entityR2dbcRepository,
-      ...javaMainPackageTemplatesBlock('_entityPackage_'),
+      ...block,
       templates: [
-        'repository/_entityClass_Repository_reactive.java',
-        'repository/_entityClass_RepositoryInternalImpl_reactive.java',
-        'repository/_entityClass_SqlHelper_reactive.java',
-        'repository/rowmapper/_entityClass_RowMapper_reactive.java',
+        'adapter/persistence/repository/_entityClass_Repository_reactive.java',
+        'adapter/persistence/repository/_entityClass_RepositoryInternalImpl_reactive.java',
+        'adapter/persistence/repository/_entityClass_SqlHelper_reactive.java',
+        'adapter/persistence/repository/rowmapper/_entityClass_RowMapper_reactive.java',
       ],
     },
     {
       condition: ctx => ctx.reactive && !ctx.embedded && ctx.entityPersistenceLayer && ctx.entityR2dbcRepository,
-      ...javaMainPackageTemplatesBlock('_entityPackage_'),
-      templates: ['repository/_entityClass_Repository_r2dbc.java'],
+      ...block,
+      templates: ['adapter/persistence/repository/_entityClass_Repository_r2dbc.java'],
     },
   ],
 });
@@ -96,7 +113,7 @@ export default asWritingEntitiesTask(async function writeEntitiesTask({ applicat
         blocks: [
           {
             condition: generator => generator.reactive && generator.requiresPersistableImplementation,
-            ...javaMainPackageTemplatesBlock('_entityPackage_'),
+            ...block,
             templates: ['domain/_persistClass_Callback.java'],
           },
         ],

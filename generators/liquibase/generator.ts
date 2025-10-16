@@ -554,24 +554,24 @@ export default class LiquibaseGenerator<
 
   get postWritingEntities() {
     return this.asPostWritingEntitiesTaskGroup({
-      postWriteChangelogs({ source }) {
-        return Promise.all(
-          this.databaseChangelogs.map(databaseChangelog => {
-            const { entity, changelogData } = databaseChangelog;
-            if (entity.skipServer) {
-              return undefined;
-            }
-
-            if (databaseChangelog.newEntity) {
-              return this._addLiquibaseFilesReferences({ entity, databaseChangelog, source });
-            }
-            if (changelogData!.requiresUpdateChangelogs) {
-              return this._addUpdateFilesReferences({ entity, databaseChangelog, changelogData, source });
-            }
-            return undefined;
-          }),
-        );
-      },
+      // postWriteChangelogs({ source }) {
+      //   return Promise.all(
+      //     this.databaseChangelogs.map(databaseChangelog => {
+      //       const { entity, changelogData } = databaseChangelog;
+      //       if (entity.skipServer) {
+      //         return undefined;
+      //       }
+      //
+      //       if (databaseChangelog.newEntity) {
+      //         return this._addLiquibaseFilesReferences({ entity, databaseChangelog, source });
+      //       }
+      //       if (changelogData!.requiresUpdateChangelogs) {
+      //         return this._addUpdateFilesReferences({ entity, databaseChangelog, changelogData, source });
+      //       }
+      //       return undefined;
+      //     }),
+      //   );
+      // },
     });
   }
 

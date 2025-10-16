@@ -19,40 +19,68 @@
 import { asWriteEntityFilesSection } from '../../../base-application/support/task-type-inference.ts';
 import { javaMainPackageTemplatesBlock, javaTestPackageTemplatesBlock } from '../../support/index.ts';
 
+let persistClass = javaMainPackageTemplatesBlock({
+  condition: ctx => ctx.entityDomainLayer,
+  templates: [
+    '_entityPackage_/domain/model/_persistClass_.java.jhi',
+    '_entityPackage_/domain/mapper/Domain_persistClass_Mapper.java.jhi',
+    '_entityPackage_/domain/event/_persistClass_CreatedEvent.java.jhi',
+    '_entityPackage_/domain/event/_persistClass_DeletedEvent.java.jhi',
+    '_entityPackage_/domain/event/_persistClass_UpdatedEvent.java.jhi',
+  ],
+});
+
+const persistClassRenameTo = persistClass.renameTo;
+
+persistClass = {
+  ...persistClass,
+  renameTo(...param: any[]): string {
+    // @ts-ignore
+    const originalResult = persistClassRenameTo(...param);
+    return `domain/${originalResult}`;
+  },
+};
+
 export const entityServerFiles = asWriteEntityFilesSection({
-  model: [
-    javaMainPackageTemplatesBlock({
-      condition: ctx => ctx.entityDomainLayer,
-      templates: ['_entityPackage_/domain/_persistClass_.java.jhi'],
-    }),
-  ],
-  modelTestFiles: [
-    javaTestPackageTemplatesBlock({
-      condition: ctx => ctx.entityDomainLayer,
-      templates: [
-        '_entityPackage_/domain/_persistClass_Asserts.java',
-        '_entityPackage_/domain/_persistClass_Test.java',
-        '_entityPackage_/domain/_persistClass_TestSamples.java',
-      ],
-    }),
-  ],
+  model: [persistClass],
+  // modelTestFiles: [
+  //   javaTestPackageTemplatesBlock({
+  //     condition: ctx => ctx.entityDomainLayer,
+  //     templates: [
+  //       '_entityPackage_/domain/model/_persistClass_Asserts.java',
+  //       '_entityPackage_/domain/model/_persistClass_Test.java',
+  //       '_entityPackage_/domain/model/_persistClass_TestSamples.java',
+  //     ],
+  //   }),
+  // ],
   server: [
     javaMainPackageTemplatesBlock({
       condition: ctx => ctx.useJakartaValidation && ctx.entityDomainLayer,
-      templates: ['_entityPackage_/domain/_persistClass_.java.jhi.jakarta_validation'],
+      templates: ['_entityPackage_/domain/model/_persistClass_.java.jhi.jakarta_validation'],
     }),
     javaMainPackageTemplatesBlock({
       condition: ctx => ctx.useJacksonIdentityInfo && ctx.entityDomainLayer,
-      templates: ['_entityPackage_/domain/_persistClass_.java.jhi.jackson_identity_info'],
+      templates: ['_entityPackage_/domain/model/_persistClass_.java.jhi.jackson_identity_info'],
     }),
   ],
 });
 
+let block = javaMainPackageTemplatesBlock({
+  renameTo: (data, filepath) => `${filepath.replace('_enumName_', (data as any).enumName)}`,
+  templates: ['_entityPackage_/domain/enumeration/_enumName_.java'],
+});
+
+const originalRenameTo = block.renameTo;
+
+block = {
+  ...block,
+  renameTo(...param: any[]): string {
+    // @ts-ignore
+    const originalResult = originalRenameTo?.(...param);
+    return `domain/${originalResult}`;
+  },
+};
+
 export const enumFiles = asWriteEntityFilesSection({
-  enumFiles: [
-    javaMainPackageTemplatesBlock({
-      renameTo: (data, filepath) => filepath.replace('_enumName_', (data as any).enumName),
-      templates: ['_entityPackage_/domain/enumeration/_enumName_.java'],
-    }),
-  ],
+  enumFiles: [block],
 });

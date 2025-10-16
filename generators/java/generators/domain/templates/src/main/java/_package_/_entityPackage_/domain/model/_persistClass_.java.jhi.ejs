@@ -1,0 +1,160 @@
+<%#
+ Copyright 2013-2025 the original author or authors from the JHipster project.
+
+ This file is part of the JHipster project, see https://www.jhipster.tech/
+ for more information.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-%>
+<&_
+ // Register sections and max allowed fragments, 0 for unlimited.
+  fragments.registerSections({
+    importSection: 0,
+    staticImportSection: 0,
+    annotationSection: 0,
+    extendsSection: 1,
+    additionalInterfacesSection: 0,
+    classStaticFieldsSection: 0,
+    classFieldsSection: 0,
+    classAdditionalFieldsSection: 0,
+    classAdditionalFieldsMethodsSection: 0,
+    classAdditionalRelationshipsSection: 0,
+    classAdditionalRelationshipsMethodsSection: 0,
+<%_ for (const field of fields) { _%>
+    field<%- field.fieldNameCapitalized %>CustomDeclarationSection: 1,
+    field<%- field.fieldNameCapitalized %>CustomMethodsSection: 1,
+    field<%- field.fieldNameCapitalized %>AnnotationSection: 0,
+  <%_ if (field.fieldWithContentType) { _%>
+    field<%- field.fieldNameCapitalized %>ContentTypeAnnotationSection: 0,
+  <%_ } _%>
+    field<%- field.fieldNameCapitalized %>CustomSetSection: 1,
+<%_ } _%>
+<%_ for (const relationship of relationships) { _%>
+    relationship<%- relationship.relationshipNameCapitalized %>AnnotationSection: 0,
+    relationship<%- relationship.relationshipNameCapitalized %>CustomSetSection: 1,
+    relationship<%- relationship.relationshipNameCapitalized %>CustomAddSection: 1,
+    relationship<%- relationship.relationshipNameCapitalized %>CustomRemoveSection: 1,
+<%_ } _%>
+  });
+-&>
+package <%= entityAbsolutePackage %>.domain.model;
+
+import ir.avan.core.domain.model.AggregateRoot;
+import ir.avan.core.domain.model.BaseModel;
+<&- fragments.staticImportSection() -&>
+<&- fragments.importSection() -&>
+import <%= entityAbsolutePackage %>.domain.mapper.Domain<%= persistClass %>Mapper;
+import lombok.*;
+
+<%_ if (anyFieldIsBigDecimal) { _%>
+import java.math.BigDecimal;
+<%_ } if (anyFieldIsInstant) { _%>
+import java.time.Instant;
+<%_ } if (anyFieldIsLocalDate) { _%>
+import java.time.LocalDate;
+<%_ } if (anyFieldIsZonedDateTime) { _%>
+import java.time.ZonedDateTime;
+<%_ } if (anyFieldIsLocalTime) { _%>
+import java.time.LocalTime;
+<%_ } if (anyFieldIsDuration) { _%>
+import java.time.Duration;
+<%_ } if (entityContainsCollectionField) { _%>
+import java.util.HashSet;
+import java.util.Set;
+<%_ } _%>
+<%_ if (anyFieldIsUUID || otherEntityPrimaryKeyTypesIncludesUUID) { _%>
+import java.util.UUID;
+<%_ } _%>
+<%_ for (const enumField of uniqueEnums) { _%>
+import <%- entityAbsolutePackage %>.domain.enumeration.<%- enumField.fieldType %>;
+<%_ } _%>
+<%_ if (!updatableEntity) { _%>
+
+import java.util.Objects;
+<%_ } _%>
+
+<%_ for (const otherEntity of otherEntities.filter(otherEntity => otherEntity.entityPackage !== entityPackage)) { _%>
+import <%= otherEntity.entityAbsoluteClass %>;
+<%_ } _%>
+
+<%_ if (entityJavadoc) { _%>
+<%- entityJavadoc %>
+<%_ } _%>
+<%_ if (!dtoMapstruct && entityApiDescription) { _%>
+@Schema(description = "<%- entityApiDescription %>")
+<%_ } _%>
+<&- fragments.annotationSection() -&>
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@Builder
+public class <%= persistClass %> <&- fragments.extendsSection() -&> extends BaseModel implements AggregateRoot {
+
+    private static final Domain<%= persistClass %>Mapper <%= persistInstance %>Mapper = Domain<%= persistClass %>Mapper.INSTANCE;
+
+<%_ if (!embedded && primaryKey.composite) { _%>
+    @Id
+    private <%= primaryKey.type %> <%= primaryKey.name %>;
+
+<%_ } _%>
+<&- fragments.classStaticFieldsSection() -&>
+<&- fragments.classFieldsSection() -&>
+<%_ for (const field of fields.filter(field => !field.javaInherited && !field.transient && (embedded || !field.id || !primaryKey.composite))) { _%>
+<&- fragments.field<%- field.fieldNameCapitalized %>CustomDeclarationSection() -&>
+<&_ if (!fragments.field<%- field.fieldNameCapitalized %>CustomDeclarationSection()) { -&>
+  <%_ if (field.fieldJavadoc) { _%>
+<%- field.fieldJavadoc %>
+  <%_ } _%>
+  <%_ if (!dtoMapstruct && field.fieldApiDescription) { _%>
+    @Schema(description = "<%- field.fieldApiDescription %>"<% if (field.fieldValidationRequired) { %>, required = true<% } %>)
+  <%_ } _%>
+<&- fragments.field<%- field.fieldNameCapitalized %>AnnotationSection() -&>
+    private <%= field.javaFieldType %> <%= field.fieldName %>;
+
+  <%_ if (field.fieldWithContentType) { _%>
+<&- fragments.field<%- field.fieldNameCapitalized %>ContentTypeAnnotationSection() -&>
+    private String <%= field.fieldName %>ContentType;
+
+  <%_ } _%>
+<&_ } -&>
+<%_ } _%>
+<&- fragments.classAdditionalFieldsSection() -&>
+
+<%_
+// An embedded entity should not reference entities that embed it, unless the other entities are also embedded
+for (relationship of relationships) {
+  if (typeof relationship.fieldApiDescription) { _%>
+<%- relationship.relationshipJavadoc %>
+    <%_ if (!dtoMapstruct && relationship.relationshipApiDescription) { _%>
+    @Schema(description = "<%- relationship.relationshipApiDescription %>")
+    <%_ } _%>
+  <%_ } _%>
+<&- fragments.relationship<%- relationship.relationshipNameCapitalized %>AnnotationSection() -&>
+  <%_ if (relationship.relationshipOneToMany) { _%>
+    private Set<<%= relationship.otherEntity.persistClass %>> <%= relationship.relationshipFieldNamePlural %> = new HashSet<>();
+
+  <%_ } else if (relationship.relationshipManyToOne) { _%>
+    private <%= relationship.otherEntity.persistClass %> <%= relationship.relationshipFieldName %>;
+
+  <%_ } else if (relationship.relationshipManyToMany) { _%>
+    private Set<<%= relationship.otherEntity.persistClass %>> <%= relationship.relationshipFieldNamePlural %> = new HashSet<>();
+
+  <%_ } else { _%>
+    private <%= relationship.otherEntity.persistClass %> <%= relationship.relationshipFieldName %>;
+  <%_ } _%>
+
+<%_ } _%>
+<&- fragments.classAdditionalRelationshipsSection() -&>
+}
