@@ -98,6 +98,7 @@ export interface Entity<F extends Field = Field, R extends Relationship = Relati
 
   persistClass: string;
   persistInstance: string;
+  packageClass: string;
   restClass: string;
   restInstance: string;
 

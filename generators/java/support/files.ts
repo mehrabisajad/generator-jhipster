@@ -28,6 +28,7 @@ export const replaceEntityFilePathVariables = (data: any, filePath: string) => {
     ?.replace(/_entityPackage_/, data.entityJavaPackageFolder)
     ?.replace(/_mainClass_/, data.mainClass)
     ?.replace(/_persistClass_/, data.persistClass)
+    ?.replace(/_packageClass_/, data.packageClass)
     ?.replace(/_entityClass_/, data.entityClass)
     ?.replace(/_dtoClass_/, data.dtoClass);
   return filePath?.includes('.jhi.') ? filePath : filePath?.replace(/_\w*/, '');

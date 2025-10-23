@@ -136,6 +136,7 @@ export default class ServerBootstrapGenerator extends BaseApplicationGenerator<S
 
           persistClass: ({ entityClass, entitySuffix }) => `${entityClass}${entitySuffix ?? ''}`,
           persistInstance: ({ entityInstance, entitySuffix }) => `${entityInstance}${entitySuffix ?? ''}`,
+          packageClass: ({ entityInstance, entitySuffix }) => `${entityInstance.toLowerCase()}`,
           // Even if dto is not used, we need to generate the dtoClass and dtoInstance is added to avoid errors in rendered relationships templates. The resulting class will not exist then.
           dtoClass: ({ entityClass, dtoSuffix }) => `${entityClass}${dtoSuffix ?? ''}`,
           dtoInstance: ({ entityInstance, dtoSuffix }) => `${entityInstance}${dtoSuffix ?? ''}`,

@@ -17,32 +17,49 @@
  * limitations under the License.
  */
 import { asWriteEntityFilesSection } from '../../../base-application/support/task-type-inference.ts';
-import { javaMainPackageTemplatesBlock, javaTestPackageTemplatesBlock } from '../../support/index.ts';
+import { javaMainPackageTemplatesBlock } from '../../support/index.ts';
 
-let persistClass = javaMainPackageTemplatesBlock({
-  condition: ctx => ctx.entityDomainLayer,
-  templates: [
-    '_entityPackage_/domain/model/_persistClass_.java.jhi',
-    '_entityPackage_/domain/mapper/Domain_persistClass_Mapper.java.jhi',
-    '_entityPackage_/domain/event/_persistClass_CreatedEvent.java.jhi',
-    '_entityPackage_/domain/event/_persistClass_DeletedEvent.java.jhi',
-    '_entityPackage_/domain/event/_persistClass_UpdatedEvent.java.jhi',
-  ],
-});
+function renameTo(persistClass: any, path: string): any {
+  const persistClassRenameTo = persistClass.renameTo;
 
-const persistClassRenameTo = persistClass.renameTo;
-
-persistClass = {
-  ...persistClass,
-  renameTo(...param: any[]): string {
-    // @ts-ignore
-    const originalResult = persistClassRenameTo(...param);
-    return `domain/${originalResult}`;
-  },
-};
+  return {
+    ...persistClass,
+    renameTo(...param: any[]): string {
+      // @ts-ignore
+      const originalResult = persistClassRenameTo(...param);
+      return `${path}/${originalResult}`;
+    },
+  };
+}
 
 export const entityServerFiles = asWriteEntityFilesSection({
-  model: [persistClass],
+  model: [
+    renameTo(
+      javaMainPackageTemplatesBlock({
+        condition: ctx => ctx.entityDomainLayer,
+        templates: [
+          '_entityPackage_/domain/model/_persistClass_.java.jhi',
+          '_entityPackage_/domain/mapper/Domain_persistClass_Mapper.java.jhi',
+          '_entityPackage_/domain/event/_persistClass_CreatedEvent.java.jhi',
+          '_entityPackage_/domain/event/_persistClass_DeletedEvent.java.jhi',
+          '_entityPackage_/domain/event/_persistClass_UpdatedEvent.java.jhi',
+        ],
+      }),
+      'domain',
+    ),
+    renameTo(
+      javaMainPackageTemplatesBlock({
+        condition: ctx => ctx.entityDomainLayer,
+        templates: [
+          '_entityPackage_/application/mapper/_persistClass_Mapper.java.jhi',
+          '_entityPackage_/application/command/_packageClass_/CreateOrUpdate_persistClass_Command.java.jhi',
+          '_entityPackage_/application/port/_persistClass_PortCommand.java.jhi',
+          '_entityPackage_/application/port/_persistClass_PortQuery.java.jhi',
+        ],
+      }),
+      'application',
+    ),
+  ],
   // modelTestFiles: [
   //   javaTestPackageTemplatesBlock({
   //     condition: ctx => ctx.entityDomainLayer,
@@ -65,22 +82,14 @@ export const entityServerFiles = asWriteEntityFilesSection({
   ],
 });
 
-let block = javaMainPackageTemplatesBlock({
-  renameTo: (data, filepath) => `${filepath.replace('_enumName_', (data as any).enumName)}`,
-  templates: ['_entityPackage_/domain/enumeration/_enumName_.java'],
-});
-
-const originalRenameTo = block.renameTo;
-
-block = {
-  ...block,
-  renameTo(...param: any[]): string {
-    // @ts-ignore
-    const originalResult = originalRenameTo?.(...param);
-    return `domain/${originalResult}`;
-  },
-};
-
 export const enumFiles = asWriteEntityFilesSection({
-  enumFiles: [block],
+  enumFiles: [
+    renameTo(
+      javaMainPackageTemplatesBlock({
+        renameTo: (data, filepath) => `${filepath.replace('_enumName_', (data as any).enumName)}`,
+        templates: ['_entityPackage_/domain/enumeration/_enumName_.java'],
+      }),
+      'domain',
+    ),
+  ],
 });

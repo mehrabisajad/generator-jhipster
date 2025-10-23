@@ -47,10 +47,17 @@
 <%_ } _%>
   });
 -&>
-package <%= entityAbsolutePackage %>.domain.model;
+package <%= entityAbsolutePackage %>.application.command.<%= packageClass %>;
 
-import ir.avan.core.domain.model.AggregateRoot;
-import ir.avan.core.domain.model.BaseModel;
+import ir.avan.core.application.command.BaseCommand;
+import ir.avan.core.application.command.Command;
+import ir.avan.core.application.command.handler.CommandHandler;
+import ir.avan.core.application.command.handler.response.BaseCommandHandler;
+import <%= entityAbsolutePackage %>.domain.constant.Exceptions;
+import <%= entityAbsolutePackage %>.domain.model.*;
+import <%= entityAbsolutePackage %>.application.mapper.<%= persistClass %>Mapper;
+import <%= entityAbsolutePackage %>.application.port.<%= persistClass %>PortCommand;
+import <%= entityAbsolutePackage %>.application.port.<%= persistClass %>PortQuery;
 <&- fragments.staticImportSection() -&>
 <&- fragments.importSection() -&>
 import <%= entityAbsolutePackage %>.domain.mapper.Domain<%= persistClass %>Mapper;
@@ -84,7 +91,7 @@ import java.util.Objects;
 <%_ } _%>
 
 <%_ for (const otherEntity of otherEntities.filter(otherEntity => otherEntity.entityPackage !== entityPackage)) { _%>
-import <%= otherEntity.entityAbsoluteClass %>;
+//import <%= otherEntity.entityAbsoluteClass %>;
 <%_ } _%>
 
 <%_ if (entityJavadoc) { _%>
@@ -94,15 +101,11 @@ import <%= otherEntity.entityAbsoluteClass %>;
 @Schema(description = "<%- entityApiDescription %>")
 <%_ } _%>
 <&- fragments.annotationSection() -&>
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@Builder
-public class <%= persistClass %> <&- fragments.extendsSection() -&> extends BaseModel implements AggregateRoot {
-
-    private static final Domain<%= persistClass %>Mapper <%= persistInstance %>Mapper = Domain<%= persistClass %>Mapper.INSTANCE;
+@Data
+@EqualsAndHashCode
+@Builder(toBuilder = true)
+@Command
+public class CreateOrUpdate<%= persistClass %>Command <&- fragments.extendsSection() -&>  implements BaseCommand<<%= persistClass %>> {
 
 <%_ if (!embedded && primaryKey.composite) { _%>
     @Id
@@ -158,31 +161,30 @@ for (relationship of relationships) {
 <%_ } _%>
 <&- fragments.classAdditionalRelationshipsSection() -&>
 
+  @CommandHandler
+  @RequiredArgsConstructor
+  public static class Handler implements BaseCommandHandler<CreateOrUpdate<%= persistClass %>Command, <%= persistClass %>> {
+    private final <%= persistClass %>PortCommand <%= persistInstance %>PortCommand;
+    private final <%= persistClass %>PortQuery <%= persistInstance %>PortQuery;
+    private final <%= persistClass %>Mapper <%= persistInstance %>Mapper = <%= persistClass %>Mapper.INSTANCE;
 
-    public <%= persistClass %> prepareForCreation() {
-        addDomainEvent(<%= persistInstance %>Mapper.toCreatedEvent(this));
-        return this;
+    @Override
+    public <%= persistClass %> handle(CreateOrUpdate<%= persistClass %>Command command) {
+
+        if (command.getId() != null && !<%= persistInstance %>PortQuery.existsById(command.getId())) {
+            throw Exceptions.EntityNotFoundException;
+        }
+
+        var domain = <%= persistInstance %>Mapper.toDomain(command);
+        if (domain.getId() == null) {
+            domain.prepareForCreation();
+        } else {
+            domain.prepareForUpdate();
+        }
+
+        return <%= persistInstance %>PortCommand.save(domain).applyChangeTo(domain);
+
     }
-
-    public <%= persistClass %> prepareForUpdate() {
-        addDomainEvent(<%= persistInstance %>Mapper.toUpdatedEvent(this));
-        return this;
-    }
-
-    public User applyChangeTo(User user) {
-        user.id = this.id;
-        user.username = this.username;
-        user.uniqueId = this.uniqueId;
-        user.firstName = this.firstName;
-        user.lastName = this.lastName;
-        user.birthDate = this.birthDate;
-        user.mobile = this.mobile;
-        user.gender = this.gender;
-        user.status = this.status;
-        user.registerDate = this.registerDate;
-        return this;
-    }
-
-
+  }
 
 }
