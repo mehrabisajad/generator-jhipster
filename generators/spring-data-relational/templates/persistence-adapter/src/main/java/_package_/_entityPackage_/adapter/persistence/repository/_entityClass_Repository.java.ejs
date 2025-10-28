@@ -18,7 +18,7 @@
 -%>
 package <%= entityAbsolutePackage %>.adapter.persistence.repository;
 
-import <%= entityAbsolutePackage %>.adapter.persistence.model.<%= persistClass %>;
+import <%= entityAbsolutePackage %>.adapter.persistence.model.<%= persistClass %>Entity;
 
 <%_ if (implementsEagerLoadApis) { _%>
 import org.springframework.data.domain.Page;
@@ -49,30 +49,30 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 <%_ } _%>
 @Repository
-public interface <%= entityClass %>Repository extends <% if (containsBagRelationships) { %><%= entityClass %>RepositoryWithBagRelationships, <% } %>JpaRepository<<%= persistClass %>, <%= primaryKey.type %>>, QuerydslPredicateExecutor<<%= persistClass %>><% if (jpaMetamodelFiltering) { %>, JpaSpecificationExecutor<<%= persistClass %>><% } %> {
+public interface <%= entityClass %>Repository extends <% if (containsBagRelationships) { %><%= entityClass %>RepositoryWithBagRelationships, <% } %>JpaRepository<<%= persistClass %>Entity, <%= primaryKey.type %>>, QuerydslPredicateExecutor<<%= persistClass %>Entity><% if (jpaMetamodelFiltering) { %>, JpaSpecificationExecutor<<%= persistClass %>Entity><% } %> {
 <%_ for (const relationship of relationships) { _%>
   <%_ if (relationship.relationshipManyToOne && relationship.otherEntityUser) { _%>
 
     @Query("select <%= entityJpqlInstance %> from <%= persistClass %> <%= entityJpqlInstance %> where <%= entityJpqlInstance %>.<%= relationship.relationshipFieldName %>.login = ?#{authentication.name}")
-    List<<%= persistClass %>> findBy<%= relationship.relationshipNameCapitalized %>IsCurrentUser();
+    List<<%= persistClass %>Entity> findBy<%= relationship.relationshipNameCapitalized %>IsCurrentUser();
   <%_ } _%>
 <%_ } _%>
 <%_ if (implementsEagerLoadApis) { _%>
 
   <%_ const containsToOneEagerRelationship = relationships.some(relationship => relationship.relationshipEagerLoad && !relationship.bagRelationship); _%>
-    default Optional<<%= persistClass %>> findOneWithEagerRelationships(<%= primaryKey.type %> <%= primaryKey.name %>) {
+    default Optional<<%= persistClass %>Entity> findOneWithEagerRelationships(<%= primaryKey.type %> <%= primaryKey.name %>) {
         return <% if (containsBagRelationships) { %>this.fetchBagRelationships(<% } %>
             this.<% if (containsToOneEagerRelationship) { %>findOneWithToOneRelationships<% } else { %>findById<% } %>(<%= primaryKey.name %>)
         <%  if (containsBagRelationships) { %>)<% } %>;
     }
 
-    default List<<%= persistClass %>> findAllWithEagerRelationships() {
+    default List<<%= persistClass %>Entity> findAllWithEagerRelationships() {
         return <% if (containsBagRelationships) { %>this.fetchBagRelationships(<% } %>
             this.<% if (containsToOneEagerRelationship) { %>findAllWithToOneRelationships<% } else { %>findAll<% } %>()
         <%  if (containsBagRelationships) { %>)<% } %>;
     }
 
-    default Page<<%= persistClass %>> findAllWithEagerRelationships(Pageable pageable) {
+    default Page<<%= persistClass %>Entity> findAllWithEagerRelationships(Pageable pageable) {
         return <% if (containsBagRelationships) { %>this.fetchBagRelationships(<% } %>
             this.<% if (containsToOneEagerRelationship) { %>findAllWithToOneRelationships<% } else { %>findAll<% } %>(pageable)
         <%  if (containsBagRelationships) { %>)<% } %>;
@@ -84,19 +84,19 @@ public interface <%= entityClass %>Repository extends <% if (containsBagRelation
         if (relationship.relationshipEagerLoad && !relationship.bagRelationship) { %> left join fetch <%= entityJpqlInstance %>.<%= relationship.propertyName %><% }
       } %>",
         countQuery = "select count(<%= entityJpqlInstance %>) from <%= persistClass %> <%= entityJpqlInstance %>")
-    Page<<%= persistClass %>> findAllWithToOneRelationships(Pageable pageable);
+    Page<<%= persistClass %>Entity> findAllWithToOneRelationships(Pageable pageable);
 
     @Query("select <%= entityJpqlInstance %> from <%= persistClass %> <%= entityJpqlInstance %><%
       for (const relationship of relationships) {
         if (relationship.relationshipEagerLoad && !relationship.bagRelationship) { %> left join fetch <%= entityJpqlInstance %>.<%= relationship.propertyName %><% }
       } %>")
-    List<<%= persistClass %>> findAllWithToOneRelationships();
+    List<<%= persistClass %>Entity> findAllWithToOneRelationships();
 
     @Query("select <%= entityJpqlInstance %> from <%= persistClass %> <%= entityJpqlInstance %><%
       for (const relationship of relationships) {
         if (relationship.relationshipEagerLoad && !relationship.bagRelationship) { %> left join fetch <%= entityJpqlInstance %>.<%= relationship.propertyName %><% }
       } %> where <%= entityJpqlInstance %>.id =:id")
-    Optional<<%= persistClass %>> findOneWithToOneRelationships(@Param("id") <%= primaryKey.type %> id);
+    Optional<<%= persistClass %>Entity> findOneWithToOneRelationships(@Param("id") <%= primaryKey.type %> id);
   <%_ } _%>
 <%_ } _%>
 }

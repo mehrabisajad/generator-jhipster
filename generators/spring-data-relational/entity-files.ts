@@ -45,6 +45,14 @@ const domainFiles = asWriteFilesBlock([
   {
     condition: generator => !generator.reactive && generator.entityDomainLayer,
     ...block,
+    templates: [
+      { file: 'adapter/persistence/mapper/_entityClass_EntityMapper.java' },
+      { file: 'adapter/persistence/port/_entityClass_Port.java' },
+    ],
+  },
+  {
+    condition: generator => !generator.reactive && generator.entityDomainLayer,
+    ...block,
     templates: [{ file: 'adapter/persistence/model/_persistClass_Entity.java.jhi.jakarta_persistence' }],
   },
   {

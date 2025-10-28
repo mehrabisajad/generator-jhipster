@@ -24,6 +24,7 @@
 import <%- entityAbsolutePackage %>.adapter.persistence.model.config.SequenceName;
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.validation.constraints.NotNull;
 <%_ if ((prodDatabaseTypePostgresql && anyFieldHasTextContentType) || (anyFieldIsUUID && (prodDatabaseTypeMysql || prodDatabaseTypeMariadb))) { _%>
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
