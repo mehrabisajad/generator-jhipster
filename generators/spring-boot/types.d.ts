@@ -75,6 +75,7 @@ export interface Entity<F extends Field = Field, R extends Relationship = Relati
 
 export type Source = JavaSource &
   ServerSource & {
+    addSequence?(sequence: { entitySequenceName: string; entityTableName: string }): void;
     addTestSpringFactory?({ key, value }: { key: string; value: string }): void;
     addLogbackLogEntry?({ file, name, level }: { file: string; name: string; level: string }): void;
     addIntegrationTestAnnotation?(annotation: JavaAnnotation): void;

@@ -133,6 +133,7 @@ export default class ServerBootstrapGenerator extends BaseApplicationGenerator<S
           entityClass: ({ entityNameCapitalized }) => upperFirst(entityNameCapitalized),
           entityClassPlural: ({ entityNamePlural }) => upperFirst(entityNamePlural),
           entityTableName: ({ entityNameCapitalized }) => hibernateSnakeCase(entityNameCapitalized),
+          entitySequenceName: ({ entityNameCapitalized }) => hibernateSnakeCase(entityNameCapitalized).toUpperCase(),
 
           persistClass: ({ entityClass, entitySuffix }) => `${entityClass}${entitySuffix ?? ''}`,
           persistInstance: ({ entityInstance, entitySuffix }) => `${entityInstance}${entitySuffix ?? ''}`,

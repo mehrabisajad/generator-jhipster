@@ -16,8 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { asWriteFilesBlock, asWriteFilesSection, asWritingEntitiesTask } from '../base-application/support/task-type-inference.ts';
+import {
+  asWriteFilesBlock,
+  asWriteFilesSection,
+  asWritingEntitiesTask,
+} from '../base-application/support/task-type-inference.ts';
 import { javaMainPackageTemplatesBlock } from '../java/support/index.ts';
+
 let block = javaMainPackageTemplatesBlock('_entityPackage_');
 
 const originalRenameTo = block.renameTo;
@@ -35,12 +40,22 @@ const domainFiles = asWriteFilesBlock([
   {
     condition: generator => !generator.reactive && !generator.embedded && generator.entityPersistenceLayer,
     ...block,
-    templates: ['adapter/persistence/model/_persistClass_.java.jhi'],
+    templates: [{ file: 'adapter/persistence/model/_persistClass_Entity.java.jhi' }],
   },
   {
     condition: generator => !generator.reactive && generator.entityDomainLayer,
     ...block,
-    templates: ['domain/_persistClass_.java.jhi.jakarta_persistence'],
+    templates: [{ file: 'adapter/persistence/model/_persistClass_Entity.java.jhi.jakarta_persistence' }],
+  },
+  {
+    condition: generator => !generator.reactive && generator.entityDomainLayer,
+    ...block,
+    templates: [
+      {
+        override: true,
+        file: 'adapter/persistence/model/config/SequenceName.java.jhi',
+      },
+    ],
   },
   {
     condition: generator => !generator.reactive && generator.requiresPersistableImplementation && generator.entityDomainLayer,

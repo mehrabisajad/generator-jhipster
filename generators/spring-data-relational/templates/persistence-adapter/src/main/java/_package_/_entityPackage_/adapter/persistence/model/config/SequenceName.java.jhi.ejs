@@ -1,0 +1,39 @@
+package <%- entityAbsolutePackage %>.adapter.persistence.model.config;
+
+/**
+ * A utility class that holds constant names for database sequences used to generate
+ * sequential primary key values via {@code @GeneratedValue(strategy = GenerationType.SEQUENCE)}.
+ * <p>
+ * This class is designed as a non-instantiable utility class (final with a private constructor)
+ * to centralize and standardize sequence naming across the persistence layer.
+ * Using this class ensures consistency, avoids typos, and simplifies maintenance when managing
+ * multiple JPA entities that rely on database sequences.
+ * <p>
+ * <strong>Usage Example:</strong>
+ * <pre>
+ * &#64;Id
+ * &#64;GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SequenceName.ENTITY)
+ * &#64;SequenceGenerator(
+ *     name = SequenceName.ENTITY,
+ *     sequenceName = SequenceName.ENTITY,
+ *     allocationSize = 1
+ * )
+ * private Integer id;
+ * </pre>
+ *
+ * @see jakarta.persistence.SequenceGenerator
+ * @see jakarta.persistence.GeneratedValue
+ */
+public final class SequenceName {
+
+    private SequenceName() {
+        throw new IllegalStateException("Utility class; instantiation is not allowed.");
+    }
+
+    // Example of additional entity-specific sequences (uncomment as needed):
+    // public static final String USER = "user_seq";
+    // public static final String ORDER = "order_seq";
+
+    // jhipster-needle-add-sequence - JHipster will add sequence
+
+}

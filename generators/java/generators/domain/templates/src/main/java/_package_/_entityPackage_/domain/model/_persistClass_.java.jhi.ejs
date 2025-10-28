@@ -51,6 +51,8 @@ package <%= entityAbsolutePackage %>.domain.model;
 
 import ir.avan.core.domain.model.AggregateRoot;
 import ir.avan.core.domain.model.BaseModel;
+import ir.avan.core.domain.problem.Validator;
+import <%= entityAbsolutePackage %>.domain.constant.Exceptions;
 <&- fragments.staticImportSection() -&>
 <&- fragments.importSection() -&>
 import <%= entityAbsolutePackage %>.domain.mapper.Domain<%= persistClass %>Mapper;
@@ -95,8 +97,8 @@ import <%= otherEntity.entityAbsoluteClass %>;
 <%_ } _%>
 <&- fragments.annotationSection() -&>
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Builder
@@ -160,29 +162,58 @@ for (relationship of relationships) {
 
 
     public <%= persistClass %> prepareForCreation() {
+        Validator.hasRule(id == null, Exceptions.HaveId);
+        validate();
         addDomainEvent(<%= persistInstance %>Mapper.toCreatedEvent(this));
         return this;
     }
 
     public <%= persistClass %> prepareForUpdate() {
+        Validator.hasRule(id != null, Exceptions.EmptyId);
+        validate();
         addDomainEvent(<%= persistInstance %>Mapper.toUpdatedEvent(this));
         return this;
     }
 
-    public User applyChangeTo(User user) {
-        user.id = this.id;
-        user.username = this.username;
-        user.uniqueId = this.uniqueId;
-        user.firstName = this.firstName;
-        user.lastName = this.lastName;
-        user.birthDate = this.birthDate;
-        user.mobile = this.mobile;
-        user.gender = this.gender;
-        user.status = this.status;
-        user.registerDate = this.registerDate;
-        return this;
-    }
 
+    public void validate() {
+    <%_ for (const field of fields) {
+        const { fieldName, fieldValidationRequired, fieldValidationMinLength, fieldValidationMaxLength,
+                fieldValidationMin, fieldValidationMax, fieldValidationPattern } = field;
+
+        let conditions = [];
+
+        // شرط‌های معتبر بودن (برعکس قبلی)
+        if (fieldValidationRequired) {
+            conditions.push(`${fieldName} != null`);
+        }
+
+        if (fieldValidationMinLength) {
+            conditions.push(`${fieldName}.length() >= ${field.fieldValidateRulesMinlength}`);
+        }
+
+        if (fieldValidationMaxLength) {
+            conditions.push(`${fieldName}.length() <= ${field.fieldValidateRulesMaxlength}`);
+        }
+
+        if (fieldValidationMin) {
+            conditions.push(`${fieldName} >= ${field.fieldValidateRulesMin}`);
+        }
+
+        if (fieldValidationMax) {
+            conditions.push(`${fieldName} <= ${field.fieldValidateRulesMax}`);
+        }
+
+        if (fieldValidationPattern) {
+            conditions.push(`${fieldName}.matches("${field.fieldValidateRulesPattern}")`);
+        }
+
+        if (conditions.length) {
+    _%>
+            Validator.hasRule(<%- conditions.join(' && ') %>, Exceptions.ObjectIsInvalid);
+    <%_ }
+    } _%>
+    }
 
 
 }

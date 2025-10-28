@@ -60,6 +60,7 @@ export interface DatabaseRelationship extends BaseApplicationRelationship, Datab
 export interface DatabaseEntity<F extends DatabaseField = DatabaseField, R extends DatabaseRelationship = DatabaseRelationship>
   extends BaseApplicationEntity<F, R> {
   entityTableName: string;
+  entitySequenceName: string;
 }
 type Property = {
   liquibaseGenerateFakeData?: boolean;

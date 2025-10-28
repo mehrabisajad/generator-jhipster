@@ -53,6 +53,7 @@ import ir.avan.core.application.command.BaseCommand;
 import ir.avan.core.application.command.Command;
 import ir.avan.core.application.command.handler.CommandHandler;
 import ir.avan.core.application.command.handler.response.BaseCommandHandler;
+import ir.avan.core.domain.problem.Validator;
 import <%= entityAbsolutePackage %>.domain.constant.Exceptions;
 import <%= entityAbsolutePackage %>.domain.model.*;
 import <%= entityAbsolutePackage %>.application.mapper.<%= persistClass %>Mapper;
@@ -171,9 +172,8 @@ for (relationship of relationships) {
     @Override
     public <%= persistClass %> handle(CreateOrUpdate<%= persistClass %>Command command) {
 
-        if (command.getId() != null && !<%= persistInstance %>PortQuery.existsById(command.getId())) {
-            throw Exceptions.EntityNotFoundException;
-        }
+        Validator.hasRule(command.getId() == null || <%= persistInstance %>PortQuery.existsById(command.getId())
+        , Exceptions.EntityNotFound);
 
         var domain = <%= persistInstance %>Mapper.toDomain(command);
         if (domain.getId() == null) {
@@ -182,7 +182,8 @@ for (relationship of relationships) {
             domain.prepareForUpdate();
         }
 
-        return <%= persistInstance %>PortCommand.save(domain).applyChangeTo(domain);
+        <%= persistInstance %>PortCommand.save(domain);
+        return domain;
 
     }
   }

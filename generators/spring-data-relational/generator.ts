@@ -22,6 +22,7 @@ import assert from 'node:assert';
 import { databaseTypes } from '../../lib/jhipster/index.ts';
 import { isReservedTableName } from '../../lib/jhipster/reserved-keywords.ts';
 import BaseApplicationGenerator from '../base-application/index.ts';
+import { createNeedleCallback } from '../base-core/support/index.ts';
 
 import cleanupTask from './cleanup.ts';
 import writeEntitiesTask, { cleanupEntitiesTask } from './entity-files.ts';
@@ -76,6 +77,17 @@ export default class SqlGenerator extends BaseApplicationGenerator<
         prepareSqlApplicationProperties({ application });
         application.devDatabaseExtraOptions = getDBCExtraOption(application.devDatabaseType);
         application.prodDatabaseExtraOptions = getDBCExtraOption(application.prodDatabaseType);
+      },
+      addNeedles({ source, application }) {
+        source.addSequence = sequence => {
+          return this.editFile(
+            `persistence-adapter/${application.srcMainJava}/${application.packageFolder}/adapter/persistence/model/config/SequenceName.java`,
+            createNeedleCallback({
+              needle: 'add-sequence',
+              contentToAdd: `public static final String ${sequence.entitySequenceName} = "${sequence.entityTableName}_seq";`,
+            }),
+          );
+        };
       },
     });
   }
@@ -289,6 +301,11 @@ export default class SqlGenerator extends BaseApplicationGenerator<
               },
             ],
           });
+        }
+      },
+      async sequence({ application, entities, source }) {
+        for (const entity of entities.filter(({ builtIn, builtInUser, embedded }) => builtInUser || (!builtIn && !embedded))) {
+          source.addSequence?.({ entitySequenceName: entity.entitySequenceName, entityTableName: entity.entityTableName });
         }
       },
     });

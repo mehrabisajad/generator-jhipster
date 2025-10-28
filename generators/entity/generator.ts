@@ -317,6 +317,9 @@ The entity ${entityName} is being created.
     if (this.options.tableName) {
       this.entityConfig.entityTableName = hibernateSnakeCase(this.options.tableName);
     }
+    if (this.options.tableName) {
+      this.entityConfig.entitySequenceName = this.entityConfig.entityTableName.toUpperCase();
+    }
   }
 
   /**
