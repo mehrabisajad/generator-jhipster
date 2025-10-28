@@ -122,7 +122,7 @@ module.exports = async (config, options, targetOptions) => {
       to: 'swagger-ui/',
     },
     { from: './<%- this.relativeDir(clientRootDir, clientSrcDir) %>swagger-ui/', to: 'swagger-ui/' },
-    // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
+    // avan-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
   ];
 
   if (patterns.length > 0) {
@@ -146,7 +146,7 @@ module.exports = async (config, options, targetOptions) => {
     new MergeJsonWebpackPlugin({
       output: {
         groupBy: [
-        // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
+        // avan-needle-i18n-language-webpack - JHipster will add/remove languages in this array
         ],
       },
     })
@@ -155,7 +155,7 @@ module.exports = async (config, options, targetOptions) => {
 
   config = merge(
     config,
-    // jhipster-needle-add-webpack-config - JHipster will add custom config
+    // avan-needle-add-webpack-config - JHipster will add custom config
   );
 
   return config;

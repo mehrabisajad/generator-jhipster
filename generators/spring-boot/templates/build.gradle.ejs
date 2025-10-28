@@ -22,7 +22,7 @@ plugins {
     id "idea"
     id "eclipse"
     id "com.gorylenko.gradle-git-properties"
-    // jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
+    // avan-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
 group = "<%= packageName %>"
@@ -66,12 +66,12 @@ repositories {
     <%_ if (serviceDiscoveryEureka) { _%>
     maven { url 'https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates' }
     <%_ } _%>
-    // jhipster-needle-gradle-repositories - JHipster will add additional repositories
+    // avan-needle-gradle-repositories - JHipster will add additional repositories
 }
 
 apply plugin: 'io.spring.dependency-management'
 
-// jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
+// avan-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
 if (project.hasProperty("prod")) {
     apply from: "gradle/profile_prod.gradle"
@@ -239,7 +239,7 @@ if (addSpringMilestoneRepository) { _%>
     implementation "org.springframework.retry:spring-retry"
 <%_ } _%>
     testImplementation "org.springframework.security:spring-security-test"
-    // jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+    // avan-needle-gradle-dependency - JHipster will add additional dependencies here
 <%_ if (reactive) { _%>
     OperatingSystem os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.getCurrentOperatingSystem();
     Architecture arch = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.getCurrentArchitecture();

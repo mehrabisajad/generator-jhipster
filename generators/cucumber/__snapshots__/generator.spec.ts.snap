@@ -103,11 +103,11 @@ exports[`generator - cucumber with gradle build tool should match files snapshot
   "build.gradle": {
     "contents": "
 dependencies {
-    // jhipster-needle-gradle-dependency
+    // avan-needle-gradle-dependency
 }
 plugins {
     id "jhipster.cucumber-conventions"
-    // jhipster-needle-gradle-plugins
+    // avan-needle-gradle-plugins
 }
 ",
     "stateCleared": "modified",
@@ -122,22 +122,22 @@ repositories {
 }
 
 dependencies {
-    // jhipster-needle-gradle-dependency - JHipster will add additional dependencies for convention plugins here
-    // jhipster-needle-gradle-build-src-dependency - Deprecated: JHipster will add additional dependencies for convention plugins here
+    // avan-needle-gradle-dependency - JHipster will add additional dependencies for convention plugins here
+    // avan-needle-gradle-build-src-dependency - Deprecated: JHipster will add additional dependencies for convention plugins here
 }
 ",
     "stateCleared": "modified",
   },
   "buildSrc/gradle/libs.versions.toml": {
     "contents": "[versions]
-# jhipster-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
-# jhipster-needle-gradle-build-src-dependency-catalog-version - Deprecated: JHipster will add additional versions for convention plugins here
+# avan-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
+# avan-needle-gradle-build-src-dependency-catalog-version - Deprecated: JHipster will add additional versions for convention plugins here
 
 [libraries]
-# jhipster-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
+# avan-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
 
 [plugins]
-# jhipster-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
+# avan-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
 ",
     "stateCleared": "modified",
   },
@@ -149,7 +149,7 @@ dependencies {
     testImplementation "org.junit.platform:junit-platform-console"
     implementation platform(libs.cucumber.bom)
     testImplementation libs.testng
-    // jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+    // avan-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 
 tasks.register('consoleLauncherTest', JavaExec) {
@@ -186,15 +186,15 @@ check.dependsOn(cucumberTest)
   },
   "gradle/libs.versions.toml": {
     "contents": "[versions]
-# jhipster-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
+# avan-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
 
 [libraries]
 cucumber-bom = { module = "io.cucumber:cucumber-bom", version = "'CUCUMBER-BOM-VERSION'" }
 testng = { module = "org.testng:testng", version = "'TESTNG-VERSION'" }
-# jhipster-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
+# avan-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
 
 [plugins]
-# jhipster-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
+# avan-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
 ",
     "stateCleared": "modified",
   },

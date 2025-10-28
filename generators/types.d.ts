@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// jhipster-needle-add-generator-with-bootstrap-start
+// avan-needle-add-generator-with-bootstrap-start
 export type GeneratorsWithBootstrap =
   | 'angular'
   | 'app'
@@ -39,10 +39,10 @@ export type GeneratorsWithBootstrap =
   | 'server'
   | 'spring-boot'
   | 'vue';
-// jhipster-needle-add-generator-with-bootstrap
+// avan-needle-add-generator-with-bootstrap
 
 type GeneratorsByNamespace = {
-  // jhipster-needle-add-generator-by-namespace-start
+  // avan-needle-add-generator-by-namespace-start
   angular: import('./angular/generator.ts').default;
   'jhipster:angular': import('./angular/generator.ts').default;
   'jhipster:angular:bootstrap': import('./angular/generators/bootstrap/generator.ts').default;
@@ -192,7 +192,7 @@ type GeneratorsByNamespace = {
   'jhipster:vue:bootstrap': import('./vue/generators/bootstrap/generator.ts').default;
   workspaces: import('./workspaces/generator.ts').default;
   'jhipster:workspaces': import('./workspaces/generator.ts').default;
-  // jhipster-needle-add-generator-by-namespace - JHipster will add generators here
+  // avan-needle-add-generator-by-namespace - JHipster will add generators here
 };
 
 export default GeneratorsByNamespace;

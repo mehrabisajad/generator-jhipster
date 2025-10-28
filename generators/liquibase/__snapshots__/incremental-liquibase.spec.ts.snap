@@ -87,7 +87,7 @@ exports[`generator - app - --incremental-changelog when adding a field with cons
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -140,10 +140,10 @@ exports[`generator - app - --incremental-changelog when adding a field with cons
                   tableName="customer">
             <column name="id" type="numeric"/>
             <column name="foo" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -202,12 +202,12 @@ ROLE_USER
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_Customer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_migrate_Customer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_constraints_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -235,7 +235,7 @@ exports[`generator - app - --incremental-changelog when adding a field without c
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -267,10 +267,10 @@ exports[`generator - app - --incremental-changelog when adding a field without c
                   tableName="customer">
             <column name="id" type="numeric"/>
             <column name="foo" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -329,11 +329,11 @@ ROLE_USER
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_Customer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_migrate_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -369,7 +369,7 @@ exports[`generator - app - --incremental-changelog when adding a many-to-many re
         <addPrimaryKey columnNames="one_one_id, another_another_id" tableName="rel_one__another"/>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -433,10 +433,10 @@ exports[`generator - app - --incremental-changelog when adding a many-to-many re
                   primaryKey="id"
                   tableName="one">
             <column name="id" type="numeric"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -496,12 +496,12 @@ ROLE_USER
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000200_added_entity_Another.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_migrate_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_constraints_One.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -529,7 +529,7 @@ exports[`generator - app - --incremental-changelog when adding a relationship sh
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -596,10 +596,10 @@ exports[`generator - app - --incremental-changelog when adding a relationship sh
                   tableName="one">
             <column name="id" type="numeric"/>
             <column name="another" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -659,12 +659,12 @@ ROLE_USER
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000200_added_entity_Another.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_migrate_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_constraints_One.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -692,7 +692,7 @@ exports[`generator - app - --incremental-changelog when adding a relationship wi
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -752,10 +752,10 @@ exports[`generator - app - --incremental-changelog when adding a relationship wi
                   tableName="one">
             <column name="id" type="numeric"/>
             <column name="another" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -928,9 +928,9 @@ ROLE_USER
     <property name="timeType" value="time(6)" dbms="postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -1091,12 +1091,12 @@ exports[`generator - app - --incremental-changelog when creating entities with d
             <column name="some_date" type="\${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+            <!-- avan-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="one" columnName="some_date" columnDataType="\${datetimeType}"/>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
         Load sample data generated with Faker.js
@@ -1116,7 +1116,7 @@ exports[`generator - app - --incremental-changelog when creating entities with d
             <column name="active" type="boolean"/>
             <column name="some_long" type="numeric"/>
             <column name="some_date" type="date"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
 </databaseChangeLog>
@@ -1146,11 +1146,11 @@ exports[`generator - app - --incremental-changelog when creating entities with d
             <column name="computed_date" type="\${datetimeType}" defaultValueComputed="NOW(6)">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+            <!-- avan-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
         Load sample data generated with Faker.js
@@ -1169,7 +1169,7 @@ exports[`generator - app - --incremental-changelog when creating entities with d
             <column name="id" type="numeric"/>
             <column name="comment" type="string"/>
             <column name="computed_date" type="date"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
 </databaseChangeLog>
@@ -1245,9 +1245,9 @@ f4d7cebb-36aa-4812-9c05-b9abb67ab7ee;false;3133;2019-12-31T18:41:05
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000200_added_entity_Two.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -1419,9 +1419,9 @@ ROLE_USER
     <property name="timeType" value="time(6)" dbms="postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -1606,11 +1606,11 @@ exports[`generator - app - --incremental-changelog when initially creating an ap
             <column name="another_another_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+            <!-- avan-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
         Load sample data generated with Faker.js
@@ -1628,7 +1628,7 @@ exports[`generator - app - --incremental-changelog when initially creating an ap
                   usePreparedStatements="true">
             <column name="one_id" type="numeric"/>
             <column name="original" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
 </databaseChangeLog>
@@ -1681,11 +1681,11 @@ exports[`generator - app - --incremental-changelog when initially creating an ap
             <column name="original" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+            <!-- avan-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
         Load sample data generated with Faker.js
@@ -1703,7 +1703,7 @@ exports[`generator - app - --incremental-changelog when initially creating an ap
                   usePreparedStatements="true">
             <column name="another_id" type="numeric"/>
             <column name="original" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
 </databaseChangeLog>
@@ -1737,7 +1737,7 @@ exports[`generator - app - --incremental-changelog when modifying a relationship
         <dropForeignKeyConstraint baseTableName="one" constraintName="fk_one__another_id"/>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -1797,10 +1797,10 @@ exports[`generator - app - --incremental-changelog when modifying a relationship
                   tableName="one">
             <column name="id" type="numeric"/>
             <column name="another" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -1839,7 +1839,7 @@ exports[`generator - app - --incremental-changelog when modifying an existing re
         </dropColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -1899,10 +1899,10 @@ exports[`generator - app - --incremental-changelog when modifying an existing re
                   tableName="one">
             <column name="id" type="numeric"/>
             <column name="another_ent" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -1931,7 +1931,7 @@ exports[`generator - app - --incremental-changelog when modifying default values
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -1963,10 +1963,10 @@ exports[`generator - app - --incremental-changelog when modifying default values
                   tableName="one">
             <column name="id" type="numeric"/>
             <column name="another_boolean" type="boolean"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -1999,7 +1999,7 @@ exports[`generator - app - --incremental-changelog when modifying default values
         </dropColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2031,10 +2031,10 @@ exports[`generator - app - --incremental-changelog when modifying default values
                   tableName="two">
             <column name="id" type="numeric"/>
             <column name="comment_new" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2105,10 +2105,10 @@ exports[`generator - app - --incremental-changelog when modifying default values
                   primaryKey="id"
                   tableName="one">
             <column name="id" type="numeric"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2132,7 +2132,7 @@ exports[`generator - app - --incremental-changelog when modifying default values
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2198,10 +2198,10 @@ exports[`generator - app - --incremental-changelog when modifying default values
                   tableName="two">
             <column name="id" type="numeric"/>
             <column name="one" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2306,8 +2306,8 @@ abf7d979-e671-4258-8548-f4e98d56ee9c
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000200_added_entity_Two.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_migrate_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000200_updated_entity_Two.xml" relativeToChangelogFile="false"/>
@@ -2317,7 +2317,7 @@ abf7d979-e671-4258-8548-f4e98d56ee9c
     <include file="config/liquibase/changelog/20200102000400_updated_entity_Two.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000400_updated_entity_migrate_Two.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000400_updated_entity_constraints_Two.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -2345,7 +2345,7 @@ exports[`generator - app - --incremental-changelog when modifying fields and rel
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2377,10 +2377,10 @@ exports[`generator - app - --incremental-changelog when modifying fields and rel
                   tableName="one">
             <column name="id" type="numeric"/>
             <column name="new_field_of_one" type="boolean"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2413,7 +2413,7 @@ exports[`generator - app - --incremental-changelog when modifying fields and rel
         </dropColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2445,10 +2445,10 @@ exports[`generator - app - --incremental-changelog when modifying fields and rel
                   tableName="another">
             <column name="id" type="numeric"/>
             <column name="original_changed" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2472,7 +2472,7 @@ exports[`generator - app - --incremental-changelog when modifying fields and rel
         </addColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2530,10 +2530,10 @@ exports[`generator - app - --incremental-changelog when modifying fields and rel
                   tableName="another">
             <column name="id" type="numeric"/>
             <column name="one" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2623,8 +2623,8 @@ ROLE_USER
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000200_added_entity_Another.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000100_updated_entity_migrate_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000200_updated_entity_Another.xml" relativeToChangelogFile="false"/>
@@ -2632,7 +2632,7 @@ ROLE_USER
     <include file="config/liquibase/changelog/20200102000400_updated_entity_Another.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000400_updated_entity_migrate_Another.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200102000400_updated_entity_constraints_Another.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -2660,7 +2660,7 @@ exports[`generator - app - --incremental-changelog when removing a field with co
         </dropColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2704,10 +2704,10 @@ ROLE_USER
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -2735,7 +2735,7 @@ exports[`generator - app - --incremental-changelog when removing a field without
         </dropColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2779,10 +2779,10 @@ ROLE_USER
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_Customer.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",
@@ -2811,7 +2811,7 @@ exports[`generator - app - --incremental-changelog when removing a relationship 
         </dropColumn>
     </changeSet>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
 ",
@@ -2856,11 +2856,11 @@ ROLE_USER
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000100_added_entity_One.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101000200_added_entity_Another.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200101000100_added_entity_constraints_One.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200102000100_updated_entity_One.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 ",
     "stateCleared": "modified",

@@ -113,7 +113,7 @@ export const checkContentIn = (contentToCheck: string | RegExp, content: string,
 };
 
 const addNeedlePrefix = (needle: string): string => {
-  return needle.includes('jhipster-needle-') ? needle : `jhipster-needle-${needle}`;
+  return needle.includes('avan-needle-') ? needle : `avan-needle-${needle}`;
 };
 
 const hasNeedleStart = (content: string, needle: string): boolean => {
@@ -252,7 +252,7 @@ export const createNeedleCallback = <Generator extends CoreGenerator = CoreGener
     if (newContent) {
       return newContent;
     }
-    const message = `Missing ${optional ? 'optional' : 'required'} jhipster-needle ${needle} not found at '${filePath}'`;
+    const message = `Missing ${optional ? 'optional' : 'required'} avan-needle ${needle} not found at '${filePath}'`;
     if (optional && this) {
       this.log.warn(message);
       return content;

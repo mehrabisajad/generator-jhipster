@@ -38,10 +38,10 @@ describe(`generator - ${generator}`, () => {
         .withFiles({
           'build.gradle': `
 dependencies {
-    // jhipster-needle-gradle-dependency
+    // avan-needle-gradle-dependency
 }
 plugins {
-    // jhipster-needle-gradle-plugins
+    // avan-needle-gradle-plugins
 }
 `,
         })

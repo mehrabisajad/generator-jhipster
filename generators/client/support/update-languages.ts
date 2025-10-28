@@ -25,7 +25,7 @@ export const createDayjsUpdateLanguagesEditFileCallback = (languagesDefinition: 
     contentToAdd: [...new Set(languagesDefinition.map(l => l.dayjsLocale))].map(
       dayjsLocale => `import 'dayjs/${commonjs ? '' : 'esm/'}locale/${dayjsLocale}';`,
     ),
-    needle: 'jhipster-needle-i18n-language-dayjs-imports',
+    needle: 'avan-needle-i18n-language-dayjs-imports',
   });
 
 export const createWebpackUpdateLanguagesNeedleCallback = (allLanguages: readonly Language[], i18nRelativeDir: string) =>
@@ -33,5 +33,5 @@ export const createWebpackUpdateLanguagesNeedleCallback = (allLanguages: readonl
     contentToAdd: allLanguages.map(
       language => `{ pattern: './${i18nRelativeDir}${language.languageTag}/*.json', fileName: './i18n/${language.languageTag}.json' },`,
     ),
-    needle: 'jhipster-needle-i18n-language-webpack',
+    needle: 'avan-needle-i18n-language-webpack',
   });

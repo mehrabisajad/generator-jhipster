@@ -10,7 +10,7 @@ exports[`generator - javascript-simple-application:eslint with defaults options 
   "eslint.config.mjs": {
     "contents": "import globals from 'globals';
 import prettier from 'eslint-plugin-prettier/recommended';
-// jhipster-needle-eslint-add-import - JHipster will add additional import here
+// avan-needle-eslint-add-import - JHipster will add additional import here
 
 export default [
   {
@@ -20,7 +20,7 @@ export default [
       },
     },
   },
-  // jhipster-needle-eslint-add-config - JHipster will add additional config here
+  // avan-needle-eslint-add-config - JHipster will add additional config here
   prettier,
 ];
 ",

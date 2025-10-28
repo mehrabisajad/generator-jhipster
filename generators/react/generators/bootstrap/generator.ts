@@ -49,7 +49,7 @@ export default class ReactBootstrapGenerator extends ClientApplicationGenerator 
             { ignoreNonExisting },
             createNeedleCallback({
               contentToAdd: generateLanguagesWebappOptions(allLanguages),
-              needle: 'jhipster-needle-i18n-language-key-pipe',
+              needle: 'avan-needle-i18n-language-key-pipe',
             }),
           );
 

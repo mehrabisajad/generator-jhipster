@@ -41,7 +41,7 @@ describe('generator - server - support - needles', () => {
         expect(() => {
           // @ts-expect-error invalid needle
           insertContentIntoApplicationProperties.call(runResult.generator, application, { foo: 'foo' });
-        }).toThrow(/Missing required jhipster-needle application-properties-foo not found at/);
+        }).toThrow(/Missing required avan-needle application-properties-foo not found at/);
       });
 
       it('without a needle', () => {
@@ -97,13 +97,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
     private Foo foo;
-    // jhipster-needle-application-properties-property
+    // avan-needle-application-properties-property
 
 
     private Foo getFoo() {
         return foo;
     };
-    // jhipster-needle-application-properties-property-getter
+    // avan-needle-application-properties-property-getter
 
 
     public static Foo{} {
@@ -113,7 +113,7 @@ public class ApplicationProperties {
           return bar;
         }
     };
-    // jhipster-needle-application-properties-property-class
+    // avan-needle-application-properties-property-class
 }
 ",
     "state": "modified",

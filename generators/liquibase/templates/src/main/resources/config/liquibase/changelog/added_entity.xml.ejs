@@ -57,7 +57,7 @@
         <%_ });
     }
 } _%>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+            <!-- avan-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
 <%_ for (const field of fields) {
     if (field.shouldDropDefaultValue) { _%>
@@ -90,7 +90,7 @@ _%>
     </changeSet>
 <%_ } _%>
 
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+    <!-- avan-needle-liquibase-add-changeset - JHipster will add changesets here -->
 <%_ if (!skipFakeData) { _%>
 
     <!--
@@ -118,7 +118,7 @@ _%>
             <column name="<%= relationship.columnName %>_<%= field.columnName %>" type="<%= field.loadColumnType %>"/>
     <%_ } _%>
   <%_ } _%>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            <!-- avan-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
 <%_ } _%>

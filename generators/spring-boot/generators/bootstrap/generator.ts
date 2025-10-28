@@ -63,7 +63,7 @@ export default class BootstrapGenerator extends SpringBootApplicationGenerator {
             { ignoreNonExisting },
             createNeedleCallback({
               contentToAdd: allLanguages.map(language => `"${language.languageTag}"`).join(',\n'),
-              needle: 'jhipster-needle-i18n-language-constant',
+              needle: 'avan-needle-i18n-language-constant',
             }),
           );
         });

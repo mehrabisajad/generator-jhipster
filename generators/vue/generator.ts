@@ -138,7 +138,7 @@ export default class VueGenerator extends ClientApplicationGenerator {
             webpackPath,
             { ignoreNonExisting },
             createNeedleCallback({
-              needle: 'jhipster-needle-add-webpack-config',
+              needle: 'avan-needle-add-webpack-config',
               contentToAdd: `,${args.config}`,
             }),
           );
@@ -161,7 +161,7 @@ export default class VueGenerator extends ClientApplicationGenerator {
             this.editFile(
               `${application.clientSrcDir}/app/router/entities.ts`,
               createNeedleCallback({
-                needle: 'jhipster-needle-add-entity-to-router-import',
+                needle: 'avan-needle-add-entity-to-router-import',
                 contentToAdd: `const ${entityAngularName} = () => import('@/entities/${entityFolderName}/${entityFileName}.vue');
 const ${entityAngularName}Details = () => import('@/entities/${entityFolderName}/${entityFileName}-details.vue');${
                   readOnly
@@ -176,7 +176,7 @@ const ${entityAngularName}Update = () => import('@/entities/${entityFolderName}/
             this.editFile(
               `${application.clientSrcDir}/app/router/entities.ts`,
               createNeedleCallback({
-                needle: 'jhipster-needle-add-entity-to-router',
+                needle: 'avan-needle-add-entity-to-router',
                 contentToAdd: `{
   path: '${entityPage}',
   name: '${entityAngularName}',
@@ -212,7 +212,7 @@ const ${entityAngularName}Update = () => import('@/entities/${entityFolderName}/
             this.editFile(
               `${application.clientSrcDir}/app/entities/entities.component.ts`,
               createNeedleCallback({
-                needle: 'jhipster-needle-add-entity-service-to-entities-component-import',
+                needle: 'avan-needle-add-entity-service-to-entities-component-import',
                 contentToAdd: `import ${entityAngularName}Service from './${entityFolderName}/${entityFileName}.service';`,
               }),
               createNeedleCallback({

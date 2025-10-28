@@ -49,7 +49,7 @@ init({
 
 const pinia = createPinia();
 
-// jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
+// avan-needle-add-entity-service-to-main-import - JHipster will import entities services here
 <%_ if (enableTranslation) { _%>
 
 const i18n = initI18N();
@@ -166,7 +166,7 @@ const app = createApp({
     provide('translationService', translationService);
 <%_ } _%>
     provide('accountService', accountService);
-    // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
+    // avan-needle-add-entity-service-to-main - JHipster will import entities services here
 <%_ if (communicationSpringWebsocket) { _%>
 
     provide('trackerService', useTrackerService({ authenticated }));

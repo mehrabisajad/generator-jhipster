@@ -167,7 +167,7 @@ another bar value`;
         it('should insert content and add ident', () => {
           const content = insertContentBeforeNeedle({
             content: `
-        ${needlePrefix} jhipster-needle-${needle}
+        ${needlePrefix} avan-needle-${needle}
 `,
             contentToAdd,
             needle,
@@ -177,7 +177,7 @@ another bar value`;
   "
           a bar value
           another bar value
-          ${needlePrefix} jhipster-needle-a-needle
+          ${needlePrefix} avan-needle-a-needle
   "
   `);
         });
@@ -185,7 +185,7 @@ another bar value`;
         it('should insert an array of content and add ident', () => {
           const content = insertContentBeforeNeedle({
             content: `
-        ${needlePrefix} jhipster-needle-${needle}
+        ${needlePrefix} avan-needle-${needle}
 `,
             contentToAdd: [contentToAdd, `${contentToAdd}2`],
             needle,
@@ -197,14 +197,14 @@ another bar value`;
           another bar value
           a bar value
           another bar value2
-          ${needlePrefix} jhipster-needle-a-needle
+          ${needlePrefix} avan-needle-a-needle
   "
   `);
         });
 
         it('should insert content with needles at start and end of contents', () => {
           const content = insertContentBeforeNeedle({
-            content: `${needlePrefix} jhipster-needle-${needle}`,
+            content: `${needlePrefix} avan-needle-${needle}`,
             contentToAdd,
             needle,
           });
@@ -212,13 +212,13 @@ another bar value`;
           expect(content).toMatchInlineSnapshot(`
 "a bar value
 another bar value
-${needlePrefix} jhipster-needle-a-needle"
+${needlePrefix} avan-needle-a-needle"
 `);
         });
 
         it('should not insert content with needles with extra letter', () => {
           const content = insertContentBeforeNeedle({
-            content: `${needlePrefix} jhipster-needle-${needle}a`,
+            content: `${needlePrefix} avan-needle-${needle}a`,
             contentToAdd,
             needle,
           });
@@ -228,7 +228,7 @@ ${needlePrefix} jhipster-needle-a-needle"
 
         it('should not insert content with needles with extra dash', () => {
           const content = insertContentBeforeNeedle({
-            content: `${needlePrefix} jhipster-needle-${needle}-`,
+            content: `${needlePrefix} avan-needle-${needle}-`,
             contentToAdd,
             needle,
           });
@@ -238,7 +238,7 @@ ${needlePrefix} jhipster-needle-a-needle"
 
         it('should not insert content without a leading space', () => {
           const content = insertContentBeforeNeedle({
-            content: `${needlePrefix}jhipster-needle-${needle}-`,
+            content: `${needlePrefix}avan-needle-${needle}-`,
             contentToAdd,
             needle,
           });
@@ -250,8 +250,8 @@ ${needlePrefix} jhipster-needle-a-needle"
           expect(() =>
             insertContentBeforeNeedle({
               content: `
-        ${needlePrefix} jhipster-needle-${needle}
-        ${needlePrefix} jhipster-needle-${needle}
+        ${needlePrefix} avan-needle-${needle}
+        ${needlePrefix} avan-needle-${needle}
 `,
               contentToAdd,
               needle,
@@ -290,7 +290,7 @@ ${needlePrefix} jhipster-needle-a-needle"
       const log = test.mock.fn(createJHipsterLogger());
       const needleCallback = createNeedleCallback({ contentToAdd, needle });
       // @ts-expect-error invalid params
-      expect(() => needleCallback.call({ log } as any, 'no needle')).toThrow(/Missing required jhipster-needle/);
+      expect(() => needleCallback.call({ log } as any, 'no needle')).toThrow(/Missing required avan-needle/);
     });
 
     it('returned function should not throw on optional missing needle', () => {
@@ -303,19 +303,19 @@ ${needlePrefix} jhipster-needle-a-needle"
     it('returned function should add contentToAdd', () => {
       const log = test.mock.fn(createJHipsterLogger());
       const needleCallback = createNeedleCallback({ contentToAdd, needle });
-      expect(needleCallback.call({ log } as any, `// jhipster-needle-${needle}`, 'file')).toMatchInlineSnapshot(`
+      expect(needleCallback.call({ log } as any, `// avan-needle-${needle}`, 'file')).toMatchInlineSnapshot(`
 "content to add
-// jhipster-needle-a-needle"
+// avan-needle-a-needle"
 `);
     });
 
     it('returned function should add contentToAdd array', () => {
       const log = test.mock.fn(createJHipsterLogger());
       const needleCallback = createNeedleCallback({ contentToAdd: [contentToAdd, `${contentToAdd}2`], needle });
-      expect(needleCallback.call({ log } as any, `// jhipster-needle-${needle}`, 'any-file')).toMatchInlineSnapshot(`
+      expect(needleCallback.call({ log } as any, `// avan-needle-${needle}`, 'any-file')).toMatchInlineSnapshot(`
 "content to add
 content to add2
-// jhipster-needle-a-needle"
+// avan-needle-a-needle"
 `);
     });
 
@@ -323,7 +323,7 @@ content to add2
       const log = test.mock.fn(createJHipsterLogger());
       const contentToAdd = test.mock.fn((_arg0: string, _arg1: any) => 'result content');
       const needleCallback = createNeedleCallback({ contentToAdd, needle });
-      const content = `  // jhipster-needle-${needle}`;
+      const content = `  // avan-needle-${needle}`;
       expect(needleCallback.call({ log } as any, content, 'file')).toMatchInlineSnapshot(`"result content"`);
       expect(contentToAdd.mock.callCount()).toBe(1);
       expect(contentToAdd.mock.calls[0].arguments[0]).toBe(content);

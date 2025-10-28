@@ -27,7 +27,7 @@ export const languages: any = {
   <%_ languagesDefinition.forEach((ln) => { _%>
   '<%= ln.languageTag %>': { name: '<%= ln.displayName %>'<%= ln.rtl ? ', rtl: true' : '' %> },
   <%_ }); _%>
-  // jhipster-needle-i18n-language-key-pipe - JHipster will add/remove languages in this object
+  // avan-needle-i18n-language-key-pipe - JHipster will add/remove languages in this object
 };
 
 export const locales = Object.keys(languages).sort();

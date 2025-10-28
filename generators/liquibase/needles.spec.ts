@@ -20,9 +20,9 @@ describe('generator - liquibase - needles', () => {
       .withFiles({
         'src/main/resources/config/liquibase/master.xml': `
 <databaseChangeLog>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <!-- avan-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- avan-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
 `,
       })

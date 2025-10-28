@@ -44,7 +44,7 @@ import sessions from 'app/modules/account/sessions/sessions.reducer';
 <%_ if (applicationTypeMonolith) { _%>
 import entitiesReducers from 'app/entities/reducers';
 <%_ } _%>
-/* jhipster-needle-add-reducer-import - JHipster will add reducer here */
+/* avan-needle-add-reducer-import - JHipster will add reducer here */
 
 const rootReducer: ReducersMapObject = {
   authentication,
@@ -67,7 +67,7 @@ const rootReducer: ReducersMapObject = {
   <%_ } _%>
 <%_ } _%>
   loadingBar,
-  /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
+  /* avan-needle-add-reducer-combine - JHipster will add reducer here */
 <%_ if (applicationTypeMonolith) { _%>
   ...entitiesReducers,
 <%_ } _%>

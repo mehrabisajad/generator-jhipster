@@ -70,7 +70,7 @@ export function addEntitiesRoute<const E extends ClientEntity, const A extends C
       const modulePath = `./${entityFolderName}/${entityFileName}.routes`;
 
       return addRoute({
-        needle: 'jhipster-needle-add-entity-route',
+        needle: 'avan-needle-add-entity-route',
         route: entityUrl,
         modulePath,
         pageTitle,
@@ -122,12 +122,12 @@ export const addItemToAdminMenu = (menu: MenuItem) =>
 export const addIconImport = ({ icon }: { icon: string }) => {
   const iconImport = `fa${upperFirstCamelCase(icon)}`;
   return createNeedleCallback({
-    needle: 'jhipster-needle-add-icon-import',
+    needle: 'avan-needle-add-icon-import',
     contentToCheck: new RegExp(`\\b${iconImport}\\b`),
     contentToAdd: (content, { indentPrefix }) =>
       content.replace(
-        /(\r?\n)(\s*)\/\/ jhipster-needle-add-icon-import/g,
-        `\n${indentPrefix}${iconImport},\n${indentPrefix}// jhipster-needle-add-icon-import`,
+        /(\r?\n)(\s*)\/\/ avan-needle-add-icon-import/g,
+        `\n${indentPrefix}${iconImport},\n${indentPrefix}// avan-needle-add-icon-import`,
       ),
   });
 };
@@ -143,7 +143,7 @@ export function addToEntitiesMenu<const E extends ClientEntity, const A extends 
   return joinCallbacks(
     ...entities.map(entity => {
       return addItemToMenu({
-        needle: entity.adminEntity ? 'jhipster-needle-add-element-to-admin-menu' : 'jhipster-needle-add-entity-to-menu',
+        needle: entity.adminEntity ? 'avan-needle-add-element-to-admin-menu' : 'avan-needle-add-entity-to-menu',
         enableTranslation,
         icon: 'asterisk',
         route: entity.entityPage!,

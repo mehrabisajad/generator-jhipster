@@ -62,7 +62,7 @@ public class Test {
         const fileContent = `package com.example;
 public enum Test {
     ;
-    // jhipster-needle-add-item-to-enum - JHipster will add new enum values here
+    // avan-needle-add-item-to-enum - JHipster will add new enum values here
 }
 `;
 
@@ -92,7 +92,7 @@ public enum Test {
 public class Test {
     public static enum TestEnum {
         EXISTING_VALUE;
-        // jhipster-needle-add-item-to-enum - JHipster will add new enum values here
+        // avan-needle-add-item-to-enum - JHipster will add new enum values here
     }
 }
 `;

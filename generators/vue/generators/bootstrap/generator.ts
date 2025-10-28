@@ -49,7 +49,7 @@ export default class VueBootstrapGenerator extends ClientApplicationGenerator {
             { ignoreNonExisting },
             createNeedleCallback({
               contentToAdd: generateLanguagesWebappOptions(allLanguages),
-              needle: 'jhipster-needle-i18n-language-key-pipe',
+              needle: 'avan-needle-i18n-language-key-pipe',
             }),
           );
 
@@ -64,7 +64,7 @@ export default class VueBootstrapGenerator extends ClientApplicationGenerator {
             { ignoreNonExisting },
             createNeedleCallback({
               contentToAdd: allLanguages.map(lang => generateDateTimeFormat(lang.languageTag)),
-              needle: 'jhipster-needle-i18n-language-date-time-format',
+              needle: 'avan-needle-i18n-language-date-time-format',
             }),
           );
 

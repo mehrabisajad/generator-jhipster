@@ -124,7 +124,7 @@ export default class ReactGenerator extends ClientApplicationGenerator<
             webpackPath,
             { ignoreNonExisting },
             createNeedleCallback({
-              needle: 'jhipster-needle-add-webpack-config',
+              needle: 'avan-needle-add-webpack-config',
               contentToAdd: `,${args.config}`,
             }),
           );

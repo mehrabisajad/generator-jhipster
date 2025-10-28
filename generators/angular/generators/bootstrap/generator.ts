@@ -47,7 +47,7 @@ export default class BootstrapGenerator extends AngularApplicationGenerator {
             { ignoreNonExisting },
             createNeedleCallback({
               contentToAdd: generateLanguagesWebappOptions(allLanguages),
-              needle: 'jhipster-needle-i18n-language-key-pipe',
+              needle: 'avan-needle-i18n-language-key-pipe',
             }),
           );
 
@@ -56,7 +56,7 @@ export default class BootstrapGenerator extends AngularApplicationGenerator {
             { ignoreNonExisting },
             createNeedleCallback({
               contentToAdd: allLanguages.map(lang => `'${lang.languageTag}',`),
-              needle: 'jhipster-needle-i18n-language-constant',
+              needle: 'avan-needle-i18n-language-constant',
             }),
           );
 

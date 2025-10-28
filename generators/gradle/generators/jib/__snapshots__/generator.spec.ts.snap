@@ -5,11 +5,11 @@ exports[`generator - gradle:jib with gradle build tool should match files snapsh
   "build.gradle": {
     "contents": "
 dependencies {
-// jhipster-needle-gradle-dependency
+// avan-needle-gradle-dependency
 }
 plugins {
 id "jhipster.docker-conventions"
-// jhipster-needle-gradle-plugins
+// avan-needle-gradle-plugins
 }
 ",
     "stateCleared": "modified",
@@ -25,23 +25,23 @@ repositories {
 
 dependencies {
     implementation libs.jib.plugin
-    // jhipster-needle-gradle-dependency - JHipster will add additional dependencies for convention plugins here
-    // jhipster-needle-gradle-build-src-dependency - Deprecated: JHipster will add additional dependencies for convention plugins here
+    // avan-needle-gradle-dependency - JHipster will add additional dependencies for convention plugins here
+    // avan-needle-gradle-build-src-dependency - Deprecated: JHipster will add additional dependencies for convention plugins here
 }
 ",
     "stateCleared": "modified",
   },
   "buildSrc/gradle/libs.versions.toml": {
     "contents": "[versions]
-# jhipster-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
-# jhipster-needle-gradle-build-src-dependency-catalog-version - Deprecated: JHipster will add additional versions for convention plugins here
+# avan-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
+# avan-needle-gradle-build-src-dependency-catalog-version - Deprecated: JHipster will add additional versions for convention plugins here
 
 [libraries]
 jib-plugin = { module = "com.google.cloud.tools:jib-gradle-plugin", version = "'GRADLE-JIB-VERSION'" }
-# jhipster-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
+# avan-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
 
 [plugins]
-# jhipster-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
+# avan-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
 ",
     "stateCleared": "modified",
   },
@@ -83,13 +83,13 @@ jib {
   },
   "gradle/libs.versions.toml": {
     "contents": "[versions]
-# jhipster-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
+# avan-needle-gradle-dependency-catalog-version - JHipster will add additional versions for convention plugins heref
 
 [libraries]
-# jhipster-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
+# avan-needle-gradle-dependency-catalog-libraries - JHipster will add additional libraries versions
 
 [plugins]
-# jhipster-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
+# avan-needle-gradle-dependency-catalog-plugins - JHipster will add additional plugins versions
 ",
     "stateCleared": "modified",
   },
